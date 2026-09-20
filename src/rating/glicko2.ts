@@ -18,10 +18,16 @@ export interface Glicko2Rating {
   volatility: number
 }
 
-/** One opponent faced during a rating period. `score` is in [0, 1]. */
+/**
+ * One opponent faced during a rating period. `score` is in [0, 1].
+ * `weight` (default 1) counts the game as a fraction of a game: both the
+ * information it carries and the rating movement it causes are scaled, so a
+ * result from a closed pool (a junior draw) moves ratings less than an open one.
+ */
 export interface GameResult {
   opponent: Glicko2Rating
   score: number
+  weight?: number
 }
 
 export const DEFAULT_RATING = 1500
@@ -73,12 +79,16 @@ export function updateRating(player: Glicko2Rating, results: GameResult[]): Glic
   // Step 4: estimated improvement in rating (delta).
   let vInv = 0
   let deltaSum = 0
-  for (const { opponent, score } of results) {
+  for (const { opponent, score, weight = 1 } of results) {
     const { mu: muJ, phi: phiJ } = toInternal(opponent)
     const gj = g(phiJ)
     const e = E(mu, muJ, phiJ)
-    vInv += gj * gj * e * (1 - e)
-    deltaSum += gj * (score - e)
+    vInv += weight * gj * gj * e * (1 - e)
+    deltaSum += weight * gj * (score - e)
+  }
+  if (vInv === 0) {
+    const phiStar = Math.sqrt(phi * phi + sigma * sigma)
+    return { rating: player.rating, rd: phiStar * SCALE, volatility: sigma }
   }
   const v = 1 / vInv
   const delta = v * deltaSum

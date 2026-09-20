@@ -1,6 +1,7 @@
 // Typed access to the prebuilt KSF dataset (tools/build-ladder.mts).
 import ladderJson from '../data/ksf/ladder.json'
 import matchesJson from '../data/ksf/matches-compact.json'
+import { ABSENCE_DAYS } from './rating/squash.ts'
 
 export interface PlayerInfo {
   id: string
@@ -79,10 +80,13 @@ export const tournamentsById = new Map(ladder.tournaments.map((t) => [t.toCd, t]
 export const SEXES = ['남자', '여자'] as const
 export type Sex = (typeof SEXES)[number]
 
-/** Players who have not competed since this date are hidden from the all-time ladder unless asked for. */
+/**
+ * Players with no match since this date are shown dimmed (the engine also docks
+ * their rating when they return — see ABSENCE_DAYS).
+ */
 export const ACTIVE_SINCE = (() => {
   const d = new Date(ladder.builtAt)
-  d.setFullYear(d.getFullYear() - 2)
+  d.setDate(d.getDate() - ABSENCE_DAYS)
   return d.toISOString().slice(0, 10)
 })()
 
@@ -91,7 +95,7 @@ export const PROVISIONAL_RD = 200
 
 export const isActive = (e: TermEntry) => (e.lastPlayed ?? '') >= ACTIVE_SINCE
 
-/** Rank within sex over the players the ladder shows by default (active ones); the same for every term. */
+/** Rank within sex over every rated player; the same for every term. */
 const rankCache = new Map<string, Map<string, number>>()
 export function rankOf(termKey: string, id: string): number | null {
   let ranks = rankCache.get(termKey)
@@ -102,7 +106,6 @@ export function rankOf(termKey: string, id: string): number | null {
       let n = 0
       for (const e of term.entries) {
         if (playersById.get(e.id)?.sex !== sex) continue
-        if (!isActive(e)) continue
         ranks.set(e.id, ++n)
       }
     }

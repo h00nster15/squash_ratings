@@ -5,7 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:wellperion": "vite --mode wellperion",
+    "dev:seoul": "vite --mode seoul",
     "build": "tsc -b && vite build",
+    "build:wellperion": "tsc -b && vite build --mode wellperion --outDir dist/wellperion",
+    "build:seoul": "tsc -b && vite build --mode seoul --outDir dist/seoul",
+    "build:all": "npm run build && npm run build:wellperion && npm run build:seoul",
+    "scrape": "node tools/scrape-ksf.mjs",
+    "ladder": "node tools/build-ladder.mts",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -20,6 +27,7 @@
     "@vitejs/plugin-react": "^6.0.4",
     "oxlint": "^1.75.0",
     "typescript": "~6.0.2",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "xlsx": "^0.18.5"
   }
 }

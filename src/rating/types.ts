@@ -17,6 +17,14 @@ export interface Match {
   /** Set when the match was played as part of a tournament. */
   tournamentId?: string
   round?: string
+  /** How much of a match this counts as for rating (default 1); see GameResult.weight. */
+  weight?: number
+  /**
+   * Ceiling for ratings earned in this draw. A player whose matches in a rating
+   * period all carry a cap cannot leave the period above the lowest of them —
+   * dominating a closed junior pool cannot read as adult strength.
+   */
+  cap?: number
 }
 
 export type TournamentFormat = 'roundrobin' | 'knockout'

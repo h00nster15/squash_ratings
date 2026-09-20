@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { winProbability } from './rating/glicko2.ts'
-import { computeRatings } from './rating/squash.ts'
+import { ABSENCE_DAYS, computeRatings } from './rating/squash.ts'
 import type { Match, Player } from './rating/types.ts'
 import { GAME_OPTIONS, type DataProps } from './shared.ts'
 import { newId, today } from './storage.ts'
@@ -58,6 +58,11 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
     setData((d) => ({ ...d, matches: d.matches.filter((m) => m.id !== id) }))
   }
 
+  const absentSince = new Date(Date.now() - ABSENCE_DAYS * 86_400_000).toISOString().slice(0, 10)
+  const [showAbsent, setShowAbsent] = useState(false)
+  const shown = rated.filter((p) => showAbsent || !p.lastPlayed || p.lastPlayed >= absentSince)
+  const absent = rated.length - shown.length
+
   const recentMatches = [...matches]
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 30)
@@ -66,7 +71,15 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
     <>
 
       <section className="panel">
-        <h2>Ladder</h2>
+        <div className="panel-head">
+          <h2>Ladder</h2>
+          {absent > 0 && (
+            <label className="check">
+              <input type="checkbox" checked={showAbsent} onChange={(e) => setShowAbsent(e.target.checked)} />
+              Include {absent} absent (no match in a year)
+            </label>
+          )}
+        </div>
         {rated.length === 0 ? (
           <p className="muted">No players yet — add one below.</p>
         ) : (
@@ -82,8 +95,8 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
               </tr>
             </thead>
             <tbody>
-              {rated.map((p, i) => (
-                <tr key={p.id} className={p.matches === 0 ? 'unrated' : ''}>
+              {shown.map((p, i) => (
+                <tr key={p.id} className={p.matches === 0 || (p.lastPlayed && p.lastPlayed < absentSince) ? 'unrated' : ''}>
                   <td>{i + 1}</td>
                   <td>{p.name}</td>
                   <td className="num strong">{Math.round(p.rating.rating)}</td>

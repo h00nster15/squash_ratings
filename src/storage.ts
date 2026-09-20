@@ -1,3 +1,4 @@
+import { org } from './org.ts'
 import type { Match, Player, Tournament } from './rating/types.ts'
 
 export interface AppData {
@@ -6,7 +7,7 @@ export interface AppData {
   tournaments: Tournament[]
 }
 
-const KEY = 'squash_ratings.v1'
+const KEY = org.storageKey
 
 export function loadData(): AppData {
   try {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ClubLadder } from './ClubLadder.tsx'
 import { NationalLadder } from './NationalLadder.tsx'
 import { PlayerPage } from './PlayerPage.tsx'
+import { org } from './org.ts'
 import { loadData, saveData } from './storage.ts'
 import { TournamentPage } from './TournamentPage.tsx'
 import { Tournaments } from './Tournaments.tsx'
@@ -23,7 +24,8 @@ function parseRoute(hash: string): Route {
   if (m) return { view: 'player', id: m[1] }
   m = h.match(/^tournament\/(.+)$/)
   if (m) return { view: 'tournament', id: m[1] }
-  return { view: 'national' }
+  if (h === 'national') return { view: 'national' }
+  return { view: org.defaultView }
 }
 
 function useRoute(): Route {
@@ -41,7 +43,7 @@ function useRoute(): Route {
 
 const TABS = [
   { key: 'national', href: '#national', label: 'KSF National' },
-  { key: 'club', href: '#club', label: 'Club' },
+  { key: 'club', href: '#club', label: org.clubLabel },
   { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
 ] as const
 
@@ -56,7 +58,7 @@ function App() {
     <main className="layout">
       <header>
         <div className="panel-head">
-          <h1>Squash Ratings</h1>
+          <h1>{org.title}</h1>
           <nav className="segmented" aria-label="Section">
             {TABS.map((t) => (
               <a key={t.key} className={tab === t.key ? 'on' : ''} href={t.href}>
@@ -66,8 +68,8 @@ function App() {
           </nav>
         </div>
         <p className="muted">
-          Glicko-2 with margin of victory. A rating is shown as{' '}
-          <span className="mono">rating ± RD</span>; the ± shrinks as a player plays more.
+          {org.subtitle} A rating is shown as <span className="mono">rating ± RD</span>; the ± shrinks
+          as a player plays more.
         </p>
       </header>
 

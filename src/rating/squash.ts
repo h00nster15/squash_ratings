@@ -13,6 +13,17 @@ import type { Match, Player } from './types.ts'
  */
 export const MARGIN_WEIGHT = 0.5
 
+/**
+ * Absence rule. A player who returns after more than ABSENCE_DAYS without a
+ * rated match re-enters with their rating cut by ABSENCE_PENALTY (on top of the
+ * RD inflation Glicko-2 already applies while they are away). Ladders also hide
+ * players past the threshold until they play again.
+ */
+export const ABSENCE_DAYS = 365
+export const ABSENCE_PENALTY = 100
+
+const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000)
+
 /** Glicko-2 score for player A in [0, 1], blending win/loss with the games share. */
 export function matchScore(gamesA: number, gamesB: number): number {
   const total = gamesA + gamesB
@@ -70,17 +81,29 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
     while (i < ordered.length && ordered[i].date === date) period.push(ordered[i++])
 
     // Every update in a period uses the ratings as they stood at the start.
+    // `before` is what the snapshots report; `prior` is the same after the
+    // absence penalty, and is what the period's maths runs on.
     const before = new Map(ratings)
+    const prior = new Map(ratings)
+    for (const m of period) {
+      for (const id of [m.playerAId, m.playerBId]) {
+        const last = stats.get(id)!.lastPlayed
+        if (last && daysBetween(last, date) > ABSENCE_DAYS && prior.get(id) === before.get(id)) {
+          const r = before.get(id)!
+          prior.set(id, { ...r, rating: r.rating - ABSENCE_PENALTY })
+        }
+      }
+    }
     const resultsFor = new Map<string, GameResult[]>()
     for (const m of period) {
       const sA = matchScore(m.gamesA, m.gamesB)
       resultsFor.set(m.playerAId, [
         ...(resultsFor.get(m.playerAId) ?? []),
-        { opponent: before.get(m.playerBId)!, score: sA },
+        { opponent: prior.get(m.playerBId)!, score: sA, weight: m.weight },
       ])
       resultsFor.set(m.playerBId, [
         ...(resultsFor.get(m.playerBId) ?? []),
-        { opponent: before.get(m.playerAId)!, score: 1 - sA },
+        { opponent: prior.get(m.playerAId)!, score: 1 - sA, weight: m.weight },
       ])
 
       const a = stats.get(m.playerAId)!
@@ -98,8 +121,19 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
       b.lastPlayed = date
     }
 
-    for (const [id, r] of before) {
-      ratings.set(id, updateRating(r, resultsFor.get(id) ?? []))
+    // Lowest cap among each player's matches this period, if every match had one.
+    const capFor = new Map<string, number>()
+    for (const m of period) {
+      for (const id of [m.playerAId, m.playerBId]) {
+        const current = capFor.get(id)
+        if (current === Infinity) continue
+        capFor.set(id, m.cap === undefined ? Infinity : Math.min(current ?? Infinity, m.cap))
+      }
+    }
+    for (const [id, r] of prior) {
+      const updated = updateRating(r, resultsFor.get(id) ?? [])
+      const cap = capFor.get(id)
+      ratings.set(id, cap !== undefined && cap !== Infinity && updated.rating > cap ? { ...updated, rating: cap } : updated)
     }
 
     for (const m of period) {

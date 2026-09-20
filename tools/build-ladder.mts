@@ -28,6 +28,31 @@ const START_BY_AGE: [maxAge: number, rating: number][] = [
   [15, 1200],
   [18, 1400],
 ]
+// 대학부 is another closed pool (university players mostly meet each other), so a
+// player whose first rated match is in a 대학부 draw also starts below 1500.
+const UNIVERSITY_START = 1400
+
+// How much a match in each kind of draw counts for rating (1 = a full match).
+// Closed pools inflate their winners: a 46-6 record in a girls' U18 draw says
+// little about adult strength, so those results move ratings less. Tune here.
+const DIVISION_WEIGHT: [pattern: RegExp, weight: number][] = [
+  [/12세이하/, 0.5],
+  [/15세이하/, 0.6],
+  [/18세이하/, 0.7],
+  [/대학부/, 0.8],
+]
+const divisionWeight = (division: string) => DIVISION_WEIGHT.find(([re]) => re.test(division))?.[1] ?? 1
+
+// Ceiling on ratings earned inside each closed pool. However dominant a player
+// is in a junior or university draw, they cannot rate above this until they
+// beat people in an open (일반부) draw. Tune here.
+const DIVISION_CAP: [pattern: RegExp, cap: number][] = [
+  [/12세이하/, 1400],
+  [/15세이하/, 1550],
+  [/18세이하/, 1700],
+  [/대학부/, 1800],
+]
+const divisionCap = (division: string) => DIVISION_CAP.find(([re]) => re.test(division))?.[1]
 
 // Ratings use only the last RATING_MONTHS of results. The shorter terms do not
 // re-rate anyone: every player keeps the same current rating, and the term adds
@@ -85,15 +110,25 @@ const singles = allSingles.filter((m) => m.date >= RATING_SINCE)
 // Age is taken at the player's first RATED match, so a junior who entered the
 // window as an adult is not handicapped for results that no longer count.
 const firstYear = new Map<string, number>()
+const firstDivision = new Map<string, string>()
 for (const m of singles) {
+  // singles is date-ordered, so the first time we see a player is their first rated match
   const y = Number(m.date.slice(0, 4))
-  for (const id of [m.playerAId, m.playerBId]) if (y < (firstYear.get(id) ?? Infinity)) firstYear.set(id, y)
+  for (const id of [m.playerAId, m.playerBId]) {
+    if (!firstYear.has(id)) {
+      firstYear.set(id, y)
+      firstDivision.set(id, m.division)
+    }
+  }
 }
 function startRating(p: RawPlayer): number | undefined {
   const y = firstYear.get(p.idNo)
   if (!y || !p.birthYear) return undefined
   const age = y - p.birthYear
-  return START_BY_AGE.find(([max]) => age <= max)?.[1]
+  const byAge = START_BY_AGE.find(([max]) => age <= max)?.[1]
+  const byDivision = /대학부/.test(firstDivision.get(p.idNo) ?? '') ? UNIVERSITY_START : undefined
+  if (byAge === undefined) return byDivision
+  return byDivision === undefined ? byAge : Math.min(byAge, byDivision)
 }
 const players: Player[] = rawPlayers.map((p) => ({ id: p.idNo, name: p.name, startRating: startRating(p) }))
 
@@ -135,6 +170,8 @@ function rate(subset: Singles[]) {
     playerBId: m.playerBId,
     gamesA: m.gamesA,
     gamesB: m.gamesB,
+    weight: divisionWeight(m.division),
+    cap: divisionCap(m.division),
   }))
   const { players: rated, snapshots } = computeRatings(players, matches)
 
