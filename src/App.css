@@ -247,3 +247,92 @@ button.ghost {
 .spark.down path {
   stroke: var(--down);
 }
+
+/* nav links share the segmented look */
+.segmented a {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.segmented a + a {
+  border-left: 1px solid var(--border);
+}
+
+.segmented a.on {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.player-link {
+  color: var(--text-h);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.player-link:hover {
+  color: var(--accent);
+}
+
+/* --- player page --- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart {
+  margin-top: 0.5rem;
+}
+
+.chart svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-axis {
+  display: flex;
+  justify-content: space-between;
+}
+
+.two-col.wide-left {
+  grid-template-columns: 3fr 2fr;
+}
+
+@media (max-width: 640px) {
+  .two-col.wide-left {
+    grid-template-columns: 1fr;
+  }
+}
+
+.group-row td {
+  padding-top: 0.9rem;
+  border-bottom: none;
+}

@@ -52,7 +52,7 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
   const ratings = new Map<string, Glicko2Rating>()
   const stats = new Map<string, { matches: number; wins: number; losses: number; lastPlayed: string | null }>()
   for (const p of players) {
-    ratings.set(p.id, newRating())
+    ratings.set(p.id, newRating(p.startRating))
     stats.set(p.id, { matches: 0, wins: 0, losses: 0, lastPlayed: null })
   }
 

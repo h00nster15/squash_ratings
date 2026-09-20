@@ -39,8 +39,8 @@ const EPSILON = 0.000001
 /** Scale factor between the Glicko (1500-centred) and Glicko-2 (0-centred) scales. */
 const SCALE = 173.7178
 
-export function newRating(): Glicko2Rating {
-  return { rating: DEFAULT_RATING, rd: DEFAULT_RD, volatility: DEFAULT_VOLATILITY }
+export function newRating(rating = DEFAULT_RATING): Glicko2Rating {
+  return { rating, rd: DEFAULT_RD, volatility: DEFAULT_VOLATILITY }
 }
 
 /** Step 2: convert to the Glicko-2 internal scale. */

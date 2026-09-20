@@ -1,6 +1,8 @@
 export interface Player {
   id: string
   name: string
+  /** Initial rating if not the default 1500 (e.g. a junior handicap). */
+  startRating?: number
 }
 
 export interface Match {

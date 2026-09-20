@@ -1,12 +1,36 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ClubLadder } from './ClubLadder.tsx'
 import { NationalLadder } from './NationalLadder.tsx'
+import { PlayerPage } from './PlayerPage.tsx'
 import './App.css'
 
-type View = 'club' | 'national'
+// Hash routes: #national (default) · #club · #player/<idNo>
+type Route = { view: 'national' } | { view: 'club' } | { view: 'player'; id: string }
+
+function parseRoute(hash: string): Route {
+  const h = hash.replace(/^#/, '')
+  if (h === 'club') return { view: 'club' }
+  const m = h.match(/^player\/(.+)$/)
+  if (m) return { view: 'player', id: m[1] }
+  return { view: 'national' }
+}
+
+function useRoute(): Route {
+  const [route, setRoute] = useState(() => parseRoute(location.hash))
+  useEffect(() => {
+    const onChange = () => {
+      setRoute(parseRoute(location.hash))
+      window.scrollTo(0, 0)
+    }
+    window.addEventListener('hashchange', onChange)
+    return () => window.removeEventListener('hashchange', onChange)
+  }, [])
+  return route
+}
 
 function App() {
-  const [view, setView] = useState<View>('national')
+  const route = useRoute()
+  const tab = route.view === 'club' ? 'club' : 'national'
 
   return (
     <main className="layout">
@@ -14,12 +38,12 @@ function App() {
         <div className="panel-head">
           <h1>Squash Ratings</h1>
           <nav className="segmented" aria-label="Ladder">
-            <button type="button" className={view === 'national' ? 'on' : ''} onClick={() => setView('national')}>
+            <a className={tab === 'national' ? 'on' : ''} href="#national">
               KSF National
-            </button>
-            <button type="button" className={view === 'club' ? 'on' : ''} onClick={() => setView('club')}>
+            </a>
+            <a className={tab === 'club' ? 'on' : ''} href="#club">
               Club
-            </button>
+            </a>
           </nav>
         </div>
         <p className="muted">
@@ -28,7 +52,7 @@ function App() {
         </p>
       </header>
 
-      {view === 'national' ? <NationalLadder /> : <ClubLadder />}
+      {route.view === 'player' ? <PlayerPage id={route.id} /> : route.view === 'club' ? <ClubLadder /> : <NationalLadder />}
     </main>
   )
 }
