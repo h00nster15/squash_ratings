@@ -16,7 +16,8 @@ export const MARGIN_WEIGHT = 0.5
 /**
  * Match format. A best-of-five says more than a best-of-three, which says more
  * than a single game, so shorter formats count as a fraction of a match.
- * Detected from the score: the winner took 3, 2 or 1 games.
+ * Detected from the score: the winner took 3, 2 or 1 games. Callers fold this
+ * into Match.weight themselves (the engine applies Match.weight as given).
  */
 export const FORMAT_WEIGHT = { bestOf5: 1, bestOf3: 0.75, singleGame: 0.5 }
 
@@ -119,14 +120,13 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
     const resultsFor = new Map<string, GameResult[]>()
     for (const m of period) {
       const sA = matchScore(m.gamesA, m.gamesB)
-      const weight = (m.weight ?? 1) * formatWeight(m.gamesA, m.gamesB)
       resultsFor.set(m.playerAId, [
         ...(resultsFor.get(m.playerAId) ?? []),
-        { opponent: prior.get(m.playerBId)!, score: sA, weight },
+        { opponent: prior.get(m.playerBId)!, score: sA, weight: m.weight },
       ])
       resultsFor.set(m.playerBId, [
         ...(resultsFor.get(m.playerBId) ?? []),
-        { opponent: prior.get(m.playerAId)!, score: 1 - sA, weight },
+        { opponent: prior.get(m.playerAId)!, score: 1 - sA, weight: m.weight },
       ])
 
       const a = stats.get(m.playerAId)!

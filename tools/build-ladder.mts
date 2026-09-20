@@ -13,7 +13,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import { computeRatings } from '../src/rating/squash.ts'
+import { computeRatings, formatWeight } from '../src/rating/squash.ts'
 import type { Match, Player } from '../src/rating/types.ts'
 
 const DIR = path.resolve('data/ksf')
@@ -170,7 +170,7 @@ function rate(subset: Singles[]) {
     playerBId: m.playerBId,
     gamesA: m.gamesA,
     gamesB: m.gamesB,
-    weight: divisionWeight(m.division),
+    weight: divisionWeight(m.division) * formatWeight(m.gamesA, m.gamesB),
     cap: divisionCap(m.division),
   }))
   const { players: rated, snapshots } = computeRatings(players, matches)
