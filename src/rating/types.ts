@@ -20,9 +20,11 @@ export interface Match {
   /** How much of a match this counts as for rating (default 1); see GameResult.weight. */
   weight?: number
   /**
-   * Ceiling for ratings earned in this draw. A player whose matches in a rating
-   * period all carry a cap cannot leave the period above the lowest of them —
-   * dominating a closed junior pool cannot read as adult strength.
+   * Ceiling for ratings earned in this draw (junior / university pools). Once a
+   * player has played a capped draw, their rating cannot exceed that cap — or,
+   * if higher, the rating of the best player they have beaten in an uncapped
+   * (일반부) draw plus ADULT_WIN_MARGIN. Dominating a closed pool cannot read
+   * as adult strength; beating adults is the only way up.
    */
   cap?: number
 }

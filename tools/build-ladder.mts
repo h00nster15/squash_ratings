@@ -30,7 +30,7 @@ const START_BY_AGE: [maxAge: number, rating: number][] = [
 ]
 // 대학부 is another closed pool (university players mostly meet each other), so a
 // player whose first rated match is in a 대학부 draw also starts below 1500.
-const UNIVERSITY_START = 1400
+const UNIVERSITY_START = 1300
 
 // How much a match in each kind of draw counts for rating (1 = a full match).
 // Closed pools inflate their winners: a 46-6 record in a girls' U18 draw says
@@ -39,7 +39,7 @@ const DIVISION_WEIGHT: [pattern: RegExp, weight: number][] = [
   [/12세이하/, 0.5],
   [/15세이하/, 0.6],
   [/18세이하/, 0.7],
-  [/대학부/, 0.8],
+  [/대학부/, 0.7],
 ]
 const divisionWeight = (division: string) => DIVISION_WEIGHT.find(([re]) => re.test(division))?.[1] ?? 1
 
@@ -50,7 +50,7 @@ const DIVISION_CAP: [pattern: RegExp, cap: number][] = [
   [/12세이하/, 1400],
   [/15세이하/, 1550],
   [/18세이하/, 1700],
-  [/대학부/, 1800],
+  [/대학부/, 1600],
 ]
 const divisionCap = (division: string) => DIVISION_CAP.find(([re]) => re.test(division))?.[1]
 

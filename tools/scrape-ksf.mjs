@@ -95,8 +95,8 @@ async function listDivisions(toCd) {
   return divisions
 }
 
-/** "남자 15세이하부"-style label from an entry list, or null if it has no usable entrants. */
-function inferDivision(entrants, startDate) {
+/** Majority sex and age band of an entry list, or null if it has no usable entrants. */
+function inferDraw(entrants, startDate) {
   const year = Number((startDate ?? '').slice(0, 4))
   const withInfo = entrants.filter((p) => p.sexNm && p.birthYear)
   if (!year || !withInfo.length) return null
@@ -104,7 +104,7 @@ function inferDivision(entrants, startDate) {
   const sex = men * 2 >= withInfo.length ? '남자' : '여자'
   const oldest = Math.max(...withInfo.map((p) => year - Number(p.birthYear)))
   const band = oldest <= 12 ? '12세이하부' : oldest <= 15 ? '15세이하부' : oldest <= 18 ? '18세이하부' : '일반부'
-  return `${sex} ${band}`
+  return { sex, band, mixed: men > 0 && men < withInfo.length }
 }
 
 function main() {
@@ -128,10 +128,22 @@ function main() {
           postJson('schedules', key).catch(() => []),
         ])
 
-        // Older events (2018–2022) carry bogus labels like "GU11 P" (that one is the
-        // men's open). When the label is not a real 남자/여자 …부 name, derive it from
-        // the entrants: majority sex + age band of the oldest entrant that year.
-        const division = /^(남자|여자)/.test(d.kindNm) ? d.kindNm : inferDivision(entrants, t.start) ?? d.kindNm
+        // The portal's labels are unreliable for older events: 2018–2022 draws are
+        // named "GU11 P" (that one is the men's open), and 2018–2021 student events
+        // have men under "여자 …부" and vice versa. When the label is not a real
+        // 남자/여자 …부 name, or its sex disagrees with the entrants, relabel from the
+        // entrants: age band of the oldest entrant that year, and — because such a
+        // draw can hold both sexes — the sex of each match's own two players.
+        const draw = inferDraw(entrants, t.start)
+        const labelSex = d.kindNm.match(/^(남자|여자)/)?.[1] ?? null
+        const trustLabel = labelSex !== null && (!draw || draw.sex === labelSex && !draw.mixed)
+        const sexOf = new Map(entrants.map((p) => [p.idNo, p.sexNm]))
+        const divisionFor = (idA, idB) => {
+          if (trustLabel || !draw) return d.kindNm
+          const sexes = [sexOf.get(idA), sexOf.get(idB)].filter(Boolean)
+          const sex = sexes.length && sexes.every((x) => x === sexes[0]) ? sexes[0] : draw.sex
+          return `${sex} ${draw.band}`
+        }
 
         // Name -> idNo within this division. A name shared by two entrants is ambiguous.
         const byName = new Map()
@@ -164,7 +176,7 @@ function main() {
             toCd: t.toCd,
             // gameDate is usually "-" (fall back to the tournament start) and sometimes "2019.03.10".
             date: m.gameDate && m.gameDate !== '-' ? m.gameDate.replace(/\./g, '-') : t.start,
-            division,
+            division: divisionFor(idA, idB),
             event: d.detailClassNm,
             format: m.maTypeNm ?? d.format,
             round: m.rhNm ?? null,

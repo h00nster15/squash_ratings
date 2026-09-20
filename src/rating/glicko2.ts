@@ -41,6 +41,14 @@ export const DEFAULT_VOLATILITY = 0.06
  */
 export const TAU = 0.5
 
+/**
+ * Elo blend. Pure Glicko-2 lets an established player's RD shrink until their
+ * rating hardly moves; Elo moves everyone by a fixed K. Flooring the RD keeps
+ * Glicko-2's fast convergence for newcomers while veterans keep moving at an
+ * Elo-like pace: RD 75 ≈ K 32 per match.
+ */
+export const RD_FLOOR = 75
+
 const EPSILON = 0.000001
 /** Scale factor between the Glicko (1500-centred) and Glicko-2 (0-centred) scales. */
 const SCALE = 173.7178
@@ -131,8 +139,8 @@ export function updateRating(player: Glicko2Rating, results: GameResult[]): Glic
   // Step 6: update the rating deviation to the new pre-rating period value.
   const phiStar = Math.sqrt(phi * phi + sigmaNew * sigmaNew)
 
-  // Step 7: update the rating and RD to the new values.
-  const phiNew = 1 / Math.sqrt(1 / (phiStar * phiStar) + 1 / v)
+  // Step 7: update the rating and RD to the new values (RD never below the floor).
+  const phiNew = Math.max(1 / Math.sqrt(1 / (phiStar * phiStar) + 1 / v), RD_FLOOR / SCALE)
   const muNew = mu + phiNew * phiNew * deltaSum
 
   // Step 8: convert back to the Glicko scale.

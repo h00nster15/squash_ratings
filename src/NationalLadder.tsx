@@ -214,11 +214,14 @@ export function NationalLadder() {
       </section>
       <p className="muted small">
         Source: 대한체육회 경기결과 (result.sports.or.kr), singles only. Men and women are rated
-        and ranked separately. Ratings are Glicko-2, one rating period per tournament. Juniors
+        and ranked separately. Ratings are Glicko-2 with an Elo-style floor (RD never below 75, so
+        established players keep moving at roughly K = 32), one rating period per tournament.
+        Best-of-3 counts 0.75 of a match and a single game 0.5. Juniors
         start lower (U12 1000 · U15 1200 · U18 1400 · adults 1500) so a junior-only record does
         not read as adult strength; junior and 대학부 results also count for less (U12 ½ · U15 0.6 ·
-        U18 0.7 · 대학부 0.8 of a match) and cannot lift a rating above that draw's ceiling
-        (U12 1400 · U15 1550 · U18 1700 · 대학부 1800) until the player beats adults. Only the
+        U18 0.7 · 대학부 0.7 of a match) and cannot lift a rating above that draw's ceiling
+        (U12 1400 · U15 1550 · U18 1700 · 대학부 1600); beating 일반부 players raises the ceiling to the best
+        one beaten + 100, so only wins over adults move a junior or university player past it. Only the
         last three years of results are rated; the shorter
         terms keep the same ratings and show how much each moved in that window (Δ) with the
         window's W–L. ± is the rating deviation; rows above ±{PROVISIONAL_RD} or with no results

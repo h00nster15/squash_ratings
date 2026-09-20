@@ -14,6 +14,18 @@ import type { Match, Player } from './types.ts'
 export const MARGIN_WEIGHT = 0.5
 
 /**
+ * Match format. A best-of-five says more than a best-of-three, which says more
+ * than a single game, so shorter formats count as a fraction of a match.
+ * Detected from the score: the winner took 3, 2 or 1 games.
+ */
+export const FORMAT_WEIGHT = { bestOf5: 1, bestOf3: 0.75, singleGame: 0.5 }
+
+export function formatWeight(gamesA: number, gamesB: number): number {
+  const won = Math.max(gamesA, gamesB)
+  return won >= 3 ? FORMAT_WEIGHT.bestOf5 : won === 2 ? FORMAT_WEIGHT.bestOf3 : FORMAT_WEIGHT.singleGame
+}
+
+/**
  * Absence rule. A player who returns after more than ABSENCE_DAYS without a
  * rated match re-enters with their rating cut by ABSENCE_PENALTY (on top of the
  * RD inflation Glicko-2 already applies while they are away). Ladders also hide
@@ -21,6 +33,12 @@ export const MARGIN_WEIGHT = 0.5
  */
 export const ABSENCE_DAYS = 365
 export const ABSENCE_PENALTY = 100
+
+/**
+ * How far above the best 일반부 player they have beaten a capped (junior /
+ * university) player may rate. See Match.cap.
+ */
+export const ADULT_WIN_MARGIN = 100
 
 const daysBetween = (a: string, b: string) => Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000)
 
@@ -72,6 +90,10 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
     .sort((a, b) => a.date.localeCompare(b.date))
 
   const snapshots: RatingSnapshot[] = []
+  // Closed-pool ceilings: the cap of the last capped draw a player entered, and
+  // the highest prior rating of an opponent they beat in an uncapped draw.
+  const capLevel = new Map<string, number>()
+  const bestAdultWin = new Map<string, number>()
 
   // Group into rating periods by date.
   let i = 0
@@ -97,13 +119,14 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
     const resultsFor = new Map<string, GameResult[]>()
     for (const m of period) {
       const sA = matchScore(m.gamesA, m.gamesB)
+      const weight = (m.weight ?? 1) * formatWeight(m.gamesA, m.gamesB)
       resultsFor.set(m.playerAId, [
         ...(resultsFor.get(m.playerAId) ?? []),
-        { opponent: prior.get(m.playerBId)!, score: sA, weight: m.weight },
+        { opponent: prior.get(m.playerBId)!, score: sA, weight },
       ])
       resultsFor.set(m.playerBId, [
         ...(resultsFor.get(m.playerBId) ?? []),
-        { opponent: prior.get(m.playerAId)!, score: 1 - sA, weight: m.weight },
+        { opponent: prior.get(m.playerAId)!, score: 1 - sA, weight },
       ])
 
       const a = stats.get(m.playerAId)!
@@ -121,19 +144,25 @@ export function computeRatings(players: Player[], matches: Match[]): RatingHisto
       b.lastPlayed = date
     }
 
-    // Lowest cap among each player's matches this period, if every match had one.
-    const capFor = new Map<string, number>()
     for (const m of period) {
-      for (const id of [m.playerAId, m.playerBId]) {
-        const current = capFor.get(id)
-        if (current === Infinity) continue
-        capFor.set(id, m.cap === undefined ? Infinity : Math.min(current ?? Infinity, m.cap))
+      const winner = m.gamesA > m.gamesB ? m.playerAId : m.gamesB > m.gamesA ? m.playerBId : null
+      const loser = winner === m.playerAId ? m.playerBId : m.playerAId
+      for (const id of [m.playerAId, m.playerBId]) if (m.cap !== undefined) capLevel.set(id, m.cap)
+      if (winner && m.cap === undefined) {
+        const beaten = prior.get(loser)!.rating
+        if (beaten > (bestAdultWin.get(winner) ?? -Infinity)) bestAdultWin.set(winner, beaten)
       }
     }
     for (const [id, r] of prior) {
       const updated = updateRating(r, resultsFor.get(id) ?? [])
-      const cap = capFor.get(id)
-      ratings.set(id, cap !== undefined && cap !== Infinity && updated.rating > cap ? { ...updated, rating: cap } : updated)
+      const cap = capLevel.get(id)
+      if (cap === undefined) {
+        ratings.set(id, updated)
+        continue
+      }
+      const earned = bestAdultWin.has(id) ? bestAdultWin.get(id)! + ADULT_WIN_MARGIN : -Infinity
+      const limit = Math.max(cap, earned)
+      ratings.set(id, updated.rating > limit ? { ...updated, rating: limit } : updated)
     }
 
     for (const m of period) {
