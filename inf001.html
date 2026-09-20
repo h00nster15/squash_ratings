@@ -1,0 +1,548 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>스쿼시 대회운영 정보제공</title>
+    <link rel="stylesheet" href="/SQ/comn/assets/front/p/css/content_result.css">
+    <script defer src="/SQ/comn/assets/common/js/jquery-2.2.4.min.js"></script>
+    <script defer src="/SQ/comn/assets/common/js/jquery-ui.min.js"></script>
+    <script defer src="/SQ/comn/assets/common/js/common.js"></script>
+    <script defer src="/SQ/comn/assets/common/js/common-function.js"></script>
+
+    <script defer src="/SQ/comn/assets/front/p/js/tablesaw.js"></script>
+    <script defer src="/SQ/comn/assets/front/p/js/tablesaw-init.js"></script>
+    <script defer src="/SQ/comn/assets/front/p/js/feSeries.js"></script>
+    <script defer src="/SQ/comn/assets/front/p/js/feCommon.js"></script>
+
+    <script defer src="/SQ/comn/assets/front/p/js/result/result-common.js"></script>
+</head>
+
+<script defer>
+    function fnAppEvent(classCd, toCd) {
+        _frm.classCd.value = classCd;
+        _frm.toCd.value = toCd;
+        move('INF102');
+    }
+
+    function fnResultEvent(classCd, toCd) {
+        _frm.classCd.value = classCd;
+        _frm.toCd.value = toCd;
+        move('INF202');
+    }
+
+    function fnVodDetail(eventCd, movSeq) {
+        _frm.eventCd.value = eventCd;
+        _frm.movSeq.value = movSeq;
+        _frm.target = "_blank";
+        _frm.action = "https://vod.sports.or.kr/vod/view.do";
+        _frm.submit();
+    }
+</script>
+<body>
+<div id="wrap">
+  <a href="#content" class="skipToContent">본문으로 바로가기</a>
+  
+<header id="header" class="header">
+  <div class="inner">
+    
+<h1 class="logo">
+  <a href="/SQ/"><img src="/SQ/comn/assets/front/p/img/logo.svg" alt="KOREA SQUASH FEDERATION"></a>
+</h1>
+<nav class="gnb">
+  <h2 class="hideEl">주메뉴</h2>
+  <ul>
+    <li><a href="/SQ/INF101.do">참가신청</a></li>
+    <li><a href="/SQ/INF201.do">일정/결과</a></li>
+    <li><a href="/SQ/INF308.do">경기영상</a></li>
+    <li><a href="/SQ/INF703.do">통합검색</a></li>
+  </ul>
+</nav>
+<div class="topMenuWrap">
+  <ul class="topMenu">
+    <li><a href="http://www.koreasquash.or.kr" target="_blank" title="새창으로열기">대한스쿼시연맹</a></li>
+    
+      <li><a href="#" onclick="fnMemLogin();return false;">로그인</a></li>
+      <li><a href="#" onclick="fnMemJoin();return false;">회원가입</a></li>
+    
+    
+  </ul>
+  <button type="button" class="homeBtn pcView" onclick="location.href='https://result.sports.or.kr/GATE.do'"><span class="hideEl">홈 버튼</span></button>
+  <button type="button" class="topSearchBtn pcView" onclick="location.href='/SQ/INF601.do';"><span class="hideEl">모바일 검색 버튼</span></button>
+  <a href="https://www.sports.or.kr" class="sports-association-logo" target="_blank"><span class="hideEl">대한체육회</span></a>
+  <button type="button" class="mobBtn"><span class="hideEl">모바일 메뉴열기 버튼</span></button>
+</div>
+    
+<div class="moGnb">
+  <h2 class="hideEl">주메뉴</h2>
+  <div class="head">
+    <h3>스쿼시 대회정보제공
+      <span>KOREA SQUASH FEDERATION</span>
+    </h3>
+    <div class="loginArea">
+      
+        <div class="login">
+          <a href="#" onclick="fnMemJoin()" title="회원가입 페이지로 이동" class="joinBtn">회원가입</a>
+          <span>종목별 경기운영 정보제공</span>
+          <button type="button" class="loginBtn" onclick="fnMemLogin()">LOGIN</button>
+        </div>
+      
+      
+      <button type="button" class="homeBtn mobView" onclick="location.href='https://result.sports.or.kr/GATE.do'">
+        <span class="hideEl">홈 버튼</span>
+      </button>
+      <button type="button" class="topSearchBtn mobView" onclick="location.href='/SQ/INF601.do';">
+        <span class="hideEl">모바일 검색 버튼</span>
+      </button>
+    </div>
+  </div>
+  <ul class="mobNav">
+    <li><a href="/SQ/INF101.do">참가신청</a></li>
+    <li><a href="/SQ/INF201.do">일정/결과</a></li>
+    <li><a href="/SQ/INF308.do">경기영상</a></li>
+    <li><a href="/SQ/INF703.do">통합검색</a></li>
+    <li><a href="https://www.sports.or.kr/" target="_blank" title="새창으로열기">대한체육회 바로가기</a></li>
+  </ul>
+  <a href="#" class="moGnbCls hideTxt">메뉴 닫기</a>
+</div>
+  </div>
+</header>
+
+
+  <div id="content" class="main">
+    <div class="mainBanner">
+      <div class="inner">
+        <p class="assocition">KOREA SQUASH FEDERATION</p>
+        <div class="mainSliderWrap">
+          <ul class="mainSlider">
+            
+              <li style="background-image: url('/SQ/comn/assets/front/p/img/bg_mainSlider.png');">
+                <span class="sign">대회정보</span>
+                <h3 class="pointer" onclick="fnResultEvent('41', '202615333')">
+                  제19회 코리아오픈 시니어 스쿼시 챔피언쉽
+                </h3>
+                <p>
+                  2026.08.12 ~ 08.15
+                  <br>
+                  인천 열우물스쿼시경기장
+                </p>
+              </li>
+            
+              <li style="background-image: url('/SQ/comn/assets/front/p/img/bg_mainSlider.png');">
+                <span class="sign">대회정보</span>
+                <h3 class="pointer" onclick="fnResultEvent('41', '202615131')">
+                  2026 제6회 태산배 전국 스쿼시 선수권대회
+                </h3>
+                <p>
+                  2026.07.11 ~ 07.14
+                  <br>
+                  나주스쿼시경기장
+                </p>
+              </li>
+            
+              <li style="background-image: url('/SQ/comn/assets/front/p/img/bg_mainSlider.png');">
+                <span class="sign">대회정보</span>
+                <h3 class="pointer" onclick="fnResultEvent('41', '202614990')">
+                  2026 제29회 금곡배 전국 초ㆍ중ㆍ고 스쿼시 선수권대회
+                </h3>
+                <p>
+                  2026.06.25 ~ 06.27
+                  <br>
+                  김천스쿼시경기장
+                </p>
+              </li>
+            
+          </ul>
+          <div class="controls-auto">
+            <button type="button" type="button" class="slide-stop">Pause</button>
+            <button type="button" type="button" class="slide-start">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inner">
+      <div class="main-section02">
+        <div class="titleArea">
+          <h4>대회 참가신청 안내</h4>
+          <p class="txt">각종 대회참가 신청을 할 수 있습니다. </p>
+          <button type="button" class="moreBtn" onclick="location.href='/SQ/INF101.do'">더보기</button>
+        </div>
+        <ul class="tournament-list">
+          
+          
+            <li class="pointer" onclick="fnAppEvent('41', '202615516')">
+              <p>
+                <span class="contest">2026 제19회 하계 전국 중고 스쿼시 선수권대회</span>
+                <span class="date-place">
+                  2026.08.29 ~ 08.30
+                  / 대구스쿼시장
+                </span>
+              </p>
+              <button type="button" class="state">
+                모집완료
+              </button>
+            </li>
+          
+            <li class="pointer" onclick="fnAppEvent('41', '202615483')">
+              <p>
+                <span class="contest">2026 제23회 회장배 전국 학생 스쿼시 선수권대회</span>
+                <span class="date-place">
+                  2026.08.20 ~ 08.23
+                  / 울산 문수스쿼시경기장
+                </span>
+              </p>
+              <button type="button" class="state">
+                모집완료
+              </button>
+            </li>
+          
+            <li class="pointer" onclick="fnAppEvent('41', '202615333')">
+              <p>
+                <span class="contest">제19회 코리아오픈 시니어 스쿼시 챔피언쉽</span>
+                <span class="date-place">
+                  2026.08.12 ~ 08.15
+                  / 인천 열우물스쿼시경기장
+                </span>
+              </p>
+              <button type="button" class="state">
+                모집완료
+              </button>
+            </li>
+          
+        </ul>
+      </div>
+
+      
+      <div class="main-section01">
+        <div class="titleArea">
+          <h4>대회일정 및 결과</h4>
+          <p class="txt">모든 대회정보를 한 번에 모아보세요.</p>
+          <button type="button" class="moreBtn" onclick="location.href='/SQ/INF201.do'">더보기</button>
+        </div>
+        <ul class="tournament-list">
+          
+          
+            <li class="pointer" onclick="fnResultEvent('41', '202615333')">
+              <p>
+                <span class="contest">제19회 코리아오픈 시니어 스쿼시 챔피언쉽</span>
+                <span class="date-place">
+                  2026.08.12 ~ 08.15
+                  / 인천 열우물스쿼시경기장
+                </span>
+              </p>
+              <button type="button" class="state">대회완료</button>
+            </li>
+          
+            <li class="pointer" onclick="fnResultEvent('41', '202615131')">
+              <p>
+                <span class="contest">2026 제6회 태산배 전국 스쿼시 선수권대회</span>
+                <span class="date-place">
+                  2026.07.11 ~ 07.14
+                  / 나주스쿼시경기장
+                </span>
+              </p>
+              <button type="button" class="state">대회완료</button>
+            </li>
+          
+            <li class="pointer" onclick="fnResultEvent('41', '202614990')">
+              <p>
+                <span class="contest">2026 제29회 금곡배 전국 초ㆍ중ㆍ고 스쿼시 선수권대회</span>
+                <span class="date-place">
+                  2026.06.25 ~ 06.27
+                  / 김천스쿼시경기장
+                </span>
+              </p>
+              <button type="button" class="state">대회완료</button>
+            </li>
+          
+        </ul>
+      </div>
+
+      <div class="main-section03">
+        <div class="titleArea">
+          <h4>대회경기 영상</h4>
+          <p class="txt">각종 대회경기 영상을 확인해보세요. </p>
+          <button type="button" class="moreBtn" onclick="location.href='/SQ/INF308.do'">더보기</button>
+        </div>
+        <div class="movieList">
+          <ul>
+            
+            
+              <li class="pointer" onclick="fnVodDetail('202615217', '107734');">
+                <div class="movie-img">
+                  <img src="https://vod.sports.or.kr/u/image/2026/07/19/462b9d9a-7ddc-4435-839b-6f0f894e9cc1_thumb.jpg"
+                       alt="제55회 전국소년체육대회 동영상 썸네일"/>
+                </div>
+                <h5>제55회 전국소년체육대회</h5>
+                <p>종별 : 남자15세이하부</p>
+                <p>세부종목 : 개인전</p>
+                <p>라운드 : 예선</p>
+              </li>
+            
+              <li class="pointer" onclick="fnVodDetail('202615217', '107733');">
+                <div class="movie-img">
+                  <img src="https://vod.sports.or.kr/u/image/2026/07/19/03a92b14-f48c-4ce2-a6d8-3324e67014a0_thumb.jpg"
+                       alt="제55회 전국소년체육대회 동영상 썸네일"/>
+                </div>
+                <h5>제55회 전국소년체육대회</h5>
+                <p>종별 : 남자15세이하부</p>
+                <p>세부종목 : 개인전</p>
+                <p>라운드 : 예선</p>
+              </li>
+            
+              <li class="pointer" onclick="fnVodDetail('202615217', '107732');">
+                <div class="movie-img">
+                  <img src="https://vod.sports.or.kr/u/image/2026/07/19/96a35f09-702e-4e04-b9a7-90dc74461fad_thumb.jpg"
+                       alt="제55회 전국소년체육대회 동영상 썸네일"/>
+                </div>
+                <h5>제55회 전국소년체육대회</h5>
+                <p>종별 : 남자15세이하부</p>
+                <p>세부종목 : 개인전</p>
+                <p>라운드 : 예선</p>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+
+      <div class="main-section06">
+        <div class="titleArea">
+          <h4>찾아 오시는 길</h4>
+          <p class="organization">대한스쿼시연맹</p>
+          <p class="txt01">
+            [05540]<br>
+            서울특별시 송파구 올림픽로 424<br class='pcView'>올림픽회관 신관 213호
+          </p>
+          <p class="txt02">TEL  02-419-6454~5</p>
+          <p class="txt02">FAX  02-419-9479</p>
+          <ul class="snsList">
+            <li><a href="https://www.facebook.com/koreasquash" target="_blank"><img src="/SQ/comn/assets/front/p/img/icon_facebook.svg" alt="페이스북 아이콘"></a></li>
+            <li><a href="https://www.instagram.com/koreasquash_official" target="_blank"><img src="/SQ/comn/assets/front/p/img/icon_instagram.svg" alt="인스타그램 아이콘"></a></li>
+            <li><a href="https://www.youtube.com/@KSF_SQUASHTV" target="_blank"><img src="/SQ/comn/assets/front/p/img/icon_youtube.svg" alt="유튜브 아이콘"></a></li>
+          </ul>
+        </div>
+        <div class="map">
+          <div id="daumRoughmapContainer1715676071099" class="root_daum_roughmap root_daum_roughmap_landing" style="width:100%;"></div>
+          <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+          <script charset="UTF-8">
+              new daum.roughmap.Lander({
+                  "timestamp": "1715676071099",
+                  "key": "2jc3t",
+                  "mapHeight": "448"
+              }).render();
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<footer id="footer" class="footer">
+  <div class="inner">
+    <div class="foot-top clearFix">
+      <div class="floatL">
+        <a href="https://www.sports.or.kr" target="_blank" class="footerLogo">
+          <img src="/SQ/comn/assets/front/p/img/footerLogo.png" alt="대한체육회">
+        </a>
+        <a href="INF100.do" target="_blank" class="privacyBtn">
+          <strong>개인정보처리방침</strong>
+        </a>
+        <span class="inquiry">시스템장애처리 &nbsp;02-2144-8141</span>
+      </div>
+      <div class="floatR">
+        <select name="relationlink" title="관련사이트" onchange="if(this.value){window.open(this.value)}">
+          
+        </select>
+      </div>
+    </div>
+  </div>
+</footer>
+<script defer src="/comn/front/js/com.js?v=1789909857489"></script>
+
+</div>
+
+
+<form id="searchVO" action="/SQ/INF001.do" method="post">
+  <input id="classCd" name="classCd" type="hidden" value="41"/>
+  <input id="toCd" name="toCd" type="hidden" value=""/>
+  <input id="pclassCd" name="pclassCd" type="hidden" value="SQ"/>
+  <input id="eventCd" name="eventCd" type="hidden" value=""/>
+  <input id="movSeq" name="movSeq" type="hidden" value=""/>
+</form>
+
+
+
+<form id="loginForm" name="loginForm" method="post">
+  <input type="hidden" name="token" value=""/>
+  <input type="hidden" name="cb" value=""/>
+  <input type="hidden" name="retUrl" value=""/>
+  <input type="hidden" name="popYn" value=""/>
+</form>
+<script>
+    function fnMemLogin() {
+        $.ajax({
+            type: "POST",
+            url: "/SQ/member/prepareSSOAjax.do",
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            success: function (result) {
+                if (result.RESULT_CODE != "0000000") {
+                    alert(result.RESULT_MSG);
+                    return;
+                }
+
+                var loginForm = findObject('loginForm');
+                loginForm.token.value = result.TOKEN;
+                loginForm.retUrl.value = "https://result.sports.or.kr/SQ/INF001.do";
+                loginForm.cb.value = "https://result.sports.or.kr/SQ/member/callbackLogin.do";
+
+
+                var loginUrl = "https://g1.sports.or.kr/member/loginProxy.do";
+                if (isMobile()) {
+                    loginUrl = "https://g1.sports.or.kr/m/member/loginProxy.do";
+                }
+
+                loginForm.popYn.value = "N";
+                if (loginForm.popYn.value == "Y") {
+                    var loginwin = window.open("", "G1Login", "");
+
+                    loginForm.action = loginUrl;
+                    loginForm.target = "G1Login";
+                    loginForm.submit();
+                } else {
+                    loginForm.action = loginUrl;
+                    loginForm.submit();
+                }
+            },
+            fail: function () {
+                alert("처리 중 오류가 발생했습니다.");
+                return;
+            }
+        });
+    }
+
+    function fnMemJoin() {
+        $.ajax({
+            type: "POST",
+            url: "/SQ/member/checks.do",
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            success: function (result) {
+                if (result.RESULT_CODE == "0000000") {
+                    alert("이미 로그인 되어 있습니다.");
+                    return;
+                }
+
+                let url = "https://g1.sports.or.kr";
+                url += isMobile() ? "/m" : "";
+                url += "/member/join/step00.do";
+                window.open(url);
+            },
+            fail: function () {
+                alert("회원가입페이지로 이동하는 중 오류가 발생하였습니다.");
+                return;
+            }
+        });
+    }
+
+    function fnMemModify() {
+        $.ajax({
+            type: "POST",
+            url: "/SQ/member/prepareSSOAjax.do",
+            dataType: 'json',
+            contentType: "application/json; charset=UTF-8",
+            success: function (result) {
+                if (result.RESULT_CODE !== "0000000") {
+                    alert(result.RESULT_MSG);
+                    return;
+                }
+                const $form = document.createElement('form');
+                $form.id = 'modifyForm';
+                $form.name = 'modifyForm';
+                $form.method = 'POST'
+                $form.action = 'https://g1.sports.or.kr/m/member/loginProxy.do';
+                document.body.appendChild($form);
+
+                const $token = document.createElement('input');
+                $token.id = 'token';
+                $token.name = 'token';
+                $token.type = 'hidden';
+                $token.value = result.TOKEN;
+                $form.appendChild($token);
+
+                const $cb = document.createElement('input');
+                $cb.id = 'cb';
+                $cb.name = 'cb';
+                $cb.type = 'hidden';
+                $cb.value = 'https://g1.sports.or.kr/m/member/edit/info.do';
+                $form.appendChild($cb);
+
+                const $retUrl = document.createElement('input');
+                $retUrl.id = 'retUrl';
+                $retUrl.name = 'retUrl';
+                $retUrl.type = 'hidden';
+                $retUrl.value = 'https://result.sports.or.kr/SQ/INF001.do';
+                $form.appendChild($retUrl);
+
+                const $popYn = document.createElement('input');
+                $popYn.id = 'popYn';
+                $popYn.name = 'popYn';
+                $popYn.type = 'hidden';
+                $popYn.value = 'N';
+                $form.appendChild($popYn);
+
+                window.open('', 'modifyForm', 'width=500,height=1000');
+                $form.target = 'modifyForm';
+                $form.submit();
+
+                $form.remove();
+            },
+            fail: function () {
+                alert("처리 중 오류가 발생했습니다.");
+            }
+        });
+    }
+
+    function fnMemLogout() {
+        if (!confirm("로그아웃하시겠습니까?\n만약 대회에 참가신청중이라면 저장하지 않은 자료는 모두 소실되면 복원할 수 없습니다.")) {
+            return;
+        }
+        location.href = "/SQ/member/logout.do";
+    }
+</script>
+
+</body>
+</html>
+
+<iframe id="vcnt" width="0" height="0" src="https://result.sports.or.kr/jjxweb/common/jsp/vcnt.jsp?syscode=RINFO&subcode=SQ" frameBorder=0 title="접속자카운트"></iframe>

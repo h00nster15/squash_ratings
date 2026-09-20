@@ -157,3 +157,93 @@ button.link {
 button.link:hover {
   color: var(--down);
 }
+
+/* --- shared bits used by both ladders --- */
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.panel-head h2 {
+  margin-bottom: 0;
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segmented button {
+  background: var(--panel);
+  color: var(--text);
+  font-weight: 500;
+  border-radius: 0;
+  padding: 0.35rem 0.8rem;
+  align-self: stretch;
+}
+
+.segmented button + button {
+  border-left: 1px solid var(--border);
+}
+
+.segmented button.on {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.filters input[type='text'],
+.filters input:not([type]) {
+  flex: 1;
+  min-width: 12rem;
+}
+
+.check {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+button.ghost {
+  background: none;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  margin-top: 0.75rem;
+}
+
+.spark path {
+  stroke: var(--text-muted);
+}
+
+.spark.up path {
+  stroke: var(--up);
+}
+
+.spark.down path {
+  stroke: var(--down);
+}

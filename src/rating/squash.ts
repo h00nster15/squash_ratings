@@ -3,8 +3,8 @@ import {
   type Glicko2Rating,
   newRating,
   updateRating,
-} from './glicko2'
-import type { Match, Player } from './types'
+} from './glicko2.ts'
+import type { Match, Player } from './types.ts'
 
 /**
  * How much the game score tempers a win. 0 = a win is a win (pure Glicko-2);

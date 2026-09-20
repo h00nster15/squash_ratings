@@ -1,4 +1,4 @@
-import type { Match, Player } from './rating/types'
+import type { Match, Player } from './rating/types.ts'
 
 export interface AppData {
   players: Player[]

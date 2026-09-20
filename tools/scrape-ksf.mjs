@@ -145,7 +145,8 @@ function main() {
           matches.push({
             tournament: t.name,
             toCd: t.toCd,
-            date: m.gameDate && m.gameDate !== '-' ? m.gameDate : t.start,
+            // gameDate is usually "-" (fall back to the tournament start) and sometimes "2019.03.10".
+            date: m.gameDate && m.gameDate !== '-' ? m.gameDate.replace(/\./g, '-') : t.start,
             division: d.kindNm,
             event: d.detailClassNm,
             format: m.maTypeNm ?? d.format,
