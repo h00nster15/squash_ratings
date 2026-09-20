@@ -189,7 +189,7 @@ export function NationalLadder() {
       <p className="muted small">
         Source: 대한체육회 경기결과 (result.sports.or.kr), singles only. Men and women are rated
         and ranked separately. Ratings are Glicko-2, one rating period per tournament. Juniors
-        start lower (U12 1200 · U15 1300 · U18 1400 · adults 1500) so a junior-only record does
+        start lower (U12 1000 · U15 1200 · U18 1400 · adults 1500) so a junior-only record does
         not read as adult strength. Term ratings use only results in that window and restart
         everyone from their starting rating. ± is the rating deviation; rows above ±{PROVISIONAL_RD}{' '}
         are dimmed as provisional. Division = the one the player last competed in.

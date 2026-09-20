@@ -21,10 +21,11 @@ const DIR = path.resolve('data/ksf')
 // Junior handicap. Juniors mostly play each other, so their pool is self-referential
 // and a dominant U12 would otherwise climb to adult-looking numbers. Starting each
 // age band lower anchors the pool; only results against higher bands pull a player up.
-// Keyed on age at the player's first recorded match. Tune here.
+// Keyed on age at the player's first recorded match. Elementary (U12) and middle
+// school (U15) pools inflate the most, so they get the largest offsets. Tune here.
 const START_BY_AGE: [maxAge: number, rating: number][] = [
-  [12, 1200],
-  [15, 1300],
+  [12, 1000],
+  [15, 1200],
   [18, 1400],
 ]
 
@@ -81,6 +82,35 @@ function startRating(p: RawPlayer): number | undefined {
   return START_BY_AGE.find(([max]) => age <= max)?.[1]
 }
 const players: Player[] = rawPlayers.map((p) => ({ id: p.idNo, name: p.name, startRating: startRating(p) }))
+
+// --- Round labels ----------------------------------------------------------
+// The portal names rounds 결승 / 준결승경기N / 준준결승경기N / 준준준결승경기N /
+// 준준준준결승 N, and "예선경기N" for whichever round is one deeper than the deepest
+// named round of that division. Normalise to 결승 / 준결승 / 8강 / 16강 / 32강 / 64강.
+// League rounds ("1R / A조") are kept as they are.
+function roundDepth(round: string | null): number | null {
+  if (!round) return null
+  if (/^결승/.test(round)) return 1 // 2 players left
+  const m = round.match(/^(준+)결승/)
+  return m ? m[1].length + 1 : null // 준결승 = 2 (4 left), 준준결승 = 3 (8 left) …
+}
+function depthLabel(depth: number): string {
+  return depth === 1 ? '결승' : depth === 2 ? '준결승' : `${2 ** depth}강`
+}
+const deepestNamed = new Map<string, number>()
+for (const m of singles) {
+  const d = roundDepth(m.round)
+  if (d === null) continue
+  const key = `${m.toCd}|${m.division}`
+  if (d > (deepestNamed.get(key) ?? 0)) deepestNamed.set(key, d)
+}
+function roundLabel(m: Singles): string | null {
+  if (!m.round) return null
+  const d = roundDepth(m.round)
+  if (d !== null) return depthLabel(d)
+  if (/^예선/.test(m.round)) return depthLabel((deepestNamed.get(`${m.toCd}|${m.division}`) ?? 2) + 1)
+  return m.round
+}
 
 // --- Rate one term ---------------------------------------------------------
 function rate(subset: Singles[]) {
@@ -168,7 +198,7 @@ fs.writeFileSync(
 const compact = allSnapshots.map((s) => {
   const m = singles[Number(s.matchId)]
   const delta = (id: string) => Math.round(s.after[id].rating - s.before[id].rating)
-  return { d: m.date, t: m.toCd, v: m.division, r: m.round, a: m.playerAId, b: m.playerBId, ga: m.gamesA, gb: m.gamesB, da: delta(m.playerAId), db: delta(m.playerBId) }
+  return { d: m.date, t: m.toCd, v: m.division, r: roundLabel(m), a: m.playerAId, b: m.playerBId, ga: m.gamesA, gb: m.gamesB, da: delta(m.playerAId), db: delta(m.playerBId) }
 })
 fs.writeFileSync(path.join(DIR, 'matches-compact.json'), JSON.stringify(compact))
 

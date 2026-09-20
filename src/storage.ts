@@ -1,8 +1,9 @@
-import type { Match, Player } from './rating/types.ts'
+import type { Match, Player, Tournament } from './rating/types.ts'
 
 export interface AppData {
   players: Player[]
   matches: Match[]
+  tournaments: Tournament[]
 }
 
 const KEY = 'squash_ratings.v1'
@@ -12,12 +13,12 @@ export function loadData(): AppData {
     const raw = localStorage.getItem(KEY)
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<AppData>
-      return { players: parsed.players ?? [], matches: parsed.matches ?? [] }
+      return { players: parsed.players ?? [], matches: parsed.matches ?? [], tournaments: parsed.tournaments ?? [] }
     }
   } catch {
     // Corrupt or unavailable storage: start fresh.
   }
-  return { players: [], matches: [] }
+  return { players: [], matches: [], tournaments: [] }
 }
 
 export function saveData(data: AppData): void {

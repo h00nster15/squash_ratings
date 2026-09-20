@@ -336,3 +336,38 @@ button.ghost {
   padding-top: 0.9rem;
   border-bottom: none;
 }
+
+.year-divisions {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* --- tournaments --- */
+h3 {
+  font-size: 0.95rem;
+  color: var(--text-h);
+  margin: 0 0 0.5rem;
+}
+
+.score-cell {
+  white-space: nowrap;
+}
+
+.score-cell select {
+  width: 3.2rem;
+  padding: 0.3rem 0.4rem;
+  margin: 0 0.25rem;
+}
+
+.ko-round {
+  margin-bottom: 0.75rem;
+}
+
+button.ghost.danger {
+  color: var(--down);
+}

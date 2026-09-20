@@ -45,6 +45,19 @@ export function PlayerPage({ id }: { id: string }) {
       .sort((a, b) => b.wins + b.losses - (a.wins + a.losses) || b.last.localeCompare(a.last))
   }, [groups, id])
 
+  // Which division(s) the player competed in each year, oldest first.
+  const divisionsByYear = useMemo(() => {
+    const byYear = new Map<string, Set<string>>()
+    for (const g of groups) {
+      const year = (g.tournament?.date ?? '').slice(0, 4)
+      if (!year) continue
+      const set = byYear.get(year) ?? new Set()
+      for (const m of g.matches) set.add(m.v)
+      byYear.set(year, set)
+    }
+    return [...byYear.entries()].sort((a, b) => a[0].localeCompare(b[0]))
+  }, [groups])
+
   if (!player || !all) {
     return (
       <section className="panel">
@@ -75,6 +88,14 @@ export function PlayerPage({ id }: { id: string }) {
             {player.sido ? ` · ${player.sido}` : ''}
           </span>
         </div>
+
+        <ul className="year-divisions">
+          {divisionsByYear.map(([year, divs]) => (
+            <li key={year}>
+              <span className="muted small">{year}</span> {[...divs].join(' / ')}
+            </li>
+          ))}
+        </ul>
 
         <div className="stats">
           <div className="stat">

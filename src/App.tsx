@@ -2,16 +2,27 @@ import { useEffect, useState } from 'react'
 import { ClubLadder } from './ClubLadder.tsx'
 import { NationalLadder } from './NationalLadder.tsx'
 import { PlayerPage } from './PlayerPage.tsx'
+import { loadData, saveData } from './storage.ts'
+import { TournamentPage } from './TournamentPage.tsx'
+import { Tournaments } from './Tournaments.tsx'
 import './App.css'
 
-// Hash routes: #national (default) · #club · #player/<idNo>
-type Route = { view: 'national' } | { view: 'club' } | { view: 'player'; id: string }
+// Hash routes: #national (default) · #player/<idNo> · #club · #tournaments · #tournament/<id>
+type Route =
+  | { view: 'national' }
+  | { view: 'player'; id: string }
+  | { view: 'club' }
+  | { view: 'tournaments' }
+  | { view: 'tournament'; id: string }
 
 function parseRoute(hash: string): Route {
   const h = hash.replace(/^#/, '')
   if (h === 'club') return { view: 'club' }
-  const m = h.match(/^player\/(.+)$/)
+  if (h === 'tournaments') return { view: 'tournaments' }
+  let m = h.match(/^player\/(.+)$/)
   if (m) return { view: 'player', id: m[1] }
+  m = h.match(/^tournament\/(.+)$/)
+  if (m) return { view: 'tournament', id: m[1] }
   return { view: 'national' }
 }
 
@@ -28,22 +39,30 @@ function useRoute(): Route {
   return route
 }
 
+const TABS = [
+  { key: 'national', href: '#national', label: 'KSF National' },
+  { key: 'club', href: '#club', label: 'Club' },
+  { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
+] as const
+
 function App() {
   const route = useRoute()
-  const tab = route.view === 'club' ? 'club' : 'national'
+  const [data, setData] = useState(loadData)
+  useEffect(() => saveData(data), [data])
+
+  const tab = route.view === 'player' ? 'national' : route.view === 'tournament' ? 'tournaments' : route.view
 
   return (
     <main className="layout">
       <header>
         <div className="panel-head">
           <h1>Squash Ratings</h1>
-          <nav className="segmented" aria-label="Ladder">
-            <a className={tab === 'national' ? 'on' : ''} href="#national">
-              KSF National
-            </a>
-            <a className={tab === 'club' ? 'on' : ''} href="#club">
-              Club
-            </a>
+          <nav className="segmented" aria-label="Section">
+            {TABS.map((t) => (
+              <a key={t.key} className={tab === t.key ? 'on' : ''} href={t.href}>
+                {t.label}
+              </a>
+            ))}
           </nav>
         </div>
         <p className="muted">
@@ -52,7 +71,17 @@ function App() {
         </p>
       </header>
 
-      {route.view === 'player' ? <PlayerPage id={route.id} /> : route.view === 'club' ? <ClubLadder /> : <NationalLadder />}
+      {route.view === 'player' ? (
+        <PlayerPage id={route.id} />
+      ) : route.view === 'club' ? (
+        <ClubLadder data={data} setData={setData} />
+      ) : route.view === 'tournaments' ? (
+        <Tournaments data={data} setData={setData} />
+      ) : route.view === 'tournament' ? (
+        <TournamentPage id={route.id} data={data} setData={setData} />
+      ) : (
+        <NationalLadder />
+      )}
     </main>
   )
 }

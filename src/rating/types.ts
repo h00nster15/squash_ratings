@@ -14,4 +14,19 @@ export interface Match {
   /** Games won by each side, e.g. 3 and 1 for a 3-1 result. */
   gamesA: number
   gamesB: number
+  /** Set when the match was played as part of a tournament. */
+  tournamentId?: string
+  round?: string
+}
+
+export type TournamentFormat = 'roundrobin' | 'knockout'
+
+export interface Tournament {
+  id: string
+  name: string
+  /** ISO date; every match in the tournament is rated in this period. */
+  date: string
+  format: TournamentFormat
+  division?: string
+  entrantIds: string[]
 }

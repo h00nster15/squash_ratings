@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { winProbability } from './rating/glicko2.ts'
 import { computeRatings } from './rating/squash.ts'
 import type { Match, Player } from './rating/types.ts'
-import { loadData, newId, saveData, today } from './storage.ts'
+import { GAME_OPTIONS, type DataProps } from './shared.ts'
+import { newId, today } from './storage.ts'
 
-const GAME_OPTIONS = [0, 1, 2, 3]
-
-export function ClubLadder() {
-  const [{ players, matches }, setData] = useState(loadData)
-  useEffect(() => saveData({ players, matches }), [players, matches])
+export function ClubLadder({ data: { players, matches, tournaments }, setData }: DataProps) {
+  const tournamentName = useMemo(() => new Map(tournaments.map((t) => [t.id, t.name])), [tournaments])
 
   const { players: rated, snapshots } = useMemo(
     () => computeRatings(players, matches),
@@ -223,7 +221,16 @@ export function ClubLadder() {
                 const dB = s ? s.after[m.playerBId].rating - s.before[m.playerBId].rating : 0
                 return (
                   <tr key={m.id}>
-                    <td className="muted">{m.date}</td>
+                    <td className="muted">
+                      {m.date}
+                      {m.tournamentId && (
+                        <span className="small">
+                          {' '}
+                          · {tournamentName.get(m.tournamentId) ?? 'tournament'}
+                          {m.round ? ` ${m.round}` : ''}
+                        </span>
+                      )}
+                    </td>
                     <td>
                       <span className={m.gamesA > m.gamesB ? 'strong' : ''}>
                         {a?.name ?? '?'}
