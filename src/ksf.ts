@@ -13,7 +13,10 @@ export interface PlayerInfo {
   lastDivision: string | null
 }
 
-/** A player's rating computed from one term's results. */
+/**
+ * A player's current rating (from the last 3 years of results) seen through one
+ * term: how far it moved inside that window and the window's record.
+ */
 export interface TermEntry {
   id: string
   rating: number
@@ -22,12 +25,18 @@ export interface TermEntry {
   wins: number
   losses: number
   lastPlayed: string | null
+  /** Rating after each tournament inside the term. */
   history: { date: string; rating: number }[]
+  /** Rating change over the term; null for the primary (3-year) term. */
+  delta: number | null
+  termMatches: number
+  termWins: number
+  termLosses: number
 }
 
 export interface Term {
   label: string
-  since: string | null
+  since: string
   entries: TermEntry[] // sorted by rating, descending
 }
 
@@ -37,7 +46,7 @@ export interface Tournament {
   date: string
 }
 
-/** One singles match; `da`/`db` are each side's all-time rating change over the whole tournament. */
+/** One singles match; `da`/`db` are each side's rating change over the whole tournament (null before the rating window). */
 export interface CompactMatch {
   d: string
   t: string
@@ -47,12 +56,13 @@ export interface CompactMatch {
   b: string
   ga: number
   gb: number
-  da: number
-  db: number
+  da: number | null
+  db: number | null
 }
 
 export const ladder = ladderJson as {
   builtAt: string
+  ratingSince: string
   matches: number
   tournaments: Tournament[]
   players: PlayerInfo[]
@@ -61,6 +71,8 @@ export const ladder = ladderJson as {
 export const matches = matchesJson as CompactMatch[]
 
 export const TERM_KEYS = Object.keys(ladder.terms)
+/** The term whose ratings are the ratings; the others only add a window Δ. */
+export const PRIMARY = TERM_KEYS[0]
 export const playersById = new Map(ladder.players.map((p) => [p.id, p]))
 export const tournamentsById = new Map(ladder.tournaments.map((t) => [t.toCd, t]))
 
@@ -79,7 +91,7 @@ export const PROVISIONAL_RD = 200
 
 export const isActive = (e: TermEntry) => (e.lastPlayed ?? '') >= ACTIVE_SINCE
 
-/** Rank within sex for a term, over the same population the ladder shows by default. */
+/** Rank within sex over the players the ladder shows by default (active ones); the same for every term. */
 const rankCache = new Map<string, Map<string, number>>()
 export function rankOf(termKey: string, id: string): number | null {
   let ranks = rankCache.get(termKey)
@@ -90,7 +102,7 @@ export function rankOf(termKey: string, id: string): number | null {
       let n = 0
       for (const e of term.entries) {
         if (playersById.get(e.id)?.sex !== sex) continue
-        if (termKey === 'all' && !isActive(e)) continue
+        if (!isActive(e)) continue
         ranks.set(e.id, ++n)
       }
     }

@@ -29,10 +29,12 @@ const START_BY_AGE: [maxAge: number, rating: number][] = [
   [18, 1400],
 ]
 
-// Rating terms: "all" uses every result; the others only results within the
-// window ending at build time, so they read as current form.
-const TERMS: { key: string; label: string; months: number | null }[] = [
-  { key: 'all', label: 'All time', months: null },
+// Ratings use only the last RATING_MONTHS of results. The shorter terms do not
+// re-rate anyone: every player keeps the same current rating, and the term adds
+// how far it moved inside that window plus the window's win–loss record.
+const RATING_MONTHS = 36
+const TERMS: { key: string; label: string; months: number }[] = [
+  { key: 'y3', label: '3 years', months: RATING_MONTHS },
   { key: 'y1', label: '1 year', months: 12 },
   { key: 'm6', label: '6 months', months: 6 },
   { key: 'm3', label: '3 months', months: 3 },
@@ -62,14 +64,26 @@ interface RawPlayer {
 const rawMatches: RawMatch[] = JSON.parse(fs.readFileSync(path.join(DIR, 'matches.json'), 'utf8'))
 const rawPlayers: RawPlayer[] = JSON.parse(fs.readFileSync(path.join(DIR, 'players.json'), 'utf8'))
 
+const now = new Date()
+const since = (months: number) => {
+  const d = new Date(now)
+  d.setMonth(d.getMonth() - months)
+  return d.toISOString().slice(0, 10)
+}
+const RATING_SINCE = since(RATING_MONTHS)
+
 type Singles = RawMatch & { playerAId: string; playerBId: string; gamesA: number; gamesB: number }
-const singles = rawMatches.filter(
+/** Every singles match, oldest first; only those on/after RATING_SINCE are rated. */
+const allSingles = rawMatches.filter(
   (m): m is Singles =>
     !!m.playerAId && !!m.playerBId && m.playerAId !== m.playerBId &&
     m.gamesA != null && m.gamesB != null && m.gamesA + m.gamesB > 0,
 )
+const singles = allSingles.filter((m) => m.date >= RATING_SINCE)
 
 // --- Starting ratings ------------------------------------------------------
+// Age is taken at the player's first RATED match, so a junior who entered the
+// window as an adult is not handicapped for results that no longer count.
 const firstYear = new Map<string, number>()
 for (const m of singles) {
   const y = Number(m.date.slice(0, 4))
@@ -98,7 +112,7 @@ function depthLabel(depth: number): string {
   return depth === 1 ? '결승' : depth === 2 ? '준결승' : `${2 ** depth}강`
 }
 const deepestNamed = new Map<string, number>()
-for (const m of singles) {
+for (const m of allSingles) {
   const d = roundDepth(m.round)
   if (d === null) continue
   const key = `${m.toCd}|${m.division}`
@@ -152,29 +166,38 @@ function rate(subset: Singles[]) {
   return { entries, snapshots }
 }
 
-const now = new Date()
-const since = (months: number) => {
-  const d = new Date(now)
-  d.setMonth(d.getMonth() - months)
-  return d.toISOString().slice(0, 10)
-}
+const { entries: current, snapshots: allSnapshots } = rate(singles)
+const startOf = new Map(players.map((p) => [p.id, p.startRating ?? 1500]))
 
-const terms: Record<string, { label: string; since: string | null; entries: ReturnType<typeof rate>['entries'] }> = {}
-let allSnapshots: ReturnType<typeof rate>['snapshots'] = []
+type TermEntry = (typeof current)[number] & { delta: number | null; termMatches: number; termWins: number; termLosses: number }
+const terms: Record<string, { label: string; since: string; entries: TermEntry[] }> = {}
 for (const t of TERMS) {
-  const from = t.months ? since(t.months) : null
-  const subset = from ? singles.filter((m) => m.date >= from) : singles
-  const { entries, snapshots } = rate(subset)
+  const from = since(t.months)
+  const entries: TermEntry[] = current.map((e) => {
+    const inWindow = singles.filter((m) => m.date >= from && (m.playerAId === e.id || m.playerBId === e.id))
+    const wins = inWindow.filter((m) => (m.playerAId === e.id ? m.gamesA > m.gamesB : m.gamesB > m.gamesA)).length
+    // Rating just before the window opened: last history point before `from`, else the start rating.
+    const before = [...e.history].reverse().find((h) => h.date < from)
+    const base = before ? before.rating : startOf.get(e.id) ?? 1500
+    return {
+      ...e,
+      history: e.history.filter((h) => h.date >= from),
+      delta: t.months === RATING_MONTHS ? null : e.rating - base,
+      termMatches: inWindow.length,
+      termWins: wins,
+      termLosses: inWindow.length - wins,
+    }
+  })
   terms[t.key] = { label: t.label, since: from, entries }
-  if (t.key === 'all') allSnapshots = snapshots
-  console.log(`${t.label.padEnd(9)} ${subset.length} matches, ${entries.length} rated players`)
+  console.log(`${t.label.padEnd(9)} since ${from}: ${entries.filter((e) => e.termMatches).length} players with results`)
 }
 
 // --- Static player info ----------------------------------------------------
 const lastDivision = new Map<string, string>()
-for (const m of singles) for (const id of [m.playerAId, m.playerBId]) lastDivision.set(id, m.division) // singles is date-ordered
+for (const m of allSingles) for (const id of [m.playerAId, m.playerBId]) lastDivision.set(id, m.division) // date-ordered
+const rated = new Set(current.map((e) => e.id))
 const info = rawPlayers
-  .filter((p) => firstYear.has(p.idNo))
+  .filter((p) => rated.has(p.idNo))
   .map((p) => ({
     id: p.idNo,
     name: p.name,
@@ -186,25 +209,26 @@ const info = rawPlayers
     lastDivision: lastDivision.get(p.idNo) ?? null,
   }))
 
-const tournaments = [...new Map(singles.map((m) => [m.toCd, { toCd: m.toCd, name: m.tournament, date: m.date }])).values()]
+const tournaments = [...new Map(allSingles.map((m) => [m.toCd, { toCd: m.toCd, name: m.tournament, date: m.date }])).values()]
   .sort((a, b) => a.date.localeCompare(b.date))
 
 fs.writeFileSync(
   path.join(DIR, 'ladder.json'),
-  JSON.stringify({ builtAt: now.toISOString(), matches: singles.length, tournaments, players: info, terms }),
+  JSON.stringify({ builtAt: now.toISOString(), ratingSince: RATING_SINCE, matches: singles.length, tournaments, players: info, terms }),
 )
 
 // Compact per-match rows with each side's all-time rating change over that tournament.
-const compact = allSnapshots.map((s) => {
-  const m = singles[Number(s.matchId)]
-  const delta = (id: string) => Math.round(s.after[id].rating - s.before[id].rating)
+const snapshotOf = new Map(allSnapshots.map((s) => [singles[Number(s.matchId)], s]))
+const compact = allSingles.map((m) => {
+  const s = snapshotOf.get(m)
+  const delta = (id: string) => (s ? Math.round(s.after[id].rating - s.before[id].rating) : null)
   return { d: m.date, t: m.toCd, v: m.division, r: roundLabel(m), a: m.playerAId, b: m.playerBId, ga: m.gamesA, gb: m.gamesB, da: delta(m.playerAId), db: delta(m.playerBId) }
 })
 fs.writeFileSync(path.join(DIR, 'matches-compact.json'), JSON.stringify(compact))
 
 const byId = new Map(info.map((p) => [p.id, p]))
 console.log('\nAll-time top 10:')
-for (const e of terms.all.entries.slice(0, 10)) {
+for (const e of terms.y3.entries.slice(0, 10)) {
   const p = byId.get(e.id)!
   console.log(`  ${String(e.rating).padStart(4)} ±${String(e.rd).padStart(3)}  ${p.name} (${p.birthYear}, start ${p.startRating}, ${p.team ?? '-'})  ${e.wins}-${e.losses}  last ${e.lastPlayed}`)
 }

@@ -4,6 +4,7 @@ import {
   isActive,
   ladder,
   playersById,
+  PRIMARY,
   PROVISIONAL_RD,
   SEXES,
   TERM_KEYS,
@@ -13,8 +14,19 @@ import { Sparkline } from './Sparkline.tsx'
 
 const PAGE = 50
 
+function DeltaCell({ value }: { value: number | null }) {
+  if (value === null) return <td className="num muted">—</td>
+  const r = Math.round(value)
+  return (
+    <td className={`num ${r > 0 ? 'up' : r < 0 ? 'down' : 'muted'}`}>
+      {r > 0 ? '+' : ''}
+      {r}
+    </td>
+  )
+}
+
 export function NationalLadder() {
-  const [termKey, setTermKey] = useState('all')
+  const [termKey, setTermKey] = useState(PRIMARY)
   const [sex, setSex] = useState<Sex>('남자')
   const [division, setDivision] = useState('')
   const [query, setQuery] = useState('')
@@ -22,6 +34,7 @@ export function NationalLadder() {
   const [limit, setLimit] = useState(PAGE)
 
   const term = ladder.terms[termKey]
+  const isPrimary = termKey === PRIMARY
 
   // Divisions contested by this sex in the term, most populated first.
   const divisions = useMemo(() => {
@@ -29,11 +42,11 @@ export function NationalLadder() {
     for (const e of term.entries) {
       const p = playersById.get(e.id)
       if (!p || p.sex !== sex || !p.lastDivision) continue
-      if (termKey === 'all' && !isActive(e)) continue
+      if (!isActive(e)) continue
       count.set(p.lastDivision, (count.get(p.lastDivision) ?? 0) + 1)
     }
     return [...count.entries()].sort((a, b) => b[1] - a[1])
-  }, [term, termKey, sex])
+  }, [term, sex])
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -43,10 +56,10 @@ export function NationalLadder() {
         ({ e, p }) =>
           p.sex === sex &&
           (!division || p.lastDivision === division) &&
-          (termKey !== 'all' || includeInactive || isActive(e)) &&
+          (includeInactive || isActive(e)) &&
           (!q || p.name.toLowerCase().includes(q) || (p.team ?? '').toLowerCase().includes(q)),
       )
-  }, [term, termKey, sex, division, query, includeInactive])
+  }, [term, sex, division, query, includeInactive])
 
   const shown = rows.slice(0, limit)
   const lastTournament = ladder.tournaments[ladder.tournaments.length - 1]
@@ -58,8 +71,8 @@ export function NationalLadder() {
         <div className="panel-head">
           <h2>KSF National Ladder</h2>
           <span className="muted small">
-            {term.since ? `results since ${term.since}` : `${ladder.matches.toLocaleString()} matches · ${ladder.tournaments.length} tournaments`}{' '}
-            · through {lastTournament?.date}
+            {ladder.matches.toLocaleString()} rated matches since {ladder.ratingSince} · through {lastTournament?.date}
+            {!isPrimary && ` · Δ and W–L since ${term.since}`}
           </span>
         </div>
         <div className="filters">
@@ -118,7 +131,7 @@ export function NationalLadder() {
               reset()
             }}
           />
-          {termKey === 'all' && (
+          {(
             <label className="check">
               <input
                 type="checkbox"
@@ -145,6 +158,7 @@ export function NationalLadder() {
                   <th>Team</th>
                   <th className="num">Rating</th>
                   <th className="num">±</th>
+                  {!isPrimary && <th className="num">Δ</th>}
                   <th>Trend</th>
                   <th className="num">W–L</th>
                   <th>Last played</th>
@@ -152,7 +166,7 @@ export function NationalLadder() {
               </thead>
               <tbody>
                 {shown.map(({ e, p }, i) => (
-                  <tr key={p.id} className={(termKey === 'all' && !isActive(e)) || e.rd > PROVISIONAL_RD ? 'unrated' : ''}>
+                  <tr key={p.id} className={!isActive(e) || e.rd > PROVISIONAL_RD || (!isPrimary && !e.termMatches) ? 'unrated' : ''}>
                     <td className="muted">{i + 1}</td>
                     <td>
                       <a className="player-link" href={`#player/${p.id}`}>
@@ -167,11 +181,12 @@ export function NationalLadder() {
                     <td className="muted small">{p.team ?? '—'}</td>
                     <td className="num strong">{e.rating}</td>
                     <td className="num muted">{e.rd}</td>
+                    {!isPrimary && <DeltaCell value={e.termMatches ? e.delta : null} />}
                     <td>
                       <Sparkline points={e.history} />
                     </td>
                     <td className="num">
-                      {e.wins}–{e.losses}
+                      {isPrimary ? `${e.wins}–${e.losses}` : `${e.termWins}–${e.termLosses}`}
                     </td>
                     <td className="muted">{e.lastPlayed ?? '—'}</td>
                   </tr>
@@ -190,9 +205,10 @@ export function NationalLadder() {
         Source: 대한체육회 경기결과 (result.sports.or.kr), singles only. Men and women are rated
         and ranked separately. Ratings are Glicko-2, one rating period per tournament. Juniors
         start lower (U12 1000 · U15 1200 · U18 1400 · adults 1500) so a junior-only record does
-        not read as adult strength. Term ratings use only results in that window and restart
-        everyone from their starting rating. ± is the rating deviation; rows above ±{PROVISIONAL_RD}{' '}
-        are dimmed as provisional. Division = the one the player last competed in.
+        not read as adult strength. Only the last three years of results are rated; the shorter
+        terms keep the same ratings and show how much each moved in that window (Δ) with the
+        window's W–L. ± is the rating deviation; rows above ±{PROVISIONAL_RD} or with no results
+        in the window are dimmed. Division = the one the player last competed in.
       </p>
     </>
   )

@@ -4,7 +4,7 @@ import {
   ladder,
   matches,
   playersById,
-  PROVISIONAL_RD,
+  PRIMARY,
   rankOf,
   TERM_KEYS,
   tournamentsById,
@@ -14,7 +14,7 @@ import { Sparkline } from './Sparkline.tsx'
 
 export function PlayerPage({ id }: { id: string }) {
   const player = playersById.get(id)
-  const all = entryOf('all', id)
+  const all = entryOf(PRIMARY, id)
 
   // This player's matches, newest first, grouped by tournament.
   const groups = useMemo(() => {
@@ -68,7 +68,7 @@ export function PlayerPage({ id }: { id: string }) {
     )
   }
 
-  const rank = rankOf('all', id)
+  const rank = rankOf(PRIMARY, id)
 
   return (
     <>
@@ -99,7 +99,7 @@ export function PlayerPage({ id }: { id: string }) {
 
         <div className="stats">
           <div className="stat">
-            <span className="stat-label">All-time rating</span>
+            <span className="stat-label">Rating (3 years)</span>
             <span className="stat-value">
               {all.rating} <span className="muted small">±{all.rd}</span>
             </span>
@@ -107,16 +107,16 @@ export function PlayerPage({ id }: { id: string }) {
               {rank ? `#${rank} ${player.sex}` : 'inactive'} · started at {player.startRating}
             </span>
           </div>
-          {TERM_KEYS.filter((k) => k !== 'all').map((k) => {
+          {TERM_KEYS.filter((k) => k !== PRIMARY).map((k) => {
             const e = entryOf(k, id)
-            const r = e ? rankOf(k, id) : null
+            const d = e && e.termMatches ? Math.round(e.delta ?? 0) : null
             return (
               <div className="stat" key={k}>
                 <span className="stat-label">{ladder.terms[k].label}</span>
-                <span className={`stat-value ${e && e.rd > PROVISIONAL_RD ? 'muted' : ''}`}>
-                  {e ? e.rating : '—'} {e && <span className="muted small">±{e.rd}</span>}
+                <span className={`stat-value ${d === null ? 'muted' : d > 0 ? 'up' : d < 0 ? 'down' : ''}`}>
+                  {d === null ? '—' : `${d > 0 ? '+' : ''}${d}`}
                 </span>
-                <span className="muted small">{e ? `#${r} · ${e.wins}–${e.losses}` : 'no results'}</span>
+                <span className="muted small">{e && e.termMatches ? `${e.termWins}–${e.termLosses} in window` : 'no results in window'}</span>
               </div>
             )
           })}
@@ -170,7 +170,7 @@ export function PlayerPage({ id }: { id: string }) {
                       <a className="player-link" href={`#player/${r.oppId}`}>
                         {r.opp?.name ?? r.oppId}
                       </a>
-                      <span className="muted small"> {entryOf('all', r.oppId)?.rating ?? ''}</span>
+                      <span className="muted small"> {entryOf(PRIMARY, r.oppId)?.rating ?? ''}</span>
                     </td>
                     <td className={`num ${r.wins > r.losses ? 'up' : r.wins < r.losses ? 'down' : ''}`}>
                       {r.wins}–{r.losses}
@@ -191,7 +191,7 @@ function GroupRows({
   group,
   me,
 }: {
-  group: { tournament?: { name: string; date: string }; matches: CompactMatch[]; delta: number }
+  group: { tournament?: { name: string; date: string }; matches: CompactMatch[]; delta: number | null }
   me: string
 }) {
   const d = group.delta
@@ -204,9 +204,8 @@ function GroupRows({
             {group.tournament?.date} · {group.matches[0].v}
           </span>
         </td>
-        <td className={`num ${d > 0 ? 'up' : d < 0 ? 'down' : 'muted'}`}>
-          {d > 0 ? '+' : ''}
-          {d}
+        <td className={`num ${d === null ? 'muted' : d > 0 ? 'up' : d < 0 ? 'down' : 'muted'}`} title={d === null ? 'before the rating window' : ''}>
+          {d === null ? '—' : `${d > 0 ? '+' : ''}${d}`}
         </td>
       </tr>
       {group.matches.map((m, i) => {

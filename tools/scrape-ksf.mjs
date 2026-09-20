@@ -95,6 +95,18 @@ async function listDivisions(toCd) {
   return divisions
 }
 
+/** "남자 15세이하부"-style label from an entry list, or null if it has no usable entrants. */
+function inferDivision(entrants, startDate) {
+  const year = Number((startDate ?? '').slice(0, 4))
+  const withInfo = entrants.filter((p) => p.sexNm && p.birthYear)
+  if (!year || !withInfo.length) return null
+  const men = withInfo.filter((p) => p.sexNm === '남자').length
+  const sex = men * 2 >= withInfo.length ? '남자' : '여자'
+  const oldest = Math.max(...withInfo.map((p) => year - Number(p.birthYear)))
+  const band = oldest <= 12 ? '12세이하부' : oldest <= 15 ? '15세이하부' : oldest <= 18 ? '18세이하부' : '일반부'
+  return `${sex} ${band}`
+}
+
 function main() {
   return (async () => {
     fs.mkdirSync(OUT_DIR, { recursive: true })
@@ -115,6 +127,11 @@ function main() {
           postJson('tourplayers', key).catch(() => []),
           postJson('schedules', key).catch(() => []),
         ])
+
+        // Older events (2018–2022) carry bogus labels like "GU11 P" (that one is the
+        // men's open). When the label is not a real 남자/여자 …부 name, derive it from
+        // the entrants: majority sex + age band of the oldest entrant that year.
+        const division = /^(남자|여자)/.test(d.kindNm) ? d.kindNm : inferDivision(entrants, t.start) ?? d.kindNm
 
         // Name -> idNo within this division. A name shared by two entrants is ambiguous.
         const byName = new Map()
@@ -147,7 +164,7 @@ function main() {
             toCd: t.toCd,
             // gameDate is usually "-" (fall back to the tournament start) and sometimes "2019.03.10".
             date: m.gameDate && m.gameDate !== '-' ? m.gameDate.replace(/\./g, '-') : t.start,
-            division: d.kindNm,
+            division,
             event: d.detailClassNm,
             format: m.maTypeNm ?? d.format,
             round: m.rhNm ?? null,
