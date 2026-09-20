@@ -1,6 +1,7 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { winProbability } from './rating/glicko2.ts'
-import { ABSENCE_DAYS, computeRatings } from './rating/squash.ts'
+import { computeHybrid } from './rating/hybrid.ts'
+import { ABSENCE_DAYS } from './rating/squash.ts'
 import type { Match, Player } from './rating/types.ts'
 import { GAME_OPTIONS, type DataProps } from './shared.ts'
 import { newId, today } from './storage.ts'
@@ -8,15 +9,11 @@ import { newId, today } from './storage.ts'
 export function ClubLadder({ data: { players, matches, tournaments }, setData }: DataProps) {
   const tournamentName = useMemo(() => new Map(tournaments.map((t) => [t.id, t.name])), [tournaments])
 
-  const { players: rated, snapshots } = useMemo(
-    () => computeRatings(players, matches),
-    [players, matches],
-  )
+  // Same blended rating as the national ladder and the league.
+  const { players: rated, deltas, glicko } = useMemo(() => computeHybrid(players, matches), [players, matches])
   const byId = useMemo(() => new Map(rated.map((p) => [p.id, p])), [rated])
-  const snapshotByMatch = useMemo(
-    () => new Map(snapshots.map((s) => [s.matchId, s])),
-    [snapshots],
-  )
+  // The forecast needs the full rating-with-uncertainty objects.
+  const forecastRating = useMemo(() => new Map(glicko.players.map((p) => [p.id, p.rating])), [glicko])
 
   // --- Add player ---
   const [newName, setNewName] = useState('')
@@ -43,7 +40,7 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
     playerA && playerB && playerA.id !== playerB.id && form.gamesA !== form.gamesB
   const forecast =
     playerA && playerB && playerA.id !== playerB.id
-      ? winProbability(playerA.rating, playerB.rating)
+      ? winProbability(forecastRating.get(playerA.id)!, forecastRating.get(playerB.id)!)
       : null
 
   function recordMatch(e: FormEvent) {
@@ -99,8 +96,8 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
                 <tr key={p.id} className={p.matches === 0 || (p.lastPlayed && p.lastPlayed < absentSince) ? 'unrated' : ''}>
                   <td>{i + 1}</td>
                   <td>{p.name}</td>
-                  <td className="num strong">{Math.round(p.rating.rating)}</td>
-                  <td className="num muted">{Math.round(p.rating.rd)}</td>
+                  <td className="num strong">{Math.round(p.rating)}</td>
+                  <td className="num muted">{Math.round(p.rd)}</td>
                   <td className="num">
                     {p.wins}–{p.losses}
                   </td>
@@ -229,9 +226,9 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
               {recentMatches.map((m) => {
                 const a = byId.get(m.playerAId)
                 const b = byId.get(m.playerBId)
-                const s = snapshotByMatch.get(m.id)
-                const dA = s ? s.after[m.playerAId].rating - s.before[m.playerAId].rating : 0
-                const dB = s ? s.after[m.playerBId].rating - s.before[m.playerBId].rating : 0
+                const d = deltas.get(m.id)
+                const dA = d?.[m.playerAId]?.rating ?? 0
+                const dB = d?.[m.playerBId]?.rating ?? 0
                 return (
                   <tr key={m.id}>
                     <td className="muted">

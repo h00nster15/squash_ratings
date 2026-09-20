@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { ClubLadder } from './ClubLadder.tsx'
 import { NationalLadder } from './NationalLadder.tsx'
 import { PlayerPage } from './PlayerPage.tsx'
@@ -8,9 +8,13 @@ import { TournamentPage } from './TournamentPage.tsx'
 import { Tournaments } from './Tournaments.tsx'
 import './App.css'
 
-// Hash routes: #national (default) · #player/<idNo> · #club · #tournaments · #tournament/<id>
+// The club-league view and its dataset only ship in builds whose org has one.
+const SeoulLeague = lazy(() => import('./SeoulLeague.tsx').then((m) => ({ default: m.SeoulLeague })))
+
+// Hash routes: #national (default) · #player/<idNo> · #club · #league · #tournaments · #tournament/<id>
 type Route =
   | { view: 'national' }
+  | { view: 'league'; player?: string }
   | { view: 'player'; id: string }
   | { view: 'club' }
   | { view: 'tournaments' }
@@ -19,6 +23,11 @@ type Route =
 function parseRoute(hash: string): Route {
   const h = hash.replace(/^#/, '')
   if (h === 'club') return { view: 'club' }
+  if (org.leagueLabel) {
+    if (h === 'league') return { view: 'league' }
+    const lp = h.match(/^league\/player\/(.+)$/)
+    if (lp) return { view: 'league', player: decodeURIComponent(lp[1]) }
+  }
   if (h === 'tournaments') return { view: 'tournaments' }
   let m = h.match(/^player\/(.+)$/)
   if (m) return { view: 'player', id: m[1] }
@@ -42,6 +51,7 @@ function useRoute(): Route {
 }
 
 const TABS = [
+  ...(org.leagueLabel ? [{ key: 'league', href: '#league', label: org.leagueLabel }] : []),
   { key: 'national', href: '#national', label: 'KSF National' },
   { key: 'club', href: '#club', label: org.clubLabel },
   { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
@@ -68,13 +78,17 @@ function App() {
           </nav>
         </div>
         <p className="muted">
-          {org.subtitle} A rating is shown as <span className="mono">rating ± RD</span>; the ± shrinks
-          as a player plays more.
+          {org.subtitle} A rating is shown as <span className="mono">rating ± uncertainty</span>; the ±
+          shrinks as a player plays more.
         </p>
       </header>
 
       {route.view === 'player' ? (
         <PlayerPage id={route.id} />
+      ) : route.view === 'league' ? (
+        <Suspense fallback={<p className="muted">Loading league…</p>}>
+          <SeoulLeague player={route.player} />
+        </Suspense>
       ) : route.view === 'club' ? (
         <ClubLadder data={data} setData={setData} />
       ) : route.view === 'tournaments' ? (

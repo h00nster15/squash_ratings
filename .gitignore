@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# League workbooks contain player contact details; only the built league.json is tracked
+data/seoul/*.xlsx

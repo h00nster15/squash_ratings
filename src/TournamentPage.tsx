@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { GAME_OPTIONS, type DataProps } from './shared.ts'
-import { computeRatings } from './rating/squash.ts'
+import { computeHybrid } from './rating/hybrid.ts'
 import type { Match, Player, Tournament } from './rating/types.ts'
 import { newId } from './storage.ts'
 
@@ -12,19 +12,19 @@ export function TournamentPage({ id, data, setData }: DataProps & { id: string }
 
   // Ratings over everything, so seeds reflect the club ladder and Δ shows this
   // tournament's effect on it (its date is one rating period).
-  const { players: rated, snapshots } = useMemo(() => computeRatings(players, matches), [players, matches])
-  const ratingOf = useMemo(() => new Map(rated.map((p) => [p.id, p.rating.rating])), [rated])
+  const { players: rated, deltas } = useMemo(() => computeHybrid(players, matches), [players, matches])
+  const ratingOf = useMemo(() => new Map(rated.map((p) => [p.id, p.rating])), [rated])
   const nameOf = useMemo(() => new Map(players.map((p) => [p.id, p.name])), [players])
 
   const mine = useMemo(() => matches.filter((m) => m.tournamentId === id), [matches, id])
   const delta = useMemo(() => {
     const d = new Map<string, number>()
-    for (const s of snapshots) {
-      if (!mine.some((m) => m.id === s.matchId)) continue
-      for (const pid of Object.keys(s.after)) d.set(pid, s.after[pid].rating - s.before[pid].rating)
+    for (const m of mine) {
+      const per = deltas.get(m.id)
+      if (per) for (const pid of Object.keys(per)) d.set(pid, per[pid].rating)
     }
     return d
-  }, [snapshots, mine])
+  }, [deltas, mine])
 
   const [newName, setNewName] = useState('')
   const [pick, setPick] = useState('')

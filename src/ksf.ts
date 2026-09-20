@@ -10,13 +10,15 @@ export interface PlayerInfo {
   sex: string | null
   team: string | null
   sido: string | null
-  startRating: number
   lastDivision: string | null
+  /** Ladders the player has results on (open and/or student divisions). */
+  ladders: string[]
 }
 
 /**
- * A player's current rating (from the last 3 years of results) seen through one
- * term: how far it moved inside that window and the window's record.
+ * A player's current rating on one ladder (from the last 3 years of results
+ * there) seen through one term: how far it moved inside that window and the
+ * window's record.
  */
 export interface TermEntry {
   id: string
@@ -41,17 +43,28 @@ export interface Term {
   entries: TermEntry[] // sorted by rating, descending
 }
 
+/**
+ * One independently rated pool. `open` is the national ladder (일반부 draws
+ * only); the others are the student divisions. Results never cross ladders.
+ */
+export interface Ladder {
+  label: string
+  matches: number
+  terms: Record<string, Term>
+}
+
 export interface Tournament {
   toCd: string
   name: string
   date: string
 }
 
-/** One singles match; `da`/`db` are each side's rating change over the whole tournament (null before the rating window). */
+/** One singles match; `l` is the ladder it was rated on, `da`/`db` each side's rating change over the whole tournament (null before the rating window). */
 export interface CompactMatch {
   d: string
   t: string
   v: string
+  l: string
   r: string | null
   a: string
   b: string
@@ -67,11 +80,14 @@ export const ladder = ladderJson as {
   matches: number
   tournaments: Tournament[]
   players: PlayerInfo[]
-  terms: Record<string, Term>
+  ladders: Record<string, Ladder>
 }
 export const matches = matchesJson as CompactMatch[]
 
-export const TERM_KEYS = Object.keys(ladder.terms)
+export const LADDER_KEYS = Object.keys(ladder.ladders)
+/** The national ladder. */
+export const OPEN = LADDER_KEYS[0]
+export const TERM_KEYS = Object.keys(ladder.ladders[OPEN].terms)
 /** The term whose ratings are the ratings; the others only add a window Δ. */
 export const PRIMARY = TERM_KEYS[0]
 export const playersById = new Map(ladder.players.map((p) => [p.id, p]))
@@ -90,30 +106,34 @@ export const ACTIVE_SINCE = (() => {
   return d.toISOString().slice(0, 10)
 })()
 
-/** RD above which a rating is too uncertain to rank on. */
+/** Uncertainty above which a rating is too loose to rank on. */
 export const PROVISIONAL_RD = 200
+/** On the national ladder a player also needs this many open-draw matches before the rating counts as settled. */
+export const PROVISIONAL_MATCHES = 5
 
 export const isActive = (e: TermEntry) => (e.lastPlayed ?? '') >= ACTIVE_SINCE
+export const isProvisional = (ladderKey: string, e: TermEntry) =>
+  e.rd > PROVISIONAL_RD || (ladderKey === OPEN && e.matches < PROVISIONAL_MATCHES)
 
-/** Rank within sex over every rated player; the same for every term. */
+/** Rank within sex over every rated player on a ladder; the same for every term. */
 const rankCache = new Map<string, Map<string, number>>()
-export function rankOf(termKey: string, id: string): number | null {
-  let ranks = rankCache.get(termKey)
+export function rankOf(ladderKey: string, id: string): number | null {
+  let ranks = rankCache.get(ladderKey)
   if (!ranks) {
     ranks = new Map()
-    const term = ladder.terms[termKey]
+    const term = ladder.ladders[ladderKey]?.terms[PRIMARY]
     for (const sex of SEXES) {
       let n = 0
-      for (const e of term.entries) {
+      for (const e of term?.entries ?? []) {
         if (playersById.get(e.id)?.sex !== sex) continue
         ranks.set(e.id, ++n)
       }
     }
-    rankCache.set(termKey, ranks)
+    rankCache.set(ladderKey, ranks)
   }
   return ranks.get(id) ?? null
 }
 
-export function entryOf(termKey: string, id: string): TermEntry | undefined {
-  return ladder.terms[termKey]?.entries.find((e) => e.id === id)
+export function entryOf(ladderKey: string, termKey: string, id: string): TermEntry | undefined {
+  return ladder.ladders[ladderKey]?.terms[termKey]?.entries.find((e) => e.id === id)
 }

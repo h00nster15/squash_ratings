@@ -12,6 +12,7 @@
     "build:seoul": "tsc -b && vite build --mode seoul --outDir dist/seoul",
     "build:all": "npm run build && npm run build:wellperion && npm run build:seoul",
     "scrape": "node tools/scrape-ksf.mjs",
+    "build:seoul-data": "node tools/build-seoul.mts",
     "ladder": "node tools/build-ladder.mts",
     "lint": "oxlint",
     "preview": "vite preview"

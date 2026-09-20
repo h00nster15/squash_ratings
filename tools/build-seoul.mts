@@ -10,13 +10,14 @@
 // This dataset is kept apart from the KSF national data in data/ksf: the two
 // are never merged and nothing here touches the national ladder.
 //
-// Rating periods: one per tie date (the league plays Tue/Wed), so a player's
-// rating moves once per night from all their rubbers that night.
+// Ratings are the hybrid in src/rating/hybrid.ts: Glicko-2 (one period per
+// league night) blended with Elo (match by match). Best-of-5 rubbers count in
+// full, best-of-3 and single games for less (FORMAT_WEIGHT).
 
 import fs from 'node:fs'
 import path from 'node:path'
 import { createRequire } from 'node:module'
-import { computeRatings } from '../src/rating/squash.ts'
+import { computeHybrid, FORMAT_WEIGHT, GLICKO_SHARE, matchFormat, type MatchFormat } from '../src/rating/hybrid.ts'
 import type { Match, Player } from '../src/rating/types.ts'
 
 const require = createRequire(import.meta.url)
@@ -145,9 +146,19 @@ interface Rubber {
   b: string
   ga: number
   gb: number
-  /** Rating change for each side after that night's period; filled after rating. */
+  /** Rally points for each side, when the sheet has them (the tie-break after games). */
+  pa: number | null
+  pb: number | null
+  /** bo5 / bo3 / single, inferred from the games; sets the rubber's rating weight. */
+  format: MatchFormat
+  /** Blended rating change for each side; filled after rating. */
   da?: number
   db?: number
+  /** The Glicko-2 and Elo parts of that change. */
+  dga?: number
+  dgb?: number
+  dea?: number
+  deb?: number
 }
 interface Tie {
   week: number
@@ -159,6 +170,8 @@ interface Tie {
   awayRubbers: number
   homeGames: number
   awayGames: number
+  homePoints: number | null
+  awayPoints: number | null
   homePts: number
   awayPts: number
   /** null when the tie has not been played (or is a bye). */
@@ -189,12 +202,32 @@ for (const name of weekSheets) {
         const ga = Number(x[off + 4])
         const gb = Number(x[off + 6])
         if (!a || !b || a === '0' || b === '0' || !(ga + gb > 0)) continue
-        rubbers.push({ bracket: Number(x[off]) || 0, a, b, ga, gb })
+        rubbers.push({ bracket: Number(x[off]) || 0, a, b, ga, gb, pa: null, pb: null, format: matchFormat(ga, gb) })
+      }
+      // Rally points live in the two summary blocks below ("Team | n | Rubbers | Games | Game Pts").
+      const pointsOf = new Map<string, number>()
+      for (let k = r + 1, blocks = 0; k < rows.length && blocks < 2; k++) {
+        const x = rows[k]
+        if (x[off + 2] !== 'Team' || x[off + 4] !== 'Rubbers') continue
+        blocks++
+        for (let j = k + 1; j < rows.length && rows[j][off + 3] !== 'Total'; j++) {
+          const y = rows[j]
+          const pts = Number(y[off + 6])
+          if (y[off + 3] && y[off + 6] !== '' && Number.isFinite(pts)) pointsOf.set(y[off + 3], pts)
+        }
+      }
+      for (const x of rubbers) {
+        x.pa = pointsOf.get(x.a) ?? null
+        x.pb = pointsOf.get(x.b) ?? null
       }
       const homeRubbers = rubbers.filter((x) => x.ga > x.gb).length
       const awayRubbers = rubbers.filter((x) => x.gb > x.ga).length
       const homeGames = rubbers.reduce((s, x) => s + x.ga, 0)
       const awayGames = rubbers.reduce((s, x) => s + x.gb, 0)
+      const hasPoints = rubbers.length > 0 && rubbers.every((x) => x.pa !== null && x.pb !== null)
+      const homePoints = hasPoints ? rubbers.reduce((s, x) => s + x.pa!, 0) : null
+      const awayPoints = hasPoints ? rubbers.reduce((s, x) => s + x.pb!, 0) : null
+      // Tie-break order, as the league sheet scores it: rubbers, games, rally points.
       const winner: Tie['winner'] =
         rubbers.length === 0
           ? null
@@ -202,11 +235,13 @@ for (const name of weekSheets) {
             ? homeRubbers > awayRubbers ? 'home' : 'away'
             : homeGames !== awayGames
               ? homeGames > awayGames ? 'home' : 'away'
-              : null
+              : homePoints !== null && awayPoints !== null && homePoints !== awayPoints
+                ? homePoints > awayPoints ? 'home' : 'away'
+                : null
       const date = tieDate.get(`${week}:${tieKey(home, away)}`) ?? weekDates.get(week)?.[0] ?? `${YEAR}-01-01`
       ties.push({
         week, date, home, away, rubbers,
-        homeRubbers, awayRubbers, homeGames, awayGames,
+        homeRubbers, awayRubbers, homeGames, awayGames, homePoints, awayPoints,
         homePts: homeGames + homeRubbers + (winner === 'home' ? TIE_WIN_BONUS : 0),
         awayPts: awayGames + awayRubbers + (winner === 'away' ? TIE_WIN_BONUS : 0),
         winner,
@@ -253,26 +288,31 @@ const rubberByMatch = new Map<string, Rubber>()
 ties.forEach((t, ti) =>
   t.rubbers.forEach((x, ri) => {
     const id = `w${t.week}-t${ti}-r${ri}`
-    matches.push({ id, date: t.date, playerAId: idOf(x.a), playerBId: idOf(x.b), gamesA: x.ga, gamesB: x.gb, round: `Week ${t.week}` })
+    matches.push({ id, date: t.date, playerAId: idOf(x.a), playerBId: idOf(x.b), gamesA: x.ga, gamesB: x.gb, round: `Week ${t.week}`, weight: FORMAT_WEIGHT[x.format] })
     rubberByMatch.set(id, x)
   }),
 )
 
-const { players: rated, snapshots } = computeRatings(players, matches)
-for (const s of snapshots) {
-  const m = matches.find((x) => x.id === s.matchId)!
-  const x = rubberByMatch.get(s.matchId)!
-  x.da = s.after[m.playerAId].rating - s.before[m.playerAId].rating
-  x.db = s.after[m.playerBId].rating - s.before[m.playerBId].rating
+const { players: rated, deltas, glicko, elo } = computeHybrid(players, matches)
+const matchById = new Map(matches.map((m) => [m.id, m]))
+for (const [id, d] of deltas) {
+  const m = matchById.get(id)!
+  const x = rubberByMatch.get(id)!
+  const a = d[m.playerAId], b = d[m.playerBId]
+  x.da = a.rating; x.db = b.rating
+  x.dga = a.glicko; x.dgb = b.glicko
+  x.dea = a.elo; x.deb = b.elo
 }
 
-// Rating after each night, for sparklines.
+// Blended rating after each night, for sparklines: Glicko-2 after the night's
+// period and Elo after the last rubber that night.
 const history = new Map<string, { date: string; rating: number }[]>()
-for (const s of snapshots) {
-  const m = matches.find((x) => x.id === s.matchId)!
+const eloAfter = new Map(elo.snapshots.map((s) => [s.matchId, s.after]))
+for (const s of glicko.snapshots) {
+  const m = matchById.get(s.matchId)!
   for (const id of [m.playerAId, m.playerBId]) {
     const h = history.get(id) ?? []
-    const r = s.after[id].rating
+    const r = GLICKO_SHARE * s.after[id].rating + (1 - GLICKO_SHARE) * eloAfter.get(s.matchId)![id]
     if (h.length && h[h.length - 1].date === m.date) h[h.length - 1].rating = r
     else h.push({ date: m.date, rating: r })
     history.set(id, h)
@@ -287,8 +327,10 @@ const ratings = rated.map((p) => {
     team: r.team,
     bracket: r.bracket,
     sub: r.sub,
-    rating: Math.round(p.rating.rating * 10) / 10,
-    rd: Math.round(p.rating.rd * 10) / 10,
+    rating: Math.round(p.rating * 10) / 10,
+    glicko: Math.round(p.glicko * 10) / 10,
+    elo: Math.round(p.elo * 10) / 10,
+    rd: Math.round(p.rd * 10) / 10,
     matches: p.matches,
     wins: p.wins,
     losses: p.losses,
@@ -312,6 +354,8 @@ const out = {
   year: YEAR,
   tieWinBonus: TIE_WIN_BONUS,
   startByBracket: START_BY_BRACKET,
+  glickoShare: GLICKO_SHARE,
+  formatWeight: FORMAT_WEIGHT,
   teams: teams.map((t) => ({ no: t.no, name: `Team ${t.no}`, players: t.players })),
   substitutes: [...roster.values()].filter((p) => p.sub).map((p) => ({ name: p.name, bracket: p.bracket })),
   standings,

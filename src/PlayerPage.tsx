@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 import {
   entryOf,
+  isProvisional,
   ladder,
   matches,
+  OPEN,
   playersById,
   PRIMARY,
   rankOf,
@@ -14,7 +16,9 @@ import { Sparkline } from './Sparkline.tsx'
 
 export function PlayerPage({ id }: { id: string }) {
   const player = playersById.get(id)
-  const all = entryOf(PRIMARY, id)
+  // The ladder shown first: national if the player is on it, else the student division they last played.
+  const mainLadder = player?.ladders.includes(OPEN) ? OPEN : player?.ladders[player.ladders.length - 1] ?? OPEN
+  const all = entryOf(mainLadder, PRIMARY, id)
 
   // This player's matches, newest first, grouped by tournament.
   const groups = useMemo(() => {
@@ -68,7 +72,6 @@ export function PlayerPage({ id }: { id: string }) {
     )
   }
 
-  const rank = rankOf(PRIMARY, id)
 
   return (
     <>
@@ -97,22 +100,31 @@ export function PlayerPage({ id }: { id: string }) {
           ))}
         </ul>
 
+        {/* One card per ladder the player has results on; results never cross ladders. */}
         <div className="stats">
-          <div className="stat">
-            <span className="stat-label">Rating (3 years)</span>
-            <span className="stat-value">
-              {all.rating} <span className="muted small">±{all.rd}</span>
-            </span>
-            <span className="muted small">
-              {rank ? `#${rank} ${player.sex}` : 'inactive'} · started at {player.startRating}
-            </span>
-          </div>
+          {player.ladders.map((lk) => {
+            const e = entryOf(lk, PRIMARY, id)!
+            const rank = rankOf(lk, id)
+            const provisional = isProvisional(lk, e)
+            return (
+              <div className="stat" key={lk}>
+                <span className="stat-label">{lk === OPEN ? '국가 랭킹' : `${ladder.ladders[lk].label} 랭킹`}</span>
+                <span className={`stat-value ${provisional ? 'muted' : ''}`}>
+                  {e.rating} <span className="muted small">±{e.rd}</span>
+                </span>
+                <span className="muted small">
+                  {rank ? `#${rank} ${player.sex}` : '—'} · {e.wins}–{e.losses}
+                  {provisional ? ' · provisional' : ''}
+                </span>
+              </div>
+            )
+          })}
           {TERM_KEYS.filter((k) => k !== PRIMARY).map((k) => {
-            const e = entryOf(k, id)
+            const e = entryOf(mainLadder, k, id)
             const d = e && e.termMatches ? Math.round(e.delta ?? 0) : null
             return (
               <div className="stat" key={k}>
-                <span className="stat-label">{ladder.terms[k].label}</span>
+                <span className="stat-label">{ladder.ladders[mainLadder].terms[k].label}</span>
                 <span className={`stat-value ${d === null ? 'muted' : d > 0 ? 'up' : d < 0 ? 'down' : ''}`}>
                   {d === null ? '—' : `${d > 0 ? '+' : ''}${d}`}
                 </span>
@@ -120,16 +132,10 @@ export function PlayerPage({ id }: { id: string }) {
               </div>
             )
           })}
-          <div className="stat">
-            <span className="stat-label">Record</span>
-            <span className="stat-value">
-              {all.wins}–{all.losses}
-            </span>
-            <span className="muted small">{all.matches} matches · last {all.lastPlayed}</span>
-          </div>
         </div>
 
         <div className="chart">
+          <span className="muted small">{mainLadder === OPEN ? '국가 랭킹' : ladder.ladders[mainLadder].label} · last {all.lastPlayed}</span>
           <Sparkline points={all.history} width={800} height={120} />
           <div className="muted small chart-axis">
             <span>{all.history[0]?.date}</span>
@@ -170,7 +176,7 @@ export function PlayerPage({ id }: { id: string }) {
                       <a className="player-link" href={`#player/${r.oppId}`}>
                         {r.opp?.name ?? r.oppId}
                       </a>
-                      <span className="muted small"> {entryOf(PRIMARY, r.oppId)?.rating ?? ''}</span>
+                      <span className="muted small"> {entryOf(mainLadder, PRIMARY, r.oppId)?.rating ?? ''}</span>
                     </td>
                     <td className={`num ${r.wins > r.losses ? 'up' : r.wins < r.losses ? 'down' : ''}`}>
                       {r.wins}–{r.losses}

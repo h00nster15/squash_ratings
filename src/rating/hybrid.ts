@@ -7,7 +7,7 @@
  * engines — Glicko-2 via GameResult.weight, Elo via its K-factor.
  */
 import { computeElo } from './elo.ts'
-import { computeRatings } from './squash.ts'
+import { computeRatings, FORMAT_WEIGHT as SQUASH_FORMAT_WEIGHT } from './squash.ts'
 import type { Match, Player } from './types.ts'
 
 /** Share of Glicko-2 in the blended rating; the rest is Elo. */
@@ -15,8 +15,12 @@ export const GLICKO_SHARE = 0.5
 
 export type MatchFormat = 'bo5' | 'bo3' | 'single'
 
-/** How much of a full match each format counts for. Tune here. */
-export const FORMAT_WEIGHT: Record<MatchFormat, number> = { bo5: 1, bo3: 0.75, single: 0.5 }
+/** How much of a full match each format counts for; the numbers live in squash.ts. */
+export const FORMAT_WEIGHT: Record<MatchFormat, number> = {
+  bo5: SQUASH_FORMAT_WEIGHT.bestOf5,
+  bo3: SQUASH_FORMAT_WEIGHT.bestOf3,
+  single: SQUASH_FORMAT_WEIGHT.singleGame,
+}
 
 /** Infer the format from the games: first to 3 is a best-of-5, first to 2 a best-of-3, 1-0 a single game. */
 export function matchFormat(gamesA: number, gamesB: number): MatchFormat {

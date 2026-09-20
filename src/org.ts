@@ -18,7 +18,9 @@ export interface OrgConfig {
   /** Label of the club tab; the org's own ladder lives there. */
   clubLabel: string
   /** Where the app opens. */
-  defaultView: 'national' | 'club'
+  defaultView: 'national' | 'club' | 'league'
+  /** Label of the club-league tab (data/seoul, built by tools/build-seoul.mts); absent = no such tab. */
+  leagueLabel?: string
   /** Pre-select this 시도 on the national ladder (players registered there). */
   nationalSido?: string
   /** localStorage namespace for the org's own players, matches and tournaments. */
@@ -29,7 +31,7 @@ const ORGS: Record<OrgKey, OrgConfig> = {
   ksf: {
     key: 'ksf',
     title: 'Squash Ratings',
-    subtitle: 'Glicko-2 with margin of victory.',
+    subtitle: 'Ratings from official tournament results.',
     accent: '#1f7a4d',
     accentDark: '#4ccb8a',
     clubLabel: 'Club',
@@ -39,7 +41,7 @@ const ORGS: Record<OrgKey, OrgConfig> = {
   wellperion: {
     key: 'wellperion',
     title: 'Wellperion Squash Ratings',
-    subtitle: '웰페리온 스쿼시 박스래더 · 랭킹 — Glicko-2 with margin of victory.',
+    subtitle: '웰페리온 스쿼시 박스래더 · 랭킹.',
     accent: '#0f4c5c',
     accentDark: '#7fa8d9',
     clubLabel: 'Wellperion',
@@ -49,11 +51,12 @@ const ORGS: Record<OrgKey, OrgConfig> = {
   seoul: {
     key: 'seoul',
     title: '서울특별시스쿼시연맹 Rankings',
-    subtitle: '서울 등록 선수 랭킹 (대한체육회 대회 결과 기준) — Glicko-2 with margin of victory.',
+    subtitle: '서울 등록 선수 랭킹 (대한체육회 대회 결과 기준).',
     accent: '#1f2a6b',
     accentDark: '#8ea6e8',
     clubLabel: '서울연맹 대회',
-    defaultView: 'national',
+    leagueLabel: 'Club League',
+    defaultView: 'league',
     nationalSido: '서울',
     storageKey: 'squash_ratings.seoul.v1',
   },
