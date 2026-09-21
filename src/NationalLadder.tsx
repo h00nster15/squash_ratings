@@ -180,7 +180,7 @@ export function NationalLadder() {
                       <a className="player-link" href={`#player/${p.id}`}>
                         {p.name}
                       </a>
-                      <span className="muted small">
+                      <span className="muted small" title="출생연도 · 최근 출전 부문 (birth year · latest division played)">
                         {' '}
                         {p.birthYear ?? '?'}
                         {p.lastDivision ? ` · ${p.lastDivision}` : ''}
@@ -210,11 +210,15 @@ export function NationalLadder() {
         )}
       </section>
       <p className="muted small">
-        Source: 대한체육회 경기결과 (result.sports.or.kr), singles only. The two ladders are rated on
+        Source: 대한체육회 경기결과 (result.sports.or.kr), singles only. Beside each name: the
+        player's birth year and the division they last played in (e.g. 2002 · 남자 일반부). The two ladders are rated on
         their own results and never mix: the national ladder counts 일반부 matches only — a student
         enters it only by playing there, and is provisional until they have {PROVISIONAL_MATCHES} such
         matches — while the student ladder counts 12세이하 · 15세이하 · 18세이하 · 대학부 matches as one
-        pool (players link the age groups as they move up) and lists only players whose latest draw
+        pool (players link the age groups as they move up). There a player starts at the level of the first draw they played
+        — 12세이하 1200, 15세이하 1350, 18세이하 1450, 대학부 1500 — so dominating a younger draw lands
+        a step below the next age group rather than reading as senior strength; beating older players
+        is the way up, and nothing caps the climb. The student ladder lists only players whose latest draw
         was a student draw (those who moved on drop off, though their past matches still count for
         everyone else). Men and women are ranked separately. Ratings update once per tournament, reward the
         margin of victory, and keep moving for established players; best-of-3 counts 0.75 of a match

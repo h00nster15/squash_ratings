@@ -89,9 +89,23 @@ const allSingles = rawMatches.filter(
 )
 const singles = allSingles.filter((m) => m.date >= RATING_SINCE)
 
-// Everyone starts at the default; a ladder only ever compares players inside
-// its own pool, so no handicap is needed.
-const players: Player[] = rawPlayers.map((p) => ({ id: p.idNo, name: p.name }))
+// --- Where a player enters a pool --------------------------------------------
+// The age groups inside the student pool barely play each other, so with a
+// common start a rating only says where a player stands among their own draw
+// — a 12세이하 champion at 1750 reads as a 대학부 contender. Rather than cap
+// anyone, each player enters the pool at the level of the FIRST draw they
+// played in the rating window (the open ladder has one level). Dominating a
+// younger draw then lands a notch below the next group's middle; beating
+// older players is the way past it, and nothing stops the climb — the start
+// only sets where it begins. Players carry their rating up as they age.
+const START_RATING: [RegExp, number][] = [
+  [/12세이하/, 1200],
+  [/15세이하/, 1350],
+  [/18세이하/, 1450],
+  [/대학부/, 1500],
+]
+const startRatingOf = (division: string) => START_RATING.find(([re]) => re.test(division))?.[1] ?? 1500
+
 
 // --- Round labels ----------------------------------------------------------
 // The portal names rounds 결승 / 준결승경기N / 준준결승경기N / 준준준결승경기N /
@@ -124,6 +138,10 @@ function roundLabel(m: Singles): string | null {
 
 // --- Rate one pool ---------------------------------------------------------
 function rate(subset: Singles[]) {
+  // Each player starts at the level of their first draw in this pool.
+  const firstDivision = new Map<string, string>()
+  for (const m of subset) for (const id of [m.playerAId, m.playerBId]) if (!firstDivision.has(id)) firstDivision.set(id, m.division) // date-ordered
+  const players: Player[] = rawPlayers.map((p) => ({ id: p.idNo, name: p.name, startRating: startRatingOf(firstDivision.get(p.idNo) ?? '') }))
   const matches: Match[] = subset.map((m, i) => ({
     id: String(i),
     date: m.date,
@@ -183,6 +201,7 @@ function rate(subset: Singles[]) {
       losses: p.losses,
       lastPlayed: p.lastPlayed,
       history: history.get(p.id) ?? [],
+      start: p.startRating ?? 1500,
     }))
   return { entries, tournamentDelta }
 }
@@ -200,7 +219,7 @@ function termsOf(subset: Singles[], current: Entry[]) {
       const wins = inWindow.filter((m) => (m.playerAId === e.id ? m.gamesA > m.gamesB : m.gamesB > m.gamesA)).length
       // Rating just before the window opened: last history point before `from`, else the start.
       const before = [...e.history].reverse().find((h) => h.date < from)
-      const base = before ? before.rating : 1500
+      const base = before ? before.rating : e.start
       return {
         ...e,
         history: e.history.filter((h) => h.date >= from),

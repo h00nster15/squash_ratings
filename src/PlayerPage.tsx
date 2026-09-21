@@ -82,7 +82,7 @@ export function PlayerPage({ id }: { id: string }) {
         <div className="panel-head">
           <h2>
             {player.name}{' '}
-            <span className="muted small">
+            <span className="muted small" title="출생연도 · 성별 · 최근 출전 부문 (birth year · sex · latest division played)">
               {player.birthYear ?? '?'} · {player.sex ?? '?'} · {player.lastDivision ?? '—'}
             </span>
           </h2>
