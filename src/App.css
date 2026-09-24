@@ -16,6 +16,9 @@ header p {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1rem 1.25rem;
+  /* Since cells no longer wrap, a table wider than the panel scrolls here
+     rather than pushing the page sideways. */
+  overflow-x: auto;
 }
 
 .panel h2 {
@@ -45,6 +48,16 @@ td {
   text-align: left;
   padding: 0.45rem 0.5rem;
   border-bottom: 1px solid var(--border);
+  /* A row reads across, not down: a cell never wraps to a second line. Wide
+     tables scroll inside .table-wrap rather than break a name in half. */
+  white-space: nowrap;
+}
+
+/* The same for a name shown outside a table — the player page heading, where
+   the birth year · 부문 sits beside the name. */
+.player-link,
+h2 .muted.small {
+  white-space: nowrap;
 }
 
 th {

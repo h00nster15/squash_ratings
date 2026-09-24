@@ -70,7 +70,36 @@ interface RawPlayer {
 }
 
 const rawMatches: RawMatch[] = JSON.parse(fs.readFileSync(path.join(DIR, 'matches.json'), 'utf8'))
-const rawPlayers: RawPlayer[] = JSON.parse(fs.readFileSync(path.join(DIR, 'players.json'), 'utf8'))
+let rawPlayers: RawPlayer[] = JSON.parse(fs.readFileSync(path.join(DIR, 'players.json'), 'utf8'))
+
+// --- One person, several 등록번호 -------------------------------------------
+// The portal gives an entrant with no registration a throwaway id (98…, an empty
+// profile), so a player can hold a real number and a temporary one per event —
+// and their record arrives split in two. data/ksf/merges.json lists the pairs
+// settled by 소속 and by never appearing in the same draw; each id there is
+// rewritten to the first one, before anything is rated. Its "review" list is
+// deliberately not applied.
+const { merge: MERGES } = JSON.parse(fs.readFileSync(path.join(DIR, 'merges.json'), 'utf8')) as {
+  merge: { name: string; birthYear: number; ids: string[]; why: string }[]
+}
+const alias = new Map<string, string>()
+for (const m of MERGES) for (const id of m.ids.slice(1)) alias.set(id, m.ids[0])
+const realId = (id: string | null) => (id && alias.get(id)) ?? id
+for (const m of rawMatches) {
+  m.playerAId = realId(m.playerAId)
+  m.playerBId = realId(m.playerBId)
+}
+for (const p of rawPlayers) {
+  const keep = alias.get(p.idNo) && rawPlayers.find((q) => q.idNo === alias.get(p.idNo))
+  if (!keep) continue
+  for (const t of p.teams) if (!keep.teams.includes(t)) keep.teams.push(t)
+  keep.sido ??= p.sido
+  keep.sex ??= p.sex
+  keep.birthYear ??= p.birthYear
+}
+const merged = rawPlayers.length
+rawPlayers = rawPlayers.filter((p) => !alias.has(p.idNo))
+if (alias.size) console.log(alias.size + ' 등록번호 merged into ' + MERGES.length + ' people (' + merged + ' → ' + rawPlayers.length + ' players)')
 
 const now = new Date()
 const since = (months: number) => {
