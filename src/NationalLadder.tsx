@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import {
   ACTIVE_SINCE,
+  ageGroupOf,
+  ageGroupsOn,
   isActive,
   isProvisional,
   ladder,
@@ -12,6 +14,7 @@ import {
   PROVISIONAL_RD,
   SEXES,
   TERM_KEYS,
+  type AgeGroup,
   type Sex,
 } from './ksf.ts'
 import { org } from './org.ts'
@@ -41,10 +44,14 @@ export function NationalLadder() {
   const [ladderKey, setLadderKey] = useState(OPEN)
   const [termKey, setTermKey] = useState(PRIMARY)
   const [sex, setSex] = useState<Sex>('남자')
+  const [age, setAge] = useState<AgeGroup | ''>('')
   const [sido, setSido] = useState(org.nationalSido ?? '')
   const [query, setQuery] = useState('')
   const [limit, setLimit] = useState(PAGE)
 
+  // The student pool is rated as one pool; picking an age group only narrows the
+  // list to the players whose latest draw was that group.
+  const ageGroups = ageGroupsOn(ladderKey)
   const pool = ladder.ladders[ladderKey]
   const term = pool.terms[termKey]
   const isPrimary = termKey === PRIMARY
@@ -57,10 +64,11 @@ export function NationalLadder() {
       .filter(
         ({ p }) =>
           p.sex === sex &&
+          (!age || ageGroupOf(p.lastDivision) === age) &&
           (!sido || p.sido === sido) &&
           (!q || p.name.toLowerCase().includes(q) || (p.team ?? '').toLowerCase().includes(q)),
       )
-  }, [term, sex, sido, query])
+  }, [term, sex, age, sido, query])
 
   const shown = rows.slice(0, limit)
   const lastTournament = ladder.tournaments[ladder.tournaments.length - 1]
@@ -72,7 +80,7 @@ export function NationalLadder() {
         <div className="panel-head">
           <h2>
             {sido ? `${sido} ` : ''}
-            {isOpen ? (sido ? '랭킹' : 'KSF National Ladder') : `${pool.label} 랭킹`}
+            {isOpen ? (sido ? '랭킹' : 'KSF National Ladder') : `${pool.label}${age ? ` ${age}` : ''} 랭킹`}
           </h2>
           <span className="muted small">
             {pool.matches.toLocaleString()} rated matches since {ladder.ratingSince} · through {lastTournament?.date}
@@ -88,6 +96,7 @@ export function NationalLadder() {
                 className={ladderKey === k ? 'on' : ''}
                 onClick={() => {
                   setLadderKey(k)
+                  setAge('')
                   reset()
                 }}
               >
@@ -95,6 +104,23 @@ export function NationalLadder() {
               </button>
             ))}
           </div>
+          {ageGroups.length > 1 && (
+            <div className="segmented" role="group" aria-label="연령">
+              {(['', ...ageGroups] as const).map((g) => (
+                <button
+                  key={g || 'all'}
+                  type="button"
+                  className={age === g ? 'on' : ''}
+                  onClick={() => {
+                    setAge(g)
+                    reset()
+                  }}
+                >
+                  {g || '전체'}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="segmented" role="group" aria-label="Sex">
             {SEXES.map((s) => (
               <button
@@ -218,7 +244,9 @@ export function NationalLadder() {
         pool (players link the age groups as they move up). There a player starts at the level of the first draw they played
         — 12세이하 1200, 15세이하 1350, 18세이하 1450, 대학부 1500 — so dominating a younger draw lands
         a step below the next age group rather than reading as senior strength; beating older players
-        is the way up, and nothing caps the climb. The student ladder lists only players whose latest draw
+        is the way up, and nothing caps the climb. Picking an age group there lists only the players whose
+        latest draw was that group — the ratings are the one pool's either way, so the order never
+        changes, only who is listed and the numbering. The student ladder lists only players whose latest draw
         was a student draw (those who moved on drop off, though their past matches still count for
         everyone else). Men and women are ranked separately. Ratings update once per tournament, reward the
         margin of victory, and keep moving for established players; best-of-3 counts 0.75 of a match

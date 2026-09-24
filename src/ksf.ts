@@ -96,6 +96,32 @@ export const tournamentsById = new Map(ladder.tournaments.map((t) => [t.toCd, t]
 export const SEXES = ['남자', '여자'] as const
 export type Sex = (typeof SEXES)[number]
 
+/** The student pool's age groups, youngest first — the order a player moves through them. */
+export const AGE_GROUPS = ['12세이하', '15세이하', '18세이하', '대학부'] as const
+export type AgeGroup = (typeof AGE_GROUPS)[number]
+
+/** The age group a draw belongs to: '남자 15세이하부' → '15세이하'; null for 일반부 and anything else. */
+export function ageGroupOf(division: string | null): AgeGroup | null {
+  if (!division) return null
+  return AGE_GROUPS.find((g) => division.includes(g)) ?? null
+}
+
+/** Age groups the players listed on a ladder last played in, youngest first. */
+const ageGroupCache = new Map<string, AgeGroup[]>()
+export function ageGroupsOn(ladderKey: string): AgeGroup[] {
+  let groups = ageGroupCache.get(ladderKey)
+  if (!groups) {
+    const present = new Set<AgeGroup>()
+    for (const e of ladder.ladders[ladderKey]?.terms[PRIMARY]?.entries ?? []) {
+      const g = ageGroupOf(playersById.get(e.id)?.lastDivision ?? null)
+      if (g) present.add(g)
+    }
+    groups = AGE_GROUPS.filter((g) => present.has(g))
+    ageGroupCache.set(ladderKey, groups)
+  }
+  return groups
+}
+
 /**
  * Players with no match since this date are shown dimmed (the engine also docks
  * their rating when they return — see ABSENCE_DAYS).
