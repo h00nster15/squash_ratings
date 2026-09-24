@@ -41,6 +41,11 @@ const MAX_AGE = { junior: 18, university: 26 }
 // re-rate anyone: every player keeps the same current rating, and the term adds
 // how far it moved inside that window plus the window's win–loss record.
 const RATING_MONTHS = 36
+// A rating is only shown once there is a body of results behind it. Below these counts
+// the player is not listed for that term — their matches still move everyone else's
+// rating, and their own page still shows every result.
+const MIN_MATCHES: Record<string, number> = { y3: 10, y1: 7, m6: 3, m3: 0 }
+
 const TERMS: { key: string; label: string; months: number }[] = [
   { key: 'y3', label: '3 years', months: RATING_MONTHS },
   { key: 'y1', label: '1 year', months: 12 },
@@ -265,7 +270,11 @@ function termsOf(subset: Singles[], current: Entry[]) {
         termLosses: inWindow.length - wins,
       }
     })
-    terms[t.key] = { label: t.label, since: from, entries }
+    // The primary term counts the whole window's matches; the shorter ones count only
+    // what happened inside them, so a player drops off a term they barely played.
+    const min = MIN_MATCHES[t.key] ?? 0
+    const listed = entries.filter((e) => (t.months === RATING_MONTHS ? e.matches : e.termMatches) >= min)
+    terms[t.key] = { label: t.label, since: from, entries: listed }
   }
   return terms
 }
@@ -273,7 +282,8 @@ function termsOf(subset: Singles[], current: Entry[]) {
 // --- Build every ladder ----------------------------------------------------
 const ladders: Record<string, { label: string; matches: number; terms: ReturnType<typeof termsOf> }> = {}
 const deltaOf = new Map<Singles, { [id: string]: number }>()
-const laddersOfPlayer = new Map<string, string[]>()
+const laddersOfPlayer = new Map<string, string[]>() // where a player is listed
+const playedOn = new Map<string, string[]>() // where a player has rated matches at all
 const birthYear = new Map(rawPlayers.map((p) => [p.idNo, p.birthYear]))
 const lastRatedDivision = new Map<string, string>()
 for (const m of singles) for (const id of [m.playerAId, m.playerBId]) lastRatedDivision.set(id, m.division) // date-ordered
@@ -290,16 +300,21 @@ for (const L of [OPEN, STUDENT]) {
   // Players who left student draws still shaped everyone's ratings, but leave the student list.
   const entries = L.key === STUDENT.key ? rated.filter((e) => isStudentNow(e.id)) : rated
   for (const [m, d] of tournamentDelta) deltaOf.set(m, d)
-  for (const e of entries) laddersOfPlayer.set(e.id, [...(laddersOfPlayer.get(e.id) ?? []), L.key])
+  // Anyone with a rated match stays in players[] so their name resolves wherever they
+  // appear; `ladders` says where they are actually LISTED, which is a shorter list.
+  for (const e of rated) playedOn.set(e.id, [...(playedOn.get(e.id) ?? []), L.key])
+  const qualified = entries.filter((e) => e.matches >= (MIN_MATCHES.y3 ?? 0))
+  for (const e of qualified) laddersOfPlayer.set(e.id, [...(laddersOfPlayer.get(e.id) ?? []), L.key])
   ladders[L.key] = { label: L.label, matches: subset.length, terms: termsOf(subset, entries) }
-  console.log(`${L.key.padEnd(6)} ${L.label.padEnd(14)} ${String(subset.length).padStart(5)} matches, ${entries.length} listed${L.key === STUDENT.key ? ` (${rated.length - entries.length} no longer students)` : ''}`)
+  console.log(`${L.key.padEnd(6)} ${L.label.padEnd(14)} ${String(subset.length).padStart(5)} matches, ${qualified.length} listed`
+    + ` (${entries.length - qualified.length} under ${MIN_MATCHES.y3} matches${L.key === STUDENT.key ? `, ${rated.length - entries.length} no longer students` : ''})`)
 }
 
 // --- Static player info ----------------------------------------------------
 const lastDivision = new Map<string, string>()
 for (const m of allSingles) for (const id of [m.playerAId, m.playerBId]) lastDivision.set(id, m.division) // date-ordered
 const info = rawPlayers
-  .filter((p) => laddersOfPlayer.has(p.idNo))
+  .filter((p) => playedOn.has(p.idNo))
   .map((p) => ({
     id: p.idNo,
     name: p.name,
@@ -308,7 +323,7 @@ const info = rawPlayers
     team: p.teams[0] ?? null, // scraper walks tournaments newest-first
     sido: p.sido,
     lastDivision: lastDivision.get(p.idNo) ?? null,
-    ladders: laddersOfPlayer.get(p.idNo)!,
+    ladders: laddersOfPlayer.get(p.idNo) ?? [],
   }))
 
 const tournaments = [...new Map(allSingles.map((m) => [m.toCd, { toCd: m.toCd, name: m.tournament, date: m.date }])).values()]
@@ -318,7 +333,7 @@ fs.writeFileSync(
   path.join(DIR, 'ladder.json'),
   JSON.stringify({
     builtAt: now.toISOString(), ratingSince: RATING_SINCE, matches: singles.length,
-    glickoShare: GLICKO_SHARE, formatWeight: FORMAT_WEIGHT,
+    glickoShare: GLICKO_SHARE, formatWeight: FORMAT_WEIGHT, minMatches: MIN_MATCHES,
     tournaments, players: info, ladders,
   }),
 )

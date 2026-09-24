@@ -22,6 +22,9 @@ import { Sparkline } from './Sparkline.tsx'
 
 const PAGE = 50
 
+/** Matches needed inside a term before a player is listed on it (from the build). */
+const minFor = (termKey: string) => ladder.minMatches?.[termKey] ?? 0
+
 /** 시도 values present among rated players, most common first. */
 const SIDOS = (() => {
   const count = new Map<string, number>()
@@ -251,7 +254,10 @@ export function NationalLadder() {
         everyone else). Men and women are ranked separately. Ratings update once per tournament, reward the
         margin of victory, and keep moving for established players; best-of-3 counts 0.75 of a match
         and a single game 0.5. Only the last three years of results are rated; the shorter terms keep
-        the same ratings and show how much each moved in that window (Δ) with the window's W–L. ± is
+        the same ratings and show how much each moved in that window (Δ) with the window's W–L.
+        A rating needs results behind it: a player is listed on a term only with{' '}
+        <strong>{minFor(termKey)} matches</strong> in it — 3 years {minFor(PRIMARY)}, 1 year {minFor('y1')}, 6 months {minFor('m6')}.
+        Their matches still count towards everyone else's rating, and their own page still shows them. ± is
         the uncertainty. Dimmed rows are provisional (± above {PROVISIONAL_RD}, or too few open
         matches), have no results in the window, or have not played since {ACTIVE_SINCE} (they stay
         listed while they have results in the last three years, and return with a −100 penalty).

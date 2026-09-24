@@ -100,7 +100,14 @@ export function PlayerPage({ id }: { id: string }) {
           ))}
         </ul>
 
-        {/* One card per ladder the player has results on; results never cross ladders. */}
+        {/* One card per ladder the player is LISTED on; results never cross ladders. A
+            player under the match minimum has none — their results still count for others. */}
+        {player.ladders.length === 0 && (
+          <p className="muted small" style={{ margin: '4px 0 12px' }}>
+            아직 순위에 오르지 않았습니다 — 최근 3년 {ladder.minMatches?.y3 ?? 0}경기를 채우면 사다리에 표시됩니다.
+            아래 전적은 그대로 기록되고, 상대 선수의 레이팅에는 이미 반영돼 있습니다.
+          </p>
+        )}
         <div className="stats">
           {player.ladders.map((lk) => {
             const e = entryOf(lk, PRIMARY, id)!

@@ -78,6 +78,8 @@ export const ladder = ladderJson as {
   builtAt: string
   ratingSince: string
   matches: number
+  /** Matches a player needs inside a term before they are listed on it. */
+  minMatches?: Record<string, number>
   tournaments: Tournament[]
   players: PlayerInfo[]
   ladders: Record<string, Ladder>
