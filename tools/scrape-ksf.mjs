@@ -24,6 +24,11 @@ const years = process.argv.slice(2)
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 const clean = (s) => String(s ?? '').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
+// Codes are read out of the page's own HTML, so they arrive escaped. A few draws
+// really are keyed by an apostrophe (kindCd "'"), which the portal writes as
+// &#039;; sent back to the API unescaped, those draws answer empty.
+const unescapeHtml = (s) =>
+  String(s ?? '').replace(/&#0?39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
 
 async function postForm(page, params) {
   await sleep(DELAY_MS)
@@ -84,8 +89,8 @@ async function listDivisions(toCd) {
     if (!m) continue
     const cells = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => clean(c[1]))
     divisions.push({
-      kindCd: m[1],
-      detailClassCd: m[2],
+      kindCd: unescapeHtml(m[1]),
+      detailClassCd: unescapeHtml(m[2]),
       kindNm: cells[0] ?? '',
       detailClassNm: cells[1] ?? '',
       format: cells[2] ?? '',
@@ -93,6 +98,39 @@ async function listDivisions(toCd) {
     })
   }
   return divisions
+}
+
+/**
+ * Every (대회, 종별, 세부종목, 경기구분) one 등록번호 appears in, from the portal's
+ * 대회참가이력 page. Match rows name players but never identify them — 개인전 rows
+ * carry no team either — so when a draw holds two entrants of the same name, this
+ * is what tells them apart.
+ */
+const historyCache = new Map()
+async function appearances(idNo) {
+  if (historyCache.has(idNo)) return historyCache.get(idNo)
+  const out = new Set()
+  try {
+    const html = await postForm('INF503', { classCd: CLASS_CD, idNo, pageIndex: 1 })
+    let tournament = null
+    for (const row of html.slice(html.indexOf('대회참가이력')).split('<tr').slice(1)) {
+      const title = row.match(/<strong>([\s\S]*?)<\/strong>/)
+      if (title) { tournament = clean(title[1]); continue }
+      const cells = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((c) => clean(c[1]))
+      if (tournament && cells.length >= 3) out.add([tournament, cells[0], cells[1], cells[2]].join('|'))
+    }
+  } catch { /* no history page: the name stays unresolved */ }
+  historyCache.set(idNo, out)
+  return out
+}
+
+/** How deep in a knockout a round sits: 결승 1, 준결승 2, 준준결승 3 …, 예선 last. */
+function drawDepth(round) {
+  if (!round) return null
+  if (/^결승/.test(round)) return 1
+  const m = round.match(/^(준+)결승/)
+  if (m) return m[1].length + 1
+  return /^예선/.test(round) ? 99 : null
 }
 
 /** Majority sex and age band of an entry list, or null if it has no usable entrants. */
@@ -135,7 +173,10 @@ function main() {
         // entrants: age band of the oldest entrant that year, and — because such a
         // draw can hold both sexes — the sex of each match's own two players.
         const draw = inferDraw(entrants, t.start)
-        const labelSex = d.kindNm.match(/^(남자|여자)/)?.[1] ?? null
+        // A label is only usable when it names both sex and age band ("여자 일반부").
+        // Open events are often listed as a bare "남자부" / "여자부"; those get the
+        // band from the entrants like any other unlabelled draw.
+        const labelSex = d.kindNm.match(/^(남자|여자)\s+\S*부/)?.[1] ?? null
         const trustLabel = labelSex !== null && (!draw || draw.sex === labelSex && !draw.mixed)
         const sexOf = new Map(entrants.map((p) => [p.idNo, p.sexNm]))
         const divisionFor = (idA, idB) => {
@@ -145,11 +186,11 @@ function main() {
           return `${sex} ${draw.band}`
         }
 
-        // Name -> idNo within this division. A name shared by two entrants is ambiguous.
+        // Name -> the entrants carrying it in this division; two people can share one.
         const byName = new Map()
         for (const p of entrants) {
           if (!p.idNo) continue
-          byName.set(p.korNm, byName.has(p.korNm) ? null : p.idNo)
+          byName.set(p.korNm, [...(byName.get(p.korNm) ?? []), p.idNo])
           if (!players.has(p.idNo)) {
             players.set(p.idNo, {
               idNo: p.idNo,
@@ -164,10 +205,50 @@ function main() {
           if (p.teamNm && !rec.teams.includes(p.teamNm)) rec.teams.push(p.teamNm)
         }
 
+        // One side of a match: the entrants of that name who, by their own
+        // 대회참가이력, played this very round of this draw.
+        const candidates = async (name, round) => {
+          const ids = byName.get(name) ?? []
+          if (ids.length < 2) return ids
+          const key = [t.name, d.kindNm, d.detailClassNm, round].join('|')
+          const hits = []
+          for (const id of ids) if ((await appearances(id)).has(key)) hits.push(id)
+          return hits
+        }
+        /** Of two entrants in one match, the one who played a later round won it. */
+        const advanced = async (ids, round) => {
+          const depth = drawDepth(round)
+          if (depth === null) return null
+          const prefix = [t.name, d.kindNm, d.detailClassNm, ''].join('|')
+          const reached = []
+          for (const id of ids) {
+            const depths = [...(await appearances(id))]
+              .filter((k) => k.startsWith(prefix))
+              .map((k) => drawDepth(k.split('|')[3]))
+              .filter((x) => x !== null && x < depth)
+            reached.push(depths.length ? Math.min(...depths) : null)
+          }
+          const best = Math.min(...reached.filter((x) => x !== null))
+          const winners = ids.filter((_, i) => reached[i] === best)
+          return winners.length === 1 ? winners[0] : null
+        }
+
         for (const m of schedule) {
           if (!m.korNmL || !m.korNmR) continue
-          const idA = byName.get(m.korNmL) ?? null
-          const idB = byName.get(m.korNmR) ?? null
+          let [a, b] = await Promise.all([candidates(m.korNmL, m.rhNm), candidates(m.korNmR, m.rhNm)])
+          // The same name on both sides: those two candidates ARE the two players,
+          // and the one who went on to a later round won this match.
+          if (m.korNmL === m.korNmR && a.length === 2 && b.length === 2) {
+            const winner = await advanced(a, m.rhNm)
+            const loser = winner ? a.find((id) => id !== winner) : null
+            if (winner && loser) {
+              const leftWon = Number(m.scoreL) > Number(m.scoreR)
+              a = [leftWon ? winner : loser]
+              b = [leftWon ? loser : winner]
+            }
+          }
+          const idA = a.length === 1 ? a[0] : null
+          const idB = b.length === 1 ? b[0] : null
           if (!idA || !idB) unresolved++
           const gamesA = Number(m.scoreL)
           const gamesB = Number(m.scoreR)
