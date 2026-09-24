@@ -111,11 +111,18 @@ const RATING_SINCE = since(RATING_MONTHS)
 
 type Singles = RawMatch & { playerAId: string; playerBId: string; gamesA: number; gamesB: number }
 /** Every singles match, oldest first; only those on/after RATING_SINCE are rated. */
+// A squash match is at most best of five, so no side can win four games: a row that
+// says otherwise is a typo in the portal and is dropped rather than rated (owner,
+// 2026-09-24, about 2024-03-21 남자 15세이하 결승 "1:4").
+const impossible = (m: RawMatch) => Math.max(m.gamesA ?? 0, m.gamesB ?? 0) > 3
 const allSingles = rawMatches.filter(
   (m): m is Singles =>
     !!m.playerAId && !!m.playerBId && m.playerAId !== m.playerBId &&
-    m.gamesA != null && m.gamesB != null && m.gamesA + m.gamesB > 0,
+    m.gamesA != null && m.gamesB != null && m.gamesA + m.gamesB > 0 && !impossible(m),
 )
+for (const m of rawMatches.filter(impossible)) {
+  console.log(`dropped (impossible score): ${m.date} ${m.division} ${m.round} ${m.playerA} ${m.gamesA}:${m.gamesB} ${m.playerB}`)
+}
 const singles = allSingles.filter((m) => m.date >= RATING_SINCE)
 
 // --- Where a player enters a pool --------------------------------------------
