@@ -22,6 +22,14 @@ import { Sparkline } from './Sparkline.tsx'
 
 const PAGE = 50
 
+/** Who the list shows: players meeting the term's minimum (and recently played), the rest, or both. */
+const STATUSES = [
+  { key: 'active', label: 'Active' },
+  { key: 'inactive', label: 'Inactive' },
+  { key: 'all', label: 'All' },
+] as const
+type Status = (typeof STATUSES)[number]['key']
+
 /** Matches needed inside a term before a player is listed on it (from the build). */
 const minFor = (termKey: string) => ladder.minMatches?.[termKey] ?? 0
 
@@ -50,6 +58,7 @@ export function NationalLadder() {
   const [age, setAge] = useState<AgeGroup | ''>('')
   const [sido, setSido] = useState(org.nationalSido ?? '')
   const [query, setQuery] = useState('')
+  const [status, setStatus] = useState<Status>('active')
   const [limit, setLimit] = useState(PAGE)
 
   // The student pool is rated as one pool; picking an age group only narrows the
@@ -65,14 +74,20 @@ export function NationalLadder() {
     return term.entries
       .map((e) => ({ e, p: playersById.get(e.id)! }))
       .filter(
-        ({ p }) =>
+        ({ e, p }) =>
+          (status === 'all' || isActive(e) === (status === 'active')) &&
           p.sex === sex &&
           (!age || ageGroupOf(p.lastDivision) === age) &&
           (!sido || p.sido === sido) &&
           (!q || p.name.toLowerCase().includes(q) || (p.team ?? '').toLowerCase().includes(q)),
       )
-  }, [term, sex, age, sido, query])
+  }, [term, status, sex, age, sido, query])
 
+  // Only active players are numbered; inactive ones show — wherever they appear.
+  const ranks = useMemo(() => {
+    let n = 0
+    return rows.map(({ e }) => (isActive(e) ? ++n : null))
+  }, [rows])
   const shown = rows.slice(0, limit)
   const lastTournament = ladder.tournaments[ladder.tournaments.length - 1]
   const reset = () => setLimit(PAGE)
@@ -154,6 +169,21 @@ export function NationalLadder() {
               </button>
             ))}
           </div>
+          <div className="segmented" role="group" aria-label="Status">
+            {STATUSES.map((s) => (
+              <button
+                key={s.key}
+                type="button"
+                className={status === s.key ? 'on' : ''}
+                onClick={() => {
+                  setStatus(s.key)
+                  reset()
+                }}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
           <select
             value={sido}
             onChange={(e) => {
@@ -201,10 +231,10 @@ export function NationalLadder() {
                 {shown.map(({ e, p }, i) => (
                   <tr
                     key={p.id}
-                    className={!isActive(e) || isProvisional(ladderKey, e) || (!isPrimary && !e.termMatches) ? 'unrated' : ''}
-                    title={isProvisional(ladderKey, e) ? 'Provisional' : ''}
+                    className={!isActive(e) || isProvisional(ladderKey, e) ? 'unrated' : ''}
+                    title={!isActive(e) ? 'Inactive' : isProvisional(ladderKey, e) ? 'Provisional' : ''}
                   >
-                    <td className="muted">{i + 1}</td>
+                    <td className="muted">{ranks[i] ?? '—'}</td>
                     <td>
                       <a className="player-link" href={`#player/${p.id}`}>
                         {p.name}
@@ -255,12 +285,13 @@ export function NationalLadder() {
         margin of victory, and keep moving for established players; best-of-3 counts 0.75 of a match
         and a single game 0.5. Only the last three years of results are rated; the shorter terms keep
         the same ratings and show how much each moved in that window (Δ) with the window's W–L.
-        A rating needs results behind it: a player is listed on a term only with{' '}
-        <strong>{minFor(termKey)} matches</strong> in it — 3 years {minFor(PRIMARY)}, 1 year {minFor('y1')}, 6 months {minFor('m6')}.
-        Their matches still count towards everyone else's rating, and their own page still shows them. ± is
-        the uncertainty. Dimmed rows are provisional (± above {PROVISIONAL_RD}, or too few open
-        matches), have no results in the window, or have not played since {ACTIVE_SINCE} (they stay
-        listed while they have results in the last three years, and return with a −100 penalty).
+        A rating needs results behind it: a player is active on a term only with{' '}
+        <strong>{Math.max(minFor(termKey), isPrimary ? 0 : 1)} matches</strong> in it — 3 years {minFor(PRIMARY)}, 1 year{' '}
+        {minFor('y1')}, 6 months {minFor('m6')}, 3 months {Math.max(minFor('m3'), 1)} — and a match since {ACTIVE_SINCE} (a
+        player back after a year away returns with a −100 penalty). Only active players are numbered; pick
+        Inactive or All to see the rest. Inactive players' matches still count towards everyone else's rating,
+        and their own page still shows them. ± is the uncertainty. Dimmed rows are inactive or provisional (±
+        above {PROVISIONAL_RD}, or too few open matches).
       </p>
     </>
   )

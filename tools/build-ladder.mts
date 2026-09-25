@@ -41,10 +41,11 @@ const MAX_AGE = { junior: 18, university: 26 }
 // re-rate anyone: every player keeps the same current rating, and the term adds
 // how far it moved inside that window plus the window's win–loss record.
 const RATING_MONTHS = 36
-// A rating is only shown once there is a body of results behind it. Below these counts
-// the player is not listed for that term — their matches still move everyone else's
-// rating, and their own page still shows every result.
-const MIN_MATCHES: Record<string, number> = { y3: 10, y1: 7, m6: 3, m3: 0 }
+// A rating only counts once there is a body of results behind it. Below these counts
+// (or with no match at all inside a shorter term) the player stays on the term but is
+// marked unqualified, which the app shows as inactive — their matches still move
+// everyone else's rating, and their own page still shows every result.
+const MIN_MATCHES: Record<string, number> = { y3: 6, y1: 3, m6: 2, m3: 0 }
 
 const TERMS: { key: string; label: string; months: number }[] = [
   { key: 'y3', label: '3 years', months: RATING_MONTHS },
@@ -248,13 +249,14 @@ function rate(subset: Singles[]) {
 }
 
 type Entry = ReturnType<typeof rate>['entries'][number]
-type TermEntry = Entry & { delta: number | null; termMatches: number; termWins: number; termLosses: number }
+type TermEntry = Entry & { delta: number | null; termMatches: number; termWins: number; termLosses: number; qualified: boolean }
 
 /** Term views of one pool's current ratings: same rating, plus the window's Δ and record. */
 function termsOf(subset: Singles[], current: Entry[]) {
   const terms: Record<string, { label: string; since: string; entries: TermEntry[] }> = {}
   for (const t of TERMS) {
     const from = since(t.months)
+    const min = MIN_MATCHES[t.key] ?? 0
     const entries: TermEntry[] = current.map((e) => {
       const inWindow = subset.filter((m) => m.date >= from && (m.playerAId === e.id || m.playerBId === e.id))
       const wins = inWindow.filter((m) => (m.playerAId === e.id ? m.gamesA > m.gamesB : m.gamesB > m.gamesA)).length
@@ -268,13 +270,13 @@ function termsOf(subset: Singles[], current: Entry[]) {
         termMatches: inWindow.length,
         termWins: wins,
         termLosses: inWindow.length - wins,
+        // The primary term counts the whole window's matches; the shorter ones count only
+        // what happened inside them (at least one), so a player who barely played a term
+        // is inactive on it.
+        qualified: t.months === RATING_MONTHS ? e.matches >= min : inWindow.length >= Math.max(min, 1),
       }
     })
-    // The primary term counts the whole window's matches; the shorter ones count only
-    // what happened inside them, so a player drops off a term they barely played.
-    const min = MIN_MATCHES[t.key] ?? 0
-    const listed = entries.filter((e) => (t.months === RATING_MONTHS ? e.matches : e.termMatches) >= min)
-    terms[t.key] = { label: t.label, since: from, entries: listed }
+    terms[t.key] = { label: t.label, since: from, entries }
   }
   return terms
 }

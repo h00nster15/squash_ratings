@@ -35,6 +35,8 @@ export interface TermEntry {
   termMatches: number
   termWins: number
   termLosses: number
+  /** Enough matches for this term (the build's minimum); false shows the player as inactive. */
+  qualified: boolean
 }
 
 export interface Term {
@@ -139,11 +141,13 @@ export const PROVISIONAL_RD = 200
 /** On the national ladder a player also needs this many open-draw matches before the rating counts as settled. */
 export const PROVISIONAL_MATCHES = 5
 
-export const isActive = (e: TermEntry) => (e.lastPlayed ?? '') >= ACTIVE_SINCE
+export const playedRecently = (e: TermEntry) => (e.lastPlayed ?? '') >= ACTIVE_SINCE
+/** Active on a term: enough matches in it, and a match since ACTIVE_SINCE. Only active players are ranked. */
+export const isActive = (e: TermEntry) => e.qualified && playedRecently(e)
 export const isProvisional = (ladderKey: string, e: TermEntry) =>
   e.rd > PROVISIONAL_RD || (ladderKey === OPEN && e.matches < PROVISIONAL_MATCHES)
 
-/** Rank within sex over every rated player on a ladder; the same for every term. */
+/** Rank within sex over the active players on a ladder's primary term. */
 const rankCache = new Map<string, Map<string, number>>()
 export function rankOf(ladderKey: string, id: string): number | null {
   let ranks = rankCache.get(ladderKey)
@@ -153,7 +157,7 @@ export function rankOf(ladderKey: string, id: string): number | null {
     for (const sex of SEXES) {
       let n = 0
       for (const e of term?.entries ?? []) {
-        if (playersById.get(e.id)?.sex !== sex) continue
+        if (playersById.get(e.id)?.sex !== sex || !isActive(e)) continue
         ranks.set(e.id, ++n)
       }
     }
