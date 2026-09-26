@@ -5,24 +5,27 @@ import { PlayerPage } from './PlayerPage.tsx'
 import { org } from './org.ts'
 import { loadData, saveData } from './storage.ts'
 import { TournamentPage } from './TournamentPage.tsx'
+import { WellperionRatings } from './WellperionRatings.tsx'
 import { Tournaments } from './Tournaments.tsx'
 import './App.css'
 
 // The club-league view and its dataset only ship in builds whose org has one.
 const SeoulLeague = lazy(() => import('./SeoulLeague.tsx').then((m) => ({ default: m.SeoulLeague })))
 
-// Hash routes: #national (default) · #player/<idNo> · #club · #league · #tournaments · #tournament/<id>
+// Hash routes: #national (default) · #player/<idNo> · #wellperion · #club · #league · #tournaments · #tournament/<id>
 type Route =
   | { view: 'national' }
   | { view: 'league'; player?: string }
   | { view: 'player'; id: string }
   | { view: 'club' }
+  | { view: 'wellperion' }
   | { view: 'tournaments' }
   | { view: 'tournament'; id: string }
 
 function parseRoute(hash: string): Route {
   const h = hash.replace(/^#/, '')
   if (h === 'club') return { view: 'club' }
+  if (h === 'wellperion' && org.clubSource) return { view: 'wellperion' }
   if (org.leagueLabel) {
     if (h === 'league') return { view: 'league' }
     const lp = h.match(/^league\/player\/(.+)$/)
@@ -52,7 +55,9 @@ function useRoute(): Route {
 
 const TABS = [
   ...(org.leagueLabel ? [{ key: 'league', href: '#league', label: org.leagueLabel }] : []),
+  ...(org.clubSource && org.defaultView === 'wellperion' ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
   { key: 'national', href: '#national', label: 'KSF National' },
+  ...(org.clubSource && org.defaultView !== 'wellperion' ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
   { key: 'club', href: '#club', label: org.clubLabel },
   { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
 ] as const
@@ -89,6 +94,8 @@ function App() {
         <Suspense fallback={<p className="muted">Loading league…</p>}>
           <SeoulLeague player={route.player} />
         </Suspense>
+      ) : route.view === 'wellperion' ? (
+        <WellperionRatings />
       ) : route.view === 'club' ? (
         <ClubLadder data={data} setData={setData} />
       ) : route.view === 'tournaments' ? (

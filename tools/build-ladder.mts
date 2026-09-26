@@ -78,6 +78,37 @@ interface RawPlayer {
 const rawMatches: RawMatch[] = JSON.parse(fs.readFileSync(path.join(DIR, 'matches.json'), 'utf8'))
 let rawPlayers: RawPlayer[] = JSON.parse(fs.readFileSync(path.join(DIR, 'players.json'), 'utf8'))
 
+// --- Wellperion club results the owner chose to count ------------------------
+// data/wellperion/club-matches.json (npm run club) holds the results in the club's
+// Google Sheet marked 전국 반영 whose two players are linked to their 등록번호. They
+// join the open ladder as "일반부 (Wellperion 클럽)" (rated on their own date like any
+// match; grouped by month as "Wellperion 클럽 YYYY-MM" on player pages). A player the national data
+// does not know is left out. Each is slotted in at its date: the rest of the build
+// reads the matches in date order.
+const CLUB_FILE = path.resolve('data/wellperion/club-matches.json')
+if (fs.existsSync(CLUB_FILE)) {
+  const club = JSON.parse(fs.readFileSync(CLUB_FILE, 'utf8')) as {
+    matches: { date: string; winnerKsf: string; loserKsf: string; gamesWinner: number; gamesLoser: number }[]
+  }
+  const known = new Set(rawPlayers.map((p) => p.idNo))
+  let added = 0
+  for (const c of club.matches) {
+    if (!known.has(c.winnerKsf) || !known.has(c.loserKsf)) {
+      console.log(`club result left out (등록번호 not in the national data): ${c.date} ${c.winnerKsf} – ${c.loserKsf}`)
+      continue
+    }
+    const month = c.date.slice(0, 7)
+    const row: RawMatch = {
+      toCd: `WP-${month}`, tournament: `Wellperion 클럽 ${month}`, date: c.date, division: '일반부 (Wellperion 클럽)', round: null,
+      playerAId: c.winnerKsf, playerBId: c.loserKsf, gamesA: c.gamesWinner, gamesB: c.gamesLoser,
+    }
+    const at = rawMatches.findIndex((m) => m.date > c.date)
+    rawMatches.splice(at < 0 ? rawMatches.length : at, 0, row)
+    added++
+  }
+  console.log(`${added} Wellperion club results added to the open ladder`)
+}
+
 // --- One person, several 등록번호 -------------------------------------------
 // The portal gives an entrant with no registration a throwaway id (98…, an empty
 // profile), so a player can hold a real number and a temporary one per event —

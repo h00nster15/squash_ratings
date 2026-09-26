@@ -15,7 +15,8 @@
     "build:seoul-data": "node tools/build-seoul.mts",
     "ladder": "node tools/build-ladder.mts",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "club": "node tools/fetch-club.mts"
   },
   "dependencies": {
     "react": "^19.2.8",

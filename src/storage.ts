@@ -34,6 +34,8 @@ export function newId(): string {
   return crypto.randomUUID()
 }
 
+/** Today's date where the user is (toISOString would give UTC: yesterday in Korea before 9 a.m.). */
 export function today(): string {
-  return new Date().toISOString().slice(0, 10)
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
