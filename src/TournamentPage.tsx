@@ -265,7 +265,7 @@ function RoundRobin({ entrants, results, delta, setResult }: { entrants: Entrant
               <th>Player</th>
               <th className="num">P</th>
               <th className="num">W–L</th>
-              <th className="num">Games</th>
+              <th className="num sm-hide">Games</th>
               <th className="num">Δ rating</th>
             </tr>
           </thead>
@@ -278,7 +278,7 @@ function RoundRobin({ entrants, results, delta, setResult }: { entrants: Entrant
                 <td className="num">
                   {s.wins}–{s.losses}
                 </td>
-                <td className="num muted">
+                <td className="num muted sm-hide">
                   {s.gf}–{s.ga}
                 </td>
                 <DeltaCell value={delta.get(s.id)} />

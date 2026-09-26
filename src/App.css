@@ -1,5 +1,7 @@
 .layout {
-  max-width: 900px;
+  /* Wide enough for the ladder's columns on one line on a desktop screen; narrower
+     screens still scroll a table inside its panel. */
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 1rem 4rem;
   display: flex;
@@ -9,6 +11,11 @@
 
 header p {
   margin: 0.25rem 0 0;
+}
+
+/* Tables use the full width; running text keeps a readable line length. */
+.layout p {
+  max-width: 90ch;
 }
 
 .panel {
@@ -383,4 +390,91 @@ h3 {
 
 button.ghost.danger {
   color: var(--down);
+}
+
+/* --- phones ---
+   Tables keep a row on one line by dropping secondary columns (class sm-hide: ±, trend,
+   last played, team where it can move under the name); what's left fits a phone without
+   sideways scrolling. Tabs and filter groups scroll sideways instead of stacking. */
+.sm-only {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .layout {
+    padding: 1rem 0.75rem 3rem;
+    gap: 1rem;
+  }
+
+  h1 {
+    font-size: 1.35rem;
+  }
+
+  .panel {
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .sm-hide {
+    display: none;
+  }
+
+  .sm-only {
+    display: inline;
+  }
+
+  /* Birth year · division (· team) moves under the name, so the name column stays narrow. */
+  .meta {
+    display: block;
+  }
+
+  th,
+  td {
+    padding: 0.5rem 0.35rem;
+  }
+
+  .segmented {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .segmented::-webkit-scrollbar {
+    display: none;
+  }
+
+  .segmented button,
+  .segmented a {
+    flex-shrink: 0;
+    white-space: nowrap;
+    /* Big enough to hit with a thumb. */
+    padding: 0.5rem 0.85rem;
+  }
+
+  .filters {
+    gap: 0.5rem;
+  }
+
+  .filters select,
+  .filters input[type='text'],
+  .filters input:not([type]) {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .panel-head {
+    gap: 0.5rem;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+  }
+
+  button.ghost {
+    width: 100%;
+  }
 }

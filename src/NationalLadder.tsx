@@ -218,13 +218,13 @@ export function NationalLadder() {
                 <tr>
                   <th>#</th>
                   <th>Player</th>
-                  <th>Team</th>
+                  <th className="sm-hide">Team</th>
                   <th className="num">Rating</th>
-                  <th className="num">±</th>
+                  <th className="num sm-hide">±</th>
                   {!isPrimary && <th className="num">Δ</th>}
-                  <th>Trend</th>
+                  <th className="sm-hide">Trend</th>
                   <th className="num">W–L</th>
-                  <th>Last played</th>
+                  <th className="sm-hide">Last played</th>
                 </tr>
               </thead>
               <tbody>
@@ -239,23 +239,25 @@ export function NationalLadder() {
                       <a className="player-link" href={`#player/${p.id}`}>
                         {p.name}
                       </a>
-                      <span className="muted small" title="출생연도 · 최근 출전 부문 (birth year · latest division played)">
+                      <span className="muted small meta" title="출생연도 · 최근 출전 부문 (birth year · latest division played)">
                         {' '}
                         {p.birthYear ?? '?'}
                         {p.lastDivision ? ` · ${p.lastDivision}` : ''}
+                        {/* On a phone the Team column is hidden, so the team joins this line. */}
+                        {p.team && <span className="sm-only"> · {p.team}</span>}
                       </span>
                     </td>
-                    <td className="muted small">{p.team ?? '—'}</td>
+                    <td className="muted small sm-hide">{p.team ?? '—'}</td>
                     <td className="num strong">{e.rating}</td>
-                    <td className="num muted">{e.rd}</td>
+                    <td className="num muted sm-hide">{e.rd}</td>
                     {!isPrimary && <DeltaCell value={e.termMatches ? e.delta : null} />}
-                    <td>
+                    <td className="sm-hide">
                       <Sparkline points={e.history} />
                     </td>
                     <td className="num">
                       {isPrimary ? `${e.wins}–${e.losses}` : `${e.termWins}–${e.termLosses}`}
                     </td>
-                    <td className="muted">{e.lastPlayed ?? '—'}</td>
+                    <td className="muted sm-hide">{e.lastPlayed ?? '—'}</td>
                   </tr>
                 ))}
               </tbody>

@@ -86,9 +86,9 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
                 <th>#</th>
                 <th>Player</th>
                 <th className="num">Rating</th>
-                <th className="num">±</th>
+                <th className="num sm-hide">±</th>
                 <th className="num">W–L</th>
-                <th>Last played</th>
+                <th className="sm-hide">Last played</th>
               </tr>
             </thead>
             <tbody>
@@ -97,11 +97,11 @@ export function ClubLadder({ data: { players, matches, tournaments }, setData }:
                   <td>{i + 1}</td>
                   <td>{p.name}</td>
                   <td className="num strong">{Math.round(p.rating)}</td>
-                  <td className="num muted">{Math.round(p.rd)}</td>
+                  <td className="num muted sm-hide">{Math.round(p.rd)}</td>
                   <td className="num">
                     {p.wins}–{p.losses}
                   </td>
-                  <td className="muted">{p.lastPlayed ?? '—'}</td>
+                  <td className="muted sm-hide">{p.lastPlayed ?? '—'}</td>
                 </tr>
               ))}
             </tbody>

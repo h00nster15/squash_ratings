@@ -37,9 +37,9 @@ export function Tournaments({ data: { tournaments, matches }, setData }: DataPro
               <tr>
                 <th>Date</th>
                 <th>Tournament</th>
-                <th>Format</th>
+                <th className="sm-hide">Format</th>
                 <th className="num">Players</th>
-                <th className="num">Matches</th>
+                <th className="num sm-hide">Matches</th>
               </tr>
             </thead>
             <tbody>
@@ -52,9 +52,9 @@ export function Tournaments({ data: { tournaments, matches }, setData }: DataPro
                     </a>
                     {t.division && <span className="muted small"> · {t.division}</span>}
                   </td>
-                  <td className="muted small">{FORMAT_LABEL[t.format]}</td>
+                  <td className="muted small sm-hide">{FORMAT_LABEL[t.format]}</td>
                   <td className="num">{t.entrantIds.length}</td>
-                  <td className="num">{played.get(t.id) ?? 0}</td>
+                  <td className="num sm-hide">{played.get(t.id) ?? 0}</td>
                 </tr>
               ))}
             </tbody>

@@ -93,10 +93,10 @@ function Standings() {
             <th>Team</th>
             <th className="num">P</th>
             <th className="num">W–L</th>
-            <th className="num">Rubbers</th>
-            <th className="num">Games</th>
+            <th className="num sm-hide">Rubbers</th>
+            <th className="num sm-hide">Games</th>
             <th className="num">Pts</th>
-            <th>Players</th>
+            <th className="sm-hide">Players</th>
           </tr>
         </thead>
         <tbody>
@@ -110,14 +110,14 @@ function Standings() {
                 <td className="num">
                   {s.won}–{s.lost}
                 </td>
-                <td className="num muted">
+                <td className="num muted sm-hide">
                   {s.rubbersFor}–{s.rubbersAgainst}
                 </td>
-                <td className="num muted">
+                <td className="num muted sm-hide">
                   {s.gamesFor}–{s.gamesAgainst}
                 </td>
                 <td className="num strong">{s.points}</td>
-                <td className="muted small">{roster.length ? roster.join(', ') : 'bye'}</td>
+                <td className="muted small sm-hide">{roster.length ? roster.join(', ') : 'bye'}</td>
               </tr>
             )
           })}
@@ -175,12 +175,12 @@ function Players() {
                 <th>#</th>
                 <th>Player</th>
                 <th>Team</th>
-                <th className="num">Bracket</th>
+                <th className="num sm-hide">Bracket</th>
                 <th className="num">Rating</th>
-                <th className="num">±</th>
-                <th>Trend</th>
+                <th className="num sm-hide">±</th>
+                <th className="sm-hide">Trend</th>
                 <th className="num">W–L</th>
-                <th>Last played</th>
+                <th className="sm-hide">Last played</th>
               </tr>
             </thead>
             <tbody>
@@ -192,16 +192,16 @@ function Players() {
                     {p.sub && <span className="muted small"> · sub</span>}
                   </td>
                   <td className="muted small">{teamName(p.team)}</td>
-                  <td className="num muted">{p.bracket}</td>
+                  <td className="num muted sm-hide">{p.bracket}</td>
                   <td className="num strong">{Math.round(p.rating)}</td>
-                  <td className="num muted">{Math.round(p.rd)}</td>
-                  <td>
+                  <td className="num muted sm-hide">{Math.round(p.rd)}</td>
+                  <td className="sm-hide">
                     <Sparkline points={p.history} />
                   </td>
                   <td className="num">
                     {p.wins}–{p.losses}
                   </td>
-                  <td className="muted">{p.lastPlayed ?? '—'}</td>
+                  <td className="muted sm-hide">{p.lastPlayed ?? '—'}</td>
                 </tr>
               ))}
             </tbody>
