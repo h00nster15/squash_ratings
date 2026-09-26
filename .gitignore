@@ -25,3 +25,6 @@ dist-ssr
 
 # League workbooks contain player contact details; only the built league.json is tracked
 data/seoul/*.xlsx
+
+# Personal Claude Code settings
+.claude/settings.local.json

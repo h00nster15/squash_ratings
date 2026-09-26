@@ -83,7 +83,8 @@ function ClubKeyForm({ onDone }: { onDone: () => void }) {
         <input type="password" placeholder="클럽 비밀번호" value={key} onChange={(e) => setKey(e.target.value)} />
         <button type="submit" disabled={!key.trim()}>보기</button>
       </form>
-      <p className="muted small">Wellperion 랭킹 페이지와 같은 클럽 비밀번호입니다.</p>
+      <p className="muted small">Wellperion 랭킹 페이지와 같은 클럽 비밀번호입니다. 코치는 아래에서 관리자 비밀번호로 바로 들어갈 수 있습니다.</p>
+      <CoachSignIn onDone={async () => onDone()} />
     </section>
   )
 }
