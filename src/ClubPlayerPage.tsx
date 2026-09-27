@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { type ClubData, type DayChange, gamesOf, nationalHistory, nationalScale, wsrHistory } from './wellperion.ts'
+import { type ClubData, type DayChange, gamesOf, nationalHistory, nationalScale, wsrByMatch } from './wellperion.ts'
 
 type Scale = 'wsr' | 'national'
 const TYPE_LABEL: Record<string, string> = { challenge: '챌린지', league: '리그', tournament: '대회', practice: '연습' }
@@ -28,13 +28,13 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
   const player = byId.get(id)
   const rated = nat.players.find((p) => p.id === id)
 
-  const history = useMemo(
-    () => ({ wsr: wsrHistory(data, id), national: nationalHistory(nat, matches, id) }),
-    [data, nat, matches, id],
-  )
-  const hasWsrHistory = !!data.wsrHistory
-  const days = history[scale]
-  const dayByDate = new Map(days.map((d) => [d.date, d]))
+  // WSR moves match by match; the national scale a day at a time (its Glicko half rates a
+  // day's results together), so its change sits on the day, not on each result.
+  const wsrChanges = useMemo(() => wsrByMatch(matches, id), [matches, id])
+  const natDays = useMemo(() => nationalHistory(nat, matches, id), [nat, matches, id])
+  const hasWsrHistory = matches.some((m) => m.wsr)
+  const points = scale === 'wsr' ? [...wsrChanges.values()] : natDays
+  const dayByDate = new Map(natDays.map((d) => [d.date, d]))
 
   // Results newest first, grouped by day.
   const groups = useMemo(() => {
@@ -103,10 +103,10 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
         <h3 className="chart-title">{unit} 변화</h3>
         {scale === 'wsr' && !hasWsrHistory ? (
           <p className="muted small">WSR 변화 기록은 클럽 스크립트를 새 버전으로 배포하면 나타납니다.</p>
-        ) : days.length === 0 ? (
+        ) : points.length === 0 ? (
           <p className="muted small">아직 경기 기록이 없습니다.</p>
         ) : (
-          <RatingChart days={days} scale={scale} />
+          <RatingChart days={points} scale={scale} />
         )}
       </section>
 
@@ -154,19 +154,16 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
                             {m.event && <span className="muted small"> · {m.event}</span>}
                           </td>
                           <td className="muted small sm-hide">{TYPE_LABEL[m.type] ?? m.type}</td>
-                          {i === 0 && (
-                            <td className="num" rowSpan={ms.length}>
-                              {day ? (
-                                <>
-                                  <span className={deltaClass(scale, day.after - day.before)}>{fmtDelta(scale, day.after - day.before)}</span>
-                                  <span className="muted small block">
-                                    {fmt(scale, day.before)} → {fmt(scale, day.after)}
-                                  </span>
-                                </>
-                              ) : (
-                                <span className="muted">—</span>
-                              )}
+                          {scale === 'wsr' ? (
+                            <td className="num">
+                              <Change scale={scale} change={wsrChanges.get(m)} />
                             </td>
+                          ) : (
+                            i === 0 && (
+                              <td className="num" rowSpan={ms.length}>
+                                <Change scale={scale} change={day} />
+                              </td>
+                            )
                           )}
                         </tr>
                       )
@@ -178,15 +175,29 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
           </div>
         )}
         <p className="muted small">
-          변화는 그날 경기 전후의 {unit}입니다. 같은 날 여러 경기는 한꺼번에 반영되므로 변화가 하나로 표시됩니다.
-          {scale === 'wsr' && ' WSR은 최근 12개월 결과로 다시 계산되므로, 경기가 없어도 오래된 경기가 빠지면서 조금씩 달라질 수 있습니다.'}
+          {scale === 'wsr'
+            ? 'WSR 변화는 경기마다 그 경기 직전 → 직후의 WSR입니다 (같은 날은 입력 순서대로). WSR은 모든 선수를 함께 다시 계산하므로, 내 경기가 없어도 상대 선수들의 다른 경기나 12개월이 지난 결과 때문에 조금씩 움직입니다 — 그래서 경기별 변화를 더한 값이 전체 변화와 꼭 같지는 않습니다.'
+            : '국가 기준 레이팅은 하루 단위로 계산되므로(같은 날 경기는 한꺼번에 반영) 변화가 그날에 하나로 표시됩니다.'}
         </p>
       </section>
     </>
   )
 }
 
-/** Rating after each day played, with the starting rating as the first point. Hover or tap for values. */
+function Change({ scale, change }: { scale: Scale; change?: DayChange }) {
+  if (!change) return <span className="muted">—</span>
+  const d = change.after - change.before
+  return (
+    <>
+      <span className={deltaClass(scale, d)}>{fmtDelta(scale, d)}</span>
+      <span className="muted small block">
+        {fmt(scale, change.before)} → {fmt(scale, change.after)}
+      </span>
+    </>
+  )
+}
+
+/** Rating after each match (WSR) or day (national scale), from the rating before the first. Hover or tap for values. */
 function RatingChart({ days, scale }: { days: DayChange[]; scale: Scale }) {
   const wrap = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(600)

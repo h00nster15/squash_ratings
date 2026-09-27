@@ -36,6 +36,11 @@ export interface ClubMatch {
   event: string
   /** 전국 반영: rated in the national ladder too, once both players are linked to KSF. */
   national: boolean
+  /**
+   * WSR around this result: [winner before, winner after, loser before, loser after].
+   * Absent from a script deployed before it existed.
+   */
+  wsr?: [number, number, number, number] | null
 }
 
 export interface ClubData {
@@ -44,11 +49,6 @@ export interface ClubData {
   players: ClubPlayer[]
   matches: ClubMatch[]
   updated: string
-  /**
-   * Each player's WSR just before and after every day they played, oldest first:
-   * club id → [date, before, after][]. Absent from a script deployed before it existed.
-   */
-  wsrHistory?: Record<string, [string, number, number][]>
   error?: string
   needKey?: boolean
 }
@@ -129,7 +129,7 @@ export function nationalScale(players: ClubPlayer[], matches: ClubMatch[]) {
   return computeHybrid(ps, ms)
 }
 
-/** One day a player played: their rating going in and coming out. */
+/** One day (national scale) or one match (WSR) a player played: their rating going in and coming out. */
 export interface DayChange {
   date: string
   before: number
@@ -158,8 +158,20 @@ export function nationalHistory(nat: ReturnType<typeof nationalScale>, matches: 
   return days
 }
 
-export const wsrHistory = (data: ClubData, playerId: string): DayChange[] =>
-  (data.wsrHistory?.[playerId] ?? []).map(([date, before, after]) => ({ date, before, after }))
+/**
+ * A player's WSR before and after each of their results, oldest first, keyed by the match.
+ * WSR is solved over everyone at once, so it also drifts a little between a player's
+ * matches (opponents play others, old results age); one entry is what that result did.
+ */
+export function wsrByMatch(matches: ClubMatch[], playerId: string): Map<ClubMatch, DayChange> {
+  const out = new Map<ClubMatch, DayChange>()
+  for (const m of matches) {
+    if (!m.wsr || (m.winner !== playerId && m.loser !== playerId)) continue
+    const [wb, wa, lb, la] = m.wsr
+    out.set(m, m.winner === playerId ? { date: m.date, before: wb, after: wa } : { date: m.date, before: lb, after: la })
+  }
+  return out
+}
 
 /**
  * WSR → national scale, fitted by least squares on players with enough results in both
