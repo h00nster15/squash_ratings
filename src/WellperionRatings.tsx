@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { ClubImport } from './ClubImport.tsx'
 import { ClubPlayerPage } from './ClubPlayerPage.tsx'
 import { ladder } from './ksf.ts'
 import { today } from './storage.ts'
@@ -381,6 +382,8 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
       </div>
 
       {msg && <p className="small">{msg}</p>}
+
+      <ClubImport data={data} reload={reload} />
 
       <section className="panel">
         <h2>최근 결과</h2>

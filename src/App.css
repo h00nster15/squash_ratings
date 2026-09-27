@@ -556,3 +556,38 @@ table.history td {
 .block {
   display: block;
 }
+
+/* Excel import (coach tools) */
+.import-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.import-map label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.import-unknown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+}
+
+.import-unknown li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.import-preview {
+  max-height: 420px;
+  overflow-y: auto;
+}

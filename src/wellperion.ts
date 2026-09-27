@@ -108,6 +108,18 @@ async function post(action: string, body: Record<string, unknown>) {
 
 export const addClubMatch = (m: { date: string; winner: string; loser: string; score: string; type: string; event: string; national: boolean }) =>
   post('club-match', m)
+/** The Excel import: new players first, then every result, all or nothing. */
+export async function addClubMatches(
+  matches: { date: string; winner: string; loser: string; score: string; type: string; event: string; national: boolean }[],
+  players: { name: string; kind: string }[],
+) {
+  try {
+    return await post('club-matches', { matches, players })
+  } catch (e) {
+    if (e instanceof Error && e.message.includes('Unknown action')) throw new Error('클럽 스크립트가 아직 엑셀 가져오기를 모릅니다 — 새 버전으로 배포해 주세요.')
+    throw e
+  }
+}
 export const setClubMatchNational = (id: string, national: boolean) => post('club-match-update', { id, national })
 export const deleteClubMatch = (id: string) => post('club-match-update', { id, delete: true })
 export const saveClubPlayer = (p: { name: string; ksfId?: string; kind?: string }) => post('club-player', p)
