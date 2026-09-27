@@ -18,14 +18,18 @@ type Route =
   | { view: 'league'; player?: string }
   | { view: 'player'; id: string }
   | { view: 'club' }
-  | { view: 'wellperion' }
+  | { view: 'wellperion'; player?: string }
   | { view: 'tournaments' }
   | { view: 'tournament'; id: string }
 
 function parseRoute(hash: string): Route {
   const h = hash.replace(/^#/, '')
   if (h === 'club') return { view: 'club' }
-  if (h === 'wellperion' && org.clubSource) return { view: 'wellperion' }
+  if (org.clubSource) {
+    if (h === 'wellperion') return { view: 'wellperion' }
+    const wp = h.match(/^wellperion\/player\/(.+)$/)
+    if (wp) return { view: 'wellperion', player: decodeURIComponent(wp[1]) }
+  }
   if (org.leagueLabel) {
     if (h === 'league') return { view: 'league' }
     const lp = h.match(/^league\/player\/(.+)$/)
@@ -95,7 +99,7 @@ function App() {
           <SeoulLeague player={route.player} />
         </Suspense>
       ) : route.view === 'wellperion' ? (
-        <WellperionRatings />
+        <WellperionRatings player={route.player} />
       ) : route.view === 'club' ? (
         <ClubLadder data={data} setData={setData} />
       ) : route.view === 'tournaments' ? (

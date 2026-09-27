@@ -478,3 +478,81 @@ button.ghost.danger {
     width: 100%;
   }
 }
+
+/* Wellperion player page: rating after each day played */
+.chart-title {
+  margin: 1rem 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.rating-chart {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.rating-chart svg {
+  display: block;
+  overflow: visible;
+}
+
+.rating-chart .grid {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.rating-chart .axis {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rating-chart .line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.rating-chart .dot {
+  fill: var(--accent);
+  stroke: var(--panel);
+  stroke-width: 2;
+}
+
+.rating-chart .crosshair {
+  stroke: var(--text-muted);
+  stroke-dasharray: 3 3;
+}
+
+.chart-tip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.3rem 0.6rem;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  white-space: nowrap;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+table.history tbody + tbody {
+  border-top: 1px solid var(--border);
+}
+
+table.history td {
+  vertical-align: top;
+}
+
+.result {
+  font-weight: 600;
+}
+
+.block {
+  display: block;
+}

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { ClubPlayerPage } from './ClubPlayerPage.tsx'
 import { ladder } from './ksf.ts'
 import { today } from './storage.ts'
 import {
@@ -31,7 +32,7 @@ const MATCH_TYPES = [
  * national ladder's scale — and a result marked 전국 반영 between two players linked to
  * their KSF 등록번호 is rated in the national ladder as well, from its next build.
  */
-export function WellperionRatings() {
+export function WellperionRatings({ player }: { player?: string }) {
   const [data, setData] = useState<ClubData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -64,6 +65,7 @@ export function WellperionRatings() {
       </section>
     )
   }
+  if (player) return <ClubPlayerPage data={data} id={player} scale={scale} setScale={setScale} />
   return <ClubView data={data} reload={reload} loading={loading} scale={scale} setScale={setScale} division={division} setDivision={setDivision} />
 }
 
@@ -180,7 +182,9 @@ function ClubView({
                     <tr key={p.id} className={unrated || p.hidden ? 'unrated' : ''}>
                       <td className="muted">{i + 1}</td>
                       <td>
-                        <strong>{p.name ?? '비공개 선수'}</strong>
+                        <a className="player-link" href={`#wellperion/player/${encodeURIComponent(p.id)}`}>
+                          <strong>{p.name ?? '비공개 선수'}</strong>
+                        </a>
                         <span className="muted small meta">
                           {' '}
                           {p.division}

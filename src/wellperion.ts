@@ -3,7 +3,7 @@
 // ../wellperion-squash). One list of results, two ratings: WSR comes from the script, the
 // national-scale rating is worked out here with the same engine as the national ladder.
 import { org } from './org.ts'
-import { computeHybrid } from './rating/hybrid.ts'
+import { blend, computeHybrid } from './rating/hybrid.ts'
 import type { Match, Player } from './rating/types.ts'
 
 export interface ClubPlayer {
@@ -44,6 +44,11 @@ export interface ClubData {
   players: ClubPlayer[]
   matches: ClubMatch[]
   updated: string
+  /**
+   * Each player's WSR just before and after every day they played, oldest first:
+   * club id → [date, before, after][]. Absent from a script deployed before it existed.
+   */
+  wsrHistory?: Record<string, [string, number, number][]>
   error?: string
   needKey?: boolean
 }
@@ -112,14 +117,49 @@ export const saveClubPlayer = (p: { name: string; ksfId?: string; kind?: string 
 /** A result logged without a score counts as an ordinary win (3-1), like WSR does. */
 export const gamesOf = (m: ClubMatch): [number, number] => m.games ?? [3, 1]
 
+/** The engine's id for the i-th club match (a row without an ID still needs one). */
+export const matchKey = (m: ClubMatch, i: number) => m.id ?? `m${i}`
+
 export function nationalScale(players: ClubPlayer[], matches: ClubMatch[]) {
   const ps: Player[] = players.map((p) => ({ id: p.id, name: p.name ?? '' }))
   const ms: Match[] = matches.map((m, i) => {
     const [a, b] = gamesOf(m)
-    return { id: m.id ?? `m${i}`, date: m.date, playerAId: m.winner, playerBId: m.loser, gamesA: a, gamesB: b }
+    return { id: matchKey(m, i), date: m.date, playerAId: m.winner, playerBId: m.loser, gamesA: a, gamesB: b }
   })
   return computeHybrid(ps, ms)
 }
+
+/** One day a player played: their rating going in and coming out. */
+export interface DayChange {
+  date: string
+  before: number
+  after: number
+}
+
+/**
+ * A player's national-scale rating before and after each day they played, oldest first.
+ * The Glicko half updates once per day (all of a day's matches together), the Elo half
+ * match by match, so a day is the smallest step both halves agree on.
+ */
+export function nationalHistory(nat: ReturnType<typeof nationalScale>, matches: ClubMatch[], playerId: string): DayChange[] {
+  const glicko = new Map(nat.glicko.snapshots.map((s) => [s.matchId, s]))
+  const elo = new Map(nat.elo.snapshots.map((s) => [s.matchId, s]))
+  const days: DayChange[] = []
+  matches.forEach((m, i) => {
+    if (m.winner !== playerId && m.loser !== playerId) return
+    const g = glicko.get(matchKey(m, i))
+    const e = elo.get(matchKey(m, i))
+    if (!g || !e) return
+    const after = blend(g.after[playerId].rating, e.after[playerId])
+    const last = days[days.length - 1]
+    if (last?.date === m.date) last.after = after
+    else days.push({ date: m.date, before: blend(g.before[playerId].rating, e.before[playerId]), after })
+  })
+  return days
+}
+
+export const wsrHistory = (data: ClubData, playerId: string): DayChange[] =>
+  (data.wsrHistory?.[playerId] ?? []).map(([date, before, after]) => ({ date, before, after }))
 
 /**
  * WSR → national scale, fitted by least squares on players with enough results in both
