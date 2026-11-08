@@ -129,6 +129,19 @@ export const saveClubPlayer = (p: { name: string; ksfId?: string; kind?: string 
 /** A result logged without a score counts as an ordinary win (3-1), like WSR does. */
 export const gamesOf = (m: ClubMatch): [number, number] => m.games ?? [3, 1]
 
+/**
+ * Points of each game from the winner's side — "11-7 9-11 11-5" → [[11,7],[9,11],[11,5]] —
+ * or [] when only the match score ("3-1") was logged.
+ */
+export function gamePoints(score: string): [number, number][] {
+  const ps = (score.match(/\d+\s*[-:]\s*\d+/g) || []).map((p) => p.split(/[-:]/).map((n) => Number(n.trim())) as [number, number])
+  return ps.length && ps.every(([x, y]) => Math.max(x, y) >= 5) ? ps : []
+}
+
+/** Game scores for display, from the winner's side or (flip) the loser's: "11-7, 9-11, 11-5". */
+export const formatPoints = (points: [number, number][], flip = false) =>
+  points.map(([x, y]) => (flip ? `${y}-${x}` : `${x}-${y}`)).join(', ')
+
 /** The engine's id for the i-th club match (a row without an ID still needs one). */
 export const matchKey = (m: ClubMatch, i: number) => m.id ?? `m${i}`
 

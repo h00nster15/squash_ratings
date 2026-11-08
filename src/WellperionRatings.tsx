@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react
 import { ClubImport } from './ClubImport.tsx'
 import { ClubPlayerPage } from './ClubPlayerPage.tsx'
 import { ladder } from './ksf.ts'
+import { ScoreInput } from './ScoreInput.tsx'
+import { emptyScore, readScore, type ScoreEntry } from './score.ts'
 import { today } from './storage.ts'
 import {
   addClubMatch,
@@ -12,6 +14,8 @@ import {
   deleteClubMatch,
   fetchClub,
   fitScales,
+  formatPoints,
+  gamePoints,
   gamesOf,
   nationalScale,
   saveClubPlayer,
@@ -302,15 +306,18 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
 
   // --- Add a result ---
   const [f, setF] = useState({ date: today(), winner: '', loser: '', score: '', type: 'challenge', event: '', national: false })
+  const [sc, setSc] = useState<ScoreEntry>(emptyScore)
   const winner = roster.find((p) => p.realName === f.winner)
   const loser = roster.find((p) => p.realName === f.loser)
-  const valid = winner && loser && winner !== loser && f.date
+  const score = readScore(sc)
+  const valid = winner && loser && winner !== loser && f.date && !score.error
   function submit(e: FormEvent) {
     e.preventDefault()
     if (!valid) return
     void run(async () => {
-      await addClubMatch(f)
+      await addClubMatch({ ...f, score: score.score })
       setF((x) => ({ ...x, winner: '', loser: '', score: '', event: '' }))
+      setSc(emptyScore)
     }, '결과를 저장했습니다.')
   }
 
@@ -347,10 +354,9 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
                 </select>
               </label>
             </div>
-            <label>
-              스코어 (승자 기준)
-              <input placeholder="3-1 또는 11-7 11-5 9-11 11-8" value={f.score} onChange={(e) => setF({ ...f, score: e.target.value })} />
-            </label>
+            <ScoreInput value={sc} onChange={setSc} winner={f.winner || '승자'} loser={f.loser || '패자'} />
+            {score.error && <p className="error small">{score.error}</p>}
+            {!score.error && score.warning && <p className="muted small">{score.warning}</p>}
             <div className="sides">
               <label>
                 유형
@@ -404,6 +410,7 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
               <tbody>
                 {recent.map((m) => {
                   const [a, b] = gamesOf(m)
+                  const points = gamePoints(m.score)
                   const linked = byId.get(m.winner)?.ksfId && byId.get(m.loser)?.ksfId
                   return (
                     <tr key={m.id!}>
@@ -411,6 +418,7 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
                       <td>
                         <strong>{name(m.winner)}</strong> {a}–{b} {name(m.loser)}
                         {!m.games && <span className="muted small"> (스코어 없음)</span>}
+                        {points.length > 0 && <div className="muted small mono points">{formatPoints(points)}</div>}
                       </td>
                       <td className="muted small sm-hide">{MATCH_TYPES.find((t) => t.v === m.type)?.l ?? m.type}</td>
                       <td>

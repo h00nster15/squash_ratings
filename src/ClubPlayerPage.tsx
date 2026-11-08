@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { type ClubData, type DayChange, gamesOf, nationalHistory, nationalScale, wsrByMatch } from './wellperion.ts'
+import { type ClubData, type DayChange, formatPoints, gamePoints, gamesOf, nationalHistory, nationalScale, wsrByMatch } from './wellperion.ts'
 
 type Scale = 'wsr' | 'national'
 const TYPE_LABEL: Record<string, string> = { challenge: '챌린지', league: '리그', tournament: '대회', practice: '연습' }
@@ -152,6 +152,7 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
                             )}
                             {!m.games && <span className="muted small"> (스코어 없음)</span>}
                             {m.event && <span className="muted small"> · {m.event}</span>}
+                            {gamePoints(m.score).length > 0 && <div className="muted small mono points">{formatPoints(gamePoints(m.score), !won)}</div>}
                           </td>
                           <td className="muted small sm-hide">{TYPE_LABEL[m.type] ?? m.type}</td>
                           {scale === 'wsr' ? (
