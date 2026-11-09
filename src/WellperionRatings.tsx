@@ -33,7 +33,7 @@ const MATCH_TYPES = [
 
 /**
  * The Wellperion club ranking. Results live in the club Google Sheet; the same results
- * give two ratings — WSR (1–10, the club's own scale) and a national-scale rating on the
+ * give two ratings — WSR (the club's own open-ended scale) and a national-scale rating on the
  * national ladder's scale — and a result marked 전국 반영 between two players linked to
  * their KSF 등록번호 is rated in the national ladder as well, from its next build.
  */
@@ -150,7 +150,7 @@ function ClubView({
         </div>
         <div className="filters">
           <div className="segmented" role="group" aria-label="Scale">
-            <button type="button" className={scale === 'wsr' ? 'on' : ''} onClick={() => setScale('wsr')}>WSR (1–10)</button>
+            <button type="button" className={scale === 'wsr' ? 'on' : ''} onClick={() => setScale('wsr')}>WSR</button>
             <button type="button" className={scale === 'national' ? 'on' : ''} onClick={() => setScale('national')}>국가 기준 레이팅</button>
           </div>
           {divisions.length > 1 && (
@@ -214,7 +214,7 @@ function ClubView({
           </div>
         )}
         <p className="muted small">
-          같은 경기 결과로 두 가지 레이팅을 계산합니다. <b>WSR</b>은 클럽의 1–10 점수(최근 12개월, 최근 30경기)이고,{' '}
+          같은 경기 결과로 두 가지 레이팅을 계산합니다. <b>WSR</b>은 클럽 자체 점수(상한 없음, 주니어 약 1–4 · 상급 성인 7+, 최근 12개월, 최근 30경기)이고,{' '}
           <b>국가 기준 레이팅</b>은 국가 랭킹과 같은 방식·같은 척도로 계산한 점수입니다. 흐린 줄은 아직 경기가 적어 잠정인 선수입니다.{' '}
           {fit
             ? `환산(≈)은 두 레이팅이 모두 충분한 ${fit.players}명으로 맞춘 추정치입니다 — WSR 1점 ≈ ${Math.round(fit.slope)}점, WSR 5.00 ≈ ${Math.round(fit.toRating(5))} (일치도 ${Math.round(fit.r2 * 100)}%).`

@@ -95,7 +95,7 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
 
         <div className="filters">
           <div className="segmented" role="group" aria-label="Scale">
-            <button type="button" className={scale === 'wsr' ? 'on' : ''} onClick={() => setScale('wsr')}>WSR (1–10)</button>
+            <button type="button" className={scale === 'wsr' ? 'on' : ''} onClick={() => setScale('wsr')}>WSR</button>
             <button type="button" className={scale === 'national' ? 'on' : ''} onClick={() => setScale('national')}>국가 기준 레이팅</button>
           </div>
         </div>
