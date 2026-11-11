@@ -10,11 +10,14 @@ import { Tournaments } from './Tournaments.tsx'
 import './App.css'
 
 // The club-league view and its dataset only ship in builds whose org has one.
+// The ranking-points view ships its own dataset, loaded when opened.
+const RankingPoints = lazy(() => import('./RankingPoints.tsx').then((m) => ({ default: m.RankingPoints })))
 const SeoulLeague = lazy(() => import('./SeoulLeague.tsx').then((m) => ({ default: m.SeoulLeague })))
 
-// Hash routes: #national (default) · #player/<idNo> · #wellperion · #club · #league · #tournaments · #tournament/<id>
+// Hash routes: #national (default) · #player/<idNo> · #points · #wellperion · #club · #league · #tournaments · #tournament/<id>
 type Route =
   | { view: 'national' }
+  | { view: 'points' }
   | { view: 'league'; player?: string }
   | { view: 'player'; id: string }
   | { view: 'club' }
@@ -25,6 +28,7 @@ type Route =
 function parseRoute(hash: string): Route {
   const h = hash.replace(/^#/, '')
   if (h === 'club') return { view: 'club' }
+  if (h === 'points') return { view: 'points' }
   if (org.clubSource) {
     if (h === 'wellperion') return { view: 'wellperion' }
     const wp = h.match(/^wellperion\/player\/(.+)$/)
@@ -61,6 +65,7 @@ const TABS = [
   ...(org.leagueLabel ? [{ key: 'league', href: '#league', label: org.leagueLabel }] : []),
   ...(org.clubSource && org.defaultView === 'wellperion' ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
   { key: 'national', href: '#national', label: 'KSF National' },
+  { key: 'points', href: '#points', label: 'Ranking Points' },
   ...(org.clubSource && org.defaultView !== 'wellperion' ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
   { key: 'club', href: '#club', label: org.clubLabel },
   { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
@@ -97,6 +102,10 @@ function App() {
       ) : route.view === 'league' ? (
         <Suspense fallback={<p className="muted">Loading league…</p>}>
           <SeoulLeague player={route.player} />
+        </Suspense>
+      ) : route.view === 'points' ? (
+        <Suspense fallback={<p className="muted">Loading ranking points…</p>}>
+          <RankingPoints />
         </Suspense>
       ) : route.view === 'wellperion' ? (
         <WellperionRatings player={route.player} />
