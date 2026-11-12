@@ -90,21 +90,44 @@ export function WellperionRatings({ player }: { player?: string }) {
 
 function ClubKeyForm({ onDone }: { onDone: () => void }) {
   const [key, setKey] = useState('')
+  const [busy, setBusy] = useState(false)
+  // A key kept from an earlier visit that the script no longer accepts.
+  const [err, setErr] = useState(clubKey.get() ? '저장된 비밀번호가 맞지 않습니다. 다시 입력해 주세요.' : '')
   return (
     <section className="panel">
       <h2>Wellperion 랭킹</h2>
       <form
         className="inline-form"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault()
-          clubKey.set(key.trim())
-          onDone()
+          const k = key.trim()
+          setBusy(true)
+          setErr('')
+          try {
+            // The club password, or else the manager password (a coach typing theirs here).
+            clubKey.set(k)
+            if ((await fetchClub()).needKey) {
+              clubKey.set('')
+              try {
+                await signIn(k)
+              } catch {
+                setErr('비밀번호가 맞지 않습니다.')
+                return
+              }
+            }
+            onDone()
+          } catch (x) {
+            setErr(x instanceof Error ? x.message : String(x))
+          } finally {
+            setBusy(false)
+          }
         }}
       >
         <input type="password" placeholder="클럽 비밀번호" value={key} onChange={(e) => setKey(e.target.value)} />
-        <button type="submit" disabled={!key.trim()}>보기</button>
+        <button type="submit" disabled={busy || !key.trim()}>{busy ? '확인 중…' : '보기'}</button>
       </form>
-      <p className="muted small">Wellperion 랭킹 페이지와 같은 클럽 비밀번호입니다. 코치는 아래에서 관리자 비밀번호로 바로 들어갈 수 있습니다.</p>
+      {err && <p className="down small">{err}</p>}
+      <p className="muted small">Wellperion 랭킹 페이지와 같은 클럽 비밀번호입니다. 코치는 관리자 비밀번호를 넣어도 됩니다.</p>
       <CoachSignIn onDone={async () => onDone()} />
     </section>
   )
