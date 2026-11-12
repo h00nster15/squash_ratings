@@ -24,6 +24,19 @@ import {
 } from './wellperion.ts'
 
 type Scale = 'wsr' | 'national'
+/** Who the list shows: players with a result inside WSR's 12-month window, the rest, or both. */
+const STATUSES = [
+  { key: 'active', label: '활동' },
+  { key: 'inactive', label: '비활동' },
+  { key: 'all', label: '전체' },
+] as const
+type Status = (typeof STATUSES)[number]['key']
+/** A player is active with a result on or after this date — 12 months back, the same window WSR counts. */
+const ACTIVE_SINCE = (() => {
+  const d = new Date()
+  d.setFullYear(d.getFullYear() - 1)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+})()
 const MATCH_TYPES = [
   { v: 'challenge', l: '챌린지' },
   { v: 'league', l: '리그' },
@@ -43,6 +56,7 @@ export function WellperionRatings({ player }: { player?: string }) {
   const [error, setError] = useState('')
   const [scale, setScale] = useState<Scale>('wsr')
   const [division, setDivision] = useState('')
+  const [status, setStatus] = useState<Status>('active')
 
   const reload = useCallback(async () => {
     setLoading(true)
@@ -71,7 +85,7 @@ export function WellperionRatings({ player }: { player?: string }) {
     )
   }
   if (player) return <ClubPlayerPage data={data} id={player} scale={scale} setScale={setScale} />
-  return <ClubView data={data} reload={reload} loading={loading} scale={scale} setScale={setScale} division={division} setDivision={setDivision} />
+  return <ClubView data={data} reload={reload} loading={loading} scale={scale} setScale={setScale} division={division} setDivision={setDivision} status={status} setStatus={setStatus} />
 }
 
 function ClubKeyForm({ onDone }: { onDone: () => void }) {
@@ -104,6 +118,8 @@ function ClubView({
   setScale,
   division,
   setDivision,
+  status,
+  setStatus,
 }: {
   data: ClubData
   reload: () => Promise<void>
@@ -112,6 +128,8 @@ function ClubView({
   setScale: (s: Scale) => void
   division: string
   setDivision: (d: string) => void
+  status: Status
+  setStatus: (s: Status) => void
 }) {
   const { players, matches, admin } = data
   const nat = useMemo(() => nationalScale(players, matches), [players, matches])
@@ -129,11 +147,27 @@ function ClubView({
     [players, ratedById],
   )
 
+  // Latest result of each player, straight from the results (hidden players included).
+  const lastPlayed = useMemo(() => {
+    const last = new Map<string, string>()
+    for (const m of matches) for (const id of [m.winner, m.loser]) if ((last.get(id) ?? '') < m.date) last.set(id, m.date)
+    return last
+  }, [matches])
+  const isActive = (p: ClubPlayer) => (lastPlayed.get(p.id) ?? '') >= ACTIVE_SINCE
+
   const divisions = [...new Set(players.map((p) => p.division))].sort()
   const listed = players
-    .filter((p) => (admin || !p.hidden) && (!division || p.division === division))
+    .filter(
+      (p) =>
+        (admin || !p.hidden) &&
+        (!division || p.division === division) &&
+        (status === 'all' || isActive(p) === (status === 'active')),
+    )
     .map((p) => ({ p, r: ratedById.get(p.id) }))
     .sort((a, b) => (scale === 'wsr' ? b.p.wsr - a.p.wsr : (b.r?.rating ?? 0) - (a.r?.rating ?? 0)))
+  // Only active players are numbered; inactive ones show — wherever they appear.
+  let n = 0
+  const ranks = listed.map(({ p }) => (isActive(p) ? ++n : null))
 
   const flagged = matches.filter((m) => m.national)
   const eligible = flagged.filter((m) => byId.get(m.winner)?.ksfId && byId.get(m.loser)?.ksfId)
@@ -152,6 +186,13 @@ function ClubView({
           <div className="segmented" role="group" aria-label="Scale">
             <button type="button" className={scale === 'wsr' ? 'on' : ''} onClick={() => setScale('wsr')}>WSR</button>
             <button type="button" className={scale === 'national' ? 'on' : ''} onClick={() => setScale('national')}>국가 기준 레이팅</button>
+          </div>
+          <div className="segmented" role="group" aria-label="활동">
+            {STATUSES.map((s) => (
+              <button key={s.key} type="button" className={status === s.key ? 'on' : ''} onClick={() => setStatus(s.key)}>
+                {s.label}
+              </button>
+            ))}
           </div>
           {divisions.length > 1 && (
             <select value={division} onChange={(e) => setDivision(e.target.value)} aria-label="디비전">
@@ -183,9 +224,10 @@ function ClubView({
               <tbody>
                 {listed.map(({ p, r }, i) => {
                   const unrated = scale === 'wsr' ? p.provisional : !r || r.matches < 3
+                  const active = isActive(p)
                   return (
-                    <tr key={p.id} className={unrated || p.hidden ? 'unrated' : ''}>
-                      <td className="muted">{i + 1}</td>
+                    <tr key={p.id} className={unrated || p.hidden || !active ? 'unrated' : ''} title={active ? '' : '비활동'}>
+                      <td className="muted">{ranks[i] ?? '—'}</td>
                       <td>
                         <a className="player-link" href={`#wellperion/player/${encodeURIComponent(p.id)}`}>
                           <strong>{p.name ?? '비공개 선수'}</strong>
@@ -205,7 +247,7 @@ function ClubView({
                         </td>
                       )}
                       <td className="num">{r ? `${r.wins}–${r.losses}` : '0–0'}</td>
-                      <td className="muted sm-hide">{r?.lastPlayed ?? '—'}</td>
+                      <td className="muted sm-hide">{lastPlayed.get(p.id) ?? '—'}</td>
                     </tr>
                   )
                 })}
@@ -215,7 +257,7 @@ function ClubView({
         )}
         <p className="muted small">
           같은 경기 결과로 두 가지 레이팅을 계산합니다. <b>WSR</b>은 클럽 자체 점수(상한 없음, 주니어 약 1–4 · 상급 성인 7+, 최근 12개월, 최근 30경기)이고,{' '}
-          <b>국가 기준 레이팅</b>은 국가 랭킹과 같은 방식·같은 척도로 계산한 점수입니다. 흐린 줄은 아직 경기가 적어 잠정인 선수입니다.{' '}
+          <b>국가 기준 레이팅</b>은 국가 랭킹과 같은 방식·같은 척도로 계산한 점수입니다. 흐린 줄은 아직 경기가 적어 잠정이거나 최근 12개월({ACTIVE_SINCE} 이후)에 경기가 없는 비활동 선수입니다. 순위 번호는 활동 선수에게만 붙습니다.{' '}
           {fit
             ? `환산(≈)은 두 레이팅이 모두 충분한 ${fit.players}명으로 맞춘 추정치입니다 — WSR 1점 ≈ ${Math.round(fit.slope)}점, WSR 5.00 ≈ ${Math.round(fit.toRating(5))} (일치도 ${Math.round(fit.r2 * 100)}%).`
             : '두 레이팅이 모두 충분한 선수가 5명 이상이 되면 서로 환산한 값(≈)을 함께 보여 줍니다.'}
