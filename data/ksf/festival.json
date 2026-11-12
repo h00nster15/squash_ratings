@@ -1,0 +1,5422 @@
+{
+ "fetched": "2026-11-12T15:09:03.229Z",
+ "events": [
+  {
+   "gameno": 102,
+   "year": 2021,
+   "name": "2021 제102회 전국체육대회",
+   "source": "history",
+   "matches": [
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "손우주",
+     "sidoA": "인천",
+     "teamA": "인천 대건고등학교[1]",
+     "playerB": "이온유",
+     "sidoB": "부산",
+     "teamB": "대광고등학교[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "천승환",
+     "sidoA": "서울",
+     "teamA": "신진과학기술고등학교[2]",
+     "playerB": "박민준",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "최호진",
+     "sidoA": "경남",
+     "teamA": "김해생명과학고등학교[3]",
+     "playerB": "서무진",
+     "sidoB": "전남",
+     "teamB": "순천팔마고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "노승서",
+     "sidoA": "충남",
+     "teamA": "충남스쿼시클럽[3]",
+     "playerB": "정태경",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       1,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "손우주",
+     "sidoA": "인천",
+     "teamA": "인천 대건고등학교[1]",
+     "playerB": "이동규",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "박민준",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[3]",
+     "playerB": "김건",
+     "sidoB": "경기",
+     "teamB": "대화고등학교[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "박경민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[3]",
+     "playerB": "최호진",
+     "sidoB": "경남",
+     "teamB": "김해생명과학고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "김성현",
+     "sidoA": "경북",
+     "teamA": "김천중앙고등학교[1]",
+     "playerB": "정태경",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       1,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "김다미",
+     "sidoA": "경기",
+     "teamA": "경기영상과학고등학교[2]",
+     "playerB": "서하민",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 2,
+     "winner": "A",
+     "points": [
+      [
+       13,
+       11
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "조**",
+     "sidoA": "서울",
+     "teamA": "서울신정고등학교[2]",
+     "playerB": "김서진",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[3]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       3,
+       11
+      ],
+      [
+       13,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "이소진",
+     "sidoA": "충북",
+     "teamA": "충북상업정보고등학교[2]",
+     "playerB": "김민주",
+     "sidoB": "인천",
+     "teamB": "인천여자고등학교[2]",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "김민정",
+     "sidoA": "부산",
+     "teamA": "대광고등학교[2]",
+     "playerB": "노윤진",
+     "sidoB": "경남",
+     "teamB": "양산여자고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "김다미",
+     "sidoA": "경기",
+     "teamA": "경기영상과학고등학교[2]",
+     "playerB": "최정희",
+     "sidoB": "충남",
+     "teamB": "충남스쿼시클럽[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       0
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "김서진",
+     "sidoA": "대구",
+     "teamA": "와룡고등학교[3]",
+     "playerB": "어**",
+     "sidoB": "세종",
+     "teamB": "세종공공스포츠클럽[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       1,
+       11
+      ],
+      [
+       1,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "김가별",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[1]",
+     "playerB": "김민주",
+     "sidoB": "인천",
+     "teamB": "인천여자고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-09",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "곽다원",
+     "sidoA": "경북",
+     "teamA": "석적고등학교[1]",
+     "playerB": "노윤진",
+     "sidoB": "경남",
+     "teamB": "양산여자고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-10",
+     "division": "남자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "최호진",
+     "sidoA": "경남",
+     "teamA": "김해생명과학고등학교[3]",
+     "playerB": "이동규",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-10",
+     "division": "남자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "정태경",
+     "sidoA": "충북",
+     "teamA": "충북상업정보고등학교[2]",
+     "playerB": "김건",
+     "sidoB": "경기",
+     "teamB": "대화고등학교[1]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-10",
+     "division": "남자 18세이하부",
+     "round": "결승",
+     "playerA": "김건",
+     "sidoA": "경기",
+     "teamA": "대화고등학교[1]",
+     "playerB": "최호진",
+     "sidoB": "경남",
+     "teamB": "김해생명과학고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-10",
+     "division": "여자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "김민주",
+     "sidoA": "인천",
+     "teamA": "인천여자고등학교[2]",
+     "playerB": "김다미",
+     "sidoB": "경기",
+     "teamB": "경기영상과학고등학교[2]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-10",
+     "division": "여자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "노윤진",
+     "sidoA": "경남",
+     "teamA": "양산여자고등학교[3]",
+     "playerB": "어**",
+     "sidoB": "세종",
+     "teamB": "세종공공스포츠클럽[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2021-10-10",
+     "division": "여자 18세이하부",
+     "round": "결승",
+     "playerA": "어**",
+     "sidoA": "세종",
+     "teamA": "세종공공스포츠클럽[2]",
+     "playerB": "김다미",
+     "sidoB": "경기",
+     "teamB": "경기영상과학고등학교[2]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    }
+   ]
+  },
+  {
+   "gameno": 103,
+   "year": 2022,
+   "name": "2022 제103회 전국체육대회",
+   "source": "history",
+   "matches": []
+  },
+  {
+   "gameno": 104,
+   "year": 2023,
+   "name": "2023 제104회 전국체육대회",
+   "source": "history",
+   "matches": []
+  },
+  {
+   "gameno": 105,
+   "year": 2024,
+   "name": "2024 제105회 전국체육대회",
+   "source": "history",
+   "matches": [
+    {
+     "date": "2024-10-11",
+     "division": "남자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "이성민",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[3]",
+     "playerB": "이동욱",
+     "sidoB": "경북",
+     "teamB": "경상북도스쿼시연맹[3]",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       14,
+       12
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "류정욱",
+     "sidoA": "충북",
+     "teamA": "충북상업정보고등학교[3]",
+     "playerB": "권용하",
+     "sidoB": "대구",
+     "teamB": "신명고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "송늘찬",
+     "sidoA": "부산",
+     "teamA": "대광고등학교[1]",
+     "playerB": "삭제선수",
+     "sidoB": "서울",
+     "teamB": "서울용산국제학교[1]",
+     "gamesA": 0,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [],
+     "reason": "(점수안줌)실격"
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "나주영",
+     "sidoA": "충남",
+     "teamA": "천안월봉고등학교[3]",
+     "playerB": "김현",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기1",
+     "playerA": "정태경",
+     "sidoA": "경기",
+     "teamA": "중앙대학교 제2캠퍼스(안성)[2]",
+     "playerB": "김승현",
+     "sidoB": "전남",
+     "teamB": "전라남도스쿼시연맹",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기2",
+     "playerA": "김건",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기3",
+     "playerA": "유승용",
+     "sidoA": "대구",
+     "teamA": "대구광역시청",
+     "playerB": "박종명",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기4",
+     "playerA": "길재호",
+     "sidoA": "대전",
+     "teamA": "대전광역시스쿼시연맹",
+     "playerB": "김진규",
+     "sidoB": "세종",
+     "teamB": "세종특별자치시스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기5",
+     "playerA": "김현인",
+     "sidoA": "제주",
+     "teamA": "제주특별자치도스쿼시연맹",
+     "playerB": "이민우",
+     "sidoB": "충북",
+     "teamB": "충청북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기6",
+     "playerA": "임재현",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "유호제",
+     "sidoB": "서울",
+     "teamB": "광운대학교정보과학교육원[4]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       5
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기7",
+     "playerA": "이원기",
+     "sidoA": "강원",
+     "teamA": "강원도스쿼시연맹",
+     "playerB": "강우석",
+     "sidoB": "울산",
+     "teamB": "울산광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       12,
+       14
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기8",
+     "playerA": "이동준",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "고영조",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       13
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "남자 일반부",
+     "round": "예선경기9",
+     "playerA": "유재진",
+     "sidoA": "부산",
+     "teamA": "부산광역시체육회",
+     "playerB": "김승현",
+     "sidoB": "전남",
+     "teamB": "전라남도스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       13,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "조아연",
+     "sidoA": "경기",
+     "teamA": "오남고등학교[3]",
+     "playerB": "한휴인",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[1]",
+     "playerB": "김민지",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       0
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "황수민",
+     "sidoA": "충남",
+     "teamA": "(사)천안남서울스포츠클럽[3]",
+     "playerB": "정수아",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       10,
+       12
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "엄준",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹[3]",
+     "playerB": "김예은",
+     "sidoB": "전북",
+     "teamB": "노을남부안스포츠클럽[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 일반부",
+     "round": "예선경기1",
+     "playerA": "양연수",
+     "sidoA": "전남",
+     "teamA": "전라남도청",
+     "playerB": "이자연",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 일반부",
+     "round": "예선경기2",
+     "playerA": "김미소",
+     "sidoA": "세종",
+     "teamA": "세종특별자치시스쿼시연맹",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 일반부",
+     "round": "예선경기3",
+     "playerA": "김하연",
+     "sidoA": "경기",
+     "teamA": "한국체육대학교[1]",
+     "playerB": "이소진",
+     "sidoB": "충북",
+     "teamB": "한국체육대학교[2]",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 일반부",
+     "round": "예선경기4",
+     "playerA": "안**",
+     "sidoA": "대구",
+     "teamA": "대구광역시청",
+     "playerB": "문혜연",
+     "sidoB": "전북",
+     "teamB": "전라북도스쿼시연맹",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 일반부",
+     "round": "예선경기5",
+     "playerA": "이지현",
+     "sidoA": "대전",
+     "teamA": "대전광역시체육회",
+     "playerB": "박다송",
+     "sidoB": "경북",
+     "teamB": "경상북도스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-11",
+     "division": "여자 일반부",
+     "round": "예선경기6",
+     "playerA": "류보람",
+     "sidoA": "울산",
+     "teamA": "울산광역시체육회",
+     "playerB": "김가혜",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       5,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "이성민",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[3]",
+     "playerB": "이종혁",
+     "sidoB": "전남",
+     "teamB": "전라남도스쿼시연맹[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "류정욱",
+     "sidoA": "충북",
+     "teamA": "충북상업정보고등학교[3]",
+     "playerB": "이지항",
+     "sidoB": "광주",
+     "teamB": "동일미래과학고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "오서진",
+     "sidoA": "인천",
+     "teamA": "인천 대건고등학교[3]",
+     "playerB": "송늘찬",
+     "sidoB": "부산",
+     "teamB": "대광고등학교[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "박민기",
+     "sidoA": "경남",
+     "teamA": "양산제일고등학교[2]",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "천안월봉고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       0,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 일반부",
+     "round": "준준결승경기1",
+     "playerA": "길재호",
+     "sidoA": "대전",
+     "teamA": "대전광역시스쿼시연맹",
+     "playerB": "박종명",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 일반부",
+     "round": "준준결승경기2",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "임재현",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 일반부",
+     "round": "준준결승경기3",
+     "playerA": "고영조",
+     "sidoA": "광주",
+     "teamA": "광주광역시체육회",
+     "playerB": "강우석",
+     "sidoB": "울산",
+     "teamB": "울산광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "남자 일반부",
+     "round": "준준결승경기4",
+     "playerA": "유재진",
+     "sidoA": "부산",
+     "teamA": "부산광역시체육회",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       13
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "조아연",
+     "sidoA": "경기",
+     "teamA": "오남고등학교[3]",
+     "playerB": "전현영",
+     "sidoB": "부산",
+     "teamB": "대광고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       9
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[1]",
+     "playerB": "이수현",
+     "sidoB": "인천",
+     "teamB": "인천광역시스쿼시연맹[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "김유빈",
+     "sidoA": "전남",
+     "teamA": "순천스포츠클럽[2]",
+     "playerB": "정수아",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "황지영",
+     "sidoA": "경남",
+     "teamA": "양산여자고등학교[1]",
+     "playerB": "엄준",
+     "sidoB": "서울",
+     "teamB": "서울특별시스쿼시연맹[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 일반부",
+     "round": "준준결승경기1",
+     "playerA": "양연수",
+     "sidoA": "전남",
+     "teamA": "전라남도청",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       8
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       13,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 일반부",
+     "round": "준준결승경기2",
+     "playerA": "문혜연",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "이소진",
+     "sidoB": "충북",
+     "teamB": "한국체육대학교[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       12,
+       10
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 일반부",
+     "round": "준준결승경기3",
+     "playerA": "김**",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹",
+     "playerB": "이지현",
+     "sidoB": "대전",
+     "teamB": "대전광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-12",
+     "division": "여자 일반부",
+     "round": "준준결승경기4",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "김가혜",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 3,
+     "gamesB": 2,
+     "winner": "A",
+     "points": [
+      [
+       12,
+       10
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "남자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "오서진",
+     "sidoA": "인천",
+     "teamA": "인천 대건고등학교[3]",
+     "playerB": "이종혁",
+     "sidoB": "전남",
+     "teamB": "전라남도스쿼시연맹[2]",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       12,
+       10
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "남자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "나주영",
+     "sidoA": "충남",
+     "teamA": "천안월봉고등학교[3]",
+     "playerB": "류정욱",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "남자 일반부",
+     "round": "준결승경기1",
+     "playerA": "강우석",
+     "sidoA": "울산",
+     "teamA": "울산광역시체육회",
+     "playerB": "박종명",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "남자 일반부",
+     "round": "준결승경기2",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       13,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "여자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "정수아",
+     "sidoA": "충북",
+     "teamA": "충북상업정보고등학교[2]",
+     "playerB": "조아연",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       1,
+       11
+      ],
+      [
+       0,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "여자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "엄준",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹[3]",
+     "playerB": "박솔민",
+     "sidoB": "광주",
+     "teamB": "동일미래과학고등학교[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "여자 일반부",
+     "round": "준결승경기1",
+     "playerA": "이지현",
+     "sidoA": "대전",
+     "teamA": "대전광역시체육회",
+     "playerB": "양연수",
+     "sidoB": "전남",
+     "teamB": "전라남도청",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       12,
+       14
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-14",
+     "division": "여자 일반부",
+     "round": "준결승경기2",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "문혜연",
+     "sidoB": "전북",
+     "teamB": "전라북도스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-15",
+     "division": "남자 18세이하부",
+     "round": "결승",
+     "playerA": "나주영",
+     "sidoA": "충남",
+     "teamA": "천안월봉고등학교[3]",
+     "playerB": "오서진",
+     "sidoB": "인천",
+     "teamB": "인천 대건고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-15",
+     "division": "남자 일반부",
+     "round": "결승",
+     "playerA": "박종명",
+     "sidoA": "충남",
+     "teamA": "충청남도체육회",
+     "playerB": "이민우",
+     "sidoB": "충북",
+     "teamB": "충청북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       12,
+       14
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-15",
+     "division": "여자 18세이하부",
+     "round": "결승",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[1]",
+     "playerB": "조아연",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[3]",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       13,
+       11
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2024-10-15",
+     "division": "여자 일반부",
+     "round": "결승",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "양연수",
+     "sidoB": "전남",
+     "teamB": "전라남도청",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    }
+   ]
+  },
+  {
+   "gameno": 106,
+   "year": 2025,
+   "name": "2025 제106회 전국체육대회",
+   "source": "history",
+   "matches": [
+    {
+     "date": "2025-10-17",
+     "division": "남자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "이동화",
+     "sidoA": "경북",
+     "teamA": "김천중앙고등학교[1]",
+     "playerB": "오지훈",
+     "sidoB": "인천",
+     "teamB": "인천 대건고등학교[2]",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "김재영",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹[1]",
+     "playerB": "우석현",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "박은찬",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[3]",
+     "playerB": "안동현",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[3]",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       12,
+       10
+      ],
+      [
+       12,
+       10
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "이용욱",
+     "sidoA": "충남",
+     "teamA": "천안월봉고등학교[3]",
+     "playerB": "박민기",
+     "sidoB": "경남",
+     "teamB": "양산제일고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       8,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기1",
+     "playerA": "유승한",
+     "sidoA": "대전",
+     "teamA": "대전광역시스쿼시연맹",
+     "playerB": "고영조",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       5,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기2",
+     "playerA": "김승현",
+     "sidoA": "대구",
+     "teamA": "대구광역시청",
+     "playerB": "이동준",
+     "sidoB": "경남",
+     "teamB": "경상남도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       13,
+       15
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기3",
+     "playerA": "강우석",
+     "sidoA": "울산",
+     "teamA": "울산광역시체육회",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기4",
+     "playerA": "최호진",
+     "sidoA": "서울",
+     "teamA": "한국체육대학교[3]",
+     "playerB": "이승택",
+     "sidoB": "경기",
+     "teamB": "경기도스쿼시연맹",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       13
+      ],
+      [
+       17,
+       19
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기5",
+     "playerA": "최영진",
+     "sidoA": "강원",
+     "teamA": "강원도스쿼시연맹",
+     "playerB": "문석호",
+     "sidoB": "세종",
+     "teamB": "세종특별자치시스쿼시연맹",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기6",
+     "playerA": "김건",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       8,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "남자 일반부",
+     "round": "예선경기7",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "오서진",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "라**",
+     "sidoA": "대구",
+     "teamA": "대구여자고등학교[1]",
+     "playerB": "박솔민",
+     "sidoB": "광주",
+     "teamB": "동일미래과학고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "서예은",
+     "sidoA": "경기",
+     "teamA": "산본고등학교[3]",
+     "playerB": "한휴인",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       0
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "김예은",
+     "sidoA": "전북",
+     "teamA": "남부안노을스포츠클럽[2]",
+     "playerB": "추예담",
+     "sidoB": "충남",
+     "teamB": "(사)천안남서울스포츠클럽[2]",
+     "gamesA": 3,
+     "gamesB": 2,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       9
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "강현이",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹[1]",
+     "playerB": "정수아",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 18세이하부",
+     "round": "예선경기5",
+     "playerA": "김태연",
+     "sidoA": "인천",
+     "teamA": "인천광역시스쿼시연맹[3]",
+     "playerB": "김유빈",
+     "sidoB": "전남",
+     "teamB": "나주스포츠클럽[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       9
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기1",
+     "playerA": "김다정",
+     "sidoA": "강원",
+     "teamA": "강원도스쿼시연맹",
+     "playerB": "박다송",
+     "sidoB": "경북",
+     "teamB": "경상북도스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기2",
+     "playerA": "엄화영",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "김하연",
+     "sidoB": "경기",
+     "teamB": "한국체육대학교[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기3",
+     "playerA": "안**",
+     "sidoA": "대구",
+     "teamA": "대구광역시청",
+     "playerB": "이자연",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       5
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기4",
+     "playerA": "이지현",
+     "sidoA": "대전",
+     "teamA": "대전광역시체육회",
+     "playerB": "류보람",
+     "sidoB": "울산",
+     "teamB": "울산광역시체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기5",
+     "playerA": "박다영",
+     "sidoA": "충북",
+     "teamA": "충청북도스쿼시연맹",
+     "playerB": "양연수",
+     "sidoB": "전남",
+     "teamB": "전라남도청",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기6",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "김가혜",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기7",
+     "playerA": "김미진",
+     "sidoA": "세종",
+     "teamA": "세종특별자치시스쿼시연맹",
+     "playerB": "엄준",
+     "sidoB": "서울",
+     "teamB": "동원과학기술대학교[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-17",
+     "division": "여자 일반부",
+     "round": "예선경기8",
+     "playerA": "김미소",
+     "sidoA": "부산",
+     "teamA": "부산광역시스쿼시연맹",
+     "playerB": "문혜연",
+     "sidoB": "전북",
+     "teamB": "전라북도스쿼시연맹",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "오지훈",
+     "sidoA": "인천",
+     "teamA": "인천 대건고등학교[2]",
+     "playerB": "이성빈",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "김재영",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹[1]",
+     "playerB": "김현",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       1,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "이종혁",
+     "sidoA": "전남",
+     "teamA": "나주스포츠클럽[3]",
+     "playerB": "안동현",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "송늘찬",
+     "sidoA": "부산",
+     "teamA": "대광고등학교[2]",
+     "playerB": "박민기",
+     "sidoB": "경남",
+     "teamB": "양산제일고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 일반부",
+     "round": "준준결승경기1",
+     "playerA": "고영조",
+     "sidoA": "광주",
+     "teamA": "광주광역시체육회",
+     "playerB": "이동준",
+     "sidoB": "경남",
+     "teamB": "경상남도체육회",
+     "gamesA": 3,
+     "gamesB": 2,
+     "winner": "A",
+     "points": [
+      [
+       10,
+       12
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 일반부",
+     "round": "준준결승경기2",
+     "playerA": "이승택",
+     "sidoA": "경기",
+     "teamA": "경기도스쿼시연맹",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 일반부",
+     "round": "준준결승경기3",
+     "playerA": "문석호",
+     "sidoA": "세종",
+     "teamA": "세종특별자치시스쿼시연맹",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "남자 일반부",
+     "round": "준준결승경기4",
+     "playerA": "이지석",
+     "sidoA": "부산",
+     "teamA": "신라대학교[4]",
+     "playerB": "이민우",
+     "sidoB": "충북",
+     "teamB": "충청북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[2]",
+     "playerB": "서예은",
+     "sidoB": "경기",
+     "teamB": "산본고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "김예은",
+     "sidoA": "전북",
+     "teamA": "남부안노을스포츠클럽[2]",
+     "playerB": "정**",
+     "sidoB": "경남",
+     "teamB": "경상남도스쿼시연맹[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "김하늘",
+     "sidoA": "경북",
+     "teamA": "김천한일여자고등학교[2]",
+     "playerB": "정수아",
+     "sidoB": "충북",
+     "teamB": "충북상업정보고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       1,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       0,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "김지윤",
+     "sidoA": "부산",
+     "teamA": "대광고등학교[3]",
+     "playerB": "김태연",
+     "sidoB": "인천",
+     "teamB": "인천광역시스쿼시연맹[3]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       9
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       5,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 일반부",
+     "round": "준준결승경기1",
+     "playerA": "김다정",
+     "sidoA": "강원",
+     "teamA": "강원도스쿼시연맹",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 일반부",
+     "round": "준준결승경기2",
+     "playerA": "이지현",
+     "sidoA": "대전",
+     "teamA": "대전광역시체육회",
+     "playerB": "안**",
+     "sidoB": "대구",
+     "teamB": "대구광역시청",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       12,
+       10
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 일반부",
+     "round": "준준결승경기3",
+     "playerA": "양연수",
+     "sidoA": "전남",
+     "teamA": "전라남도청",
+     "playerB": "허민경",
+     "sidoB": "경남",
+     "teamB": "경상남도체육회",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       10,
+       12
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-18",
+     "division": "여자 일반부",
+     "round": "준준결승경기4",
+     "playerA": "문혜연",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "엄준",
+     "sidoB": "서울",
+     "teamB": "동원과학기술대학교[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "남자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "이종혁",
+     "sidoA": "전남",
+     "teamA": "나주스포츠클럽[3]",
+     "playerB": "이성빈",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "남자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "박민기",
+     "sidoA": "경남",
+     "teamA": "양산제일고등학교[3]",
+     "playerB": "김현",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "남자 일반부",
+     "round": "준결승경기1",
+     "playerA": "나주영",
+     "sidoA": "충남",
+     "teamA": "충청남도체육회",
+     "playerB": "고영조",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "남자 일반부",
+     "round": "준결승경기2",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "여자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "정수아",
+     "sidoA": "충북",
+     "teamA": "충북상업정보고등학교[3]",
+     "playerB": "박솔민",
+     "sidoB": "광주",
+     "teamB": "동일미래과학고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "여자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "김태연",
+     "sidoA": "인천",
+     "teamA": "인천광역시스쿼시연맹[3]",
+     "playerB": "정**",
+     "sidoB": "경남",
+     "teamB": "경상남도스쿼시연맹[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       14,
+       12
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "여자 일반부",
+     "round": "준결승경기1",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       12,
+       10
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-20",
+     "division": "여자 일반부",
+     "round": "준결승경기2",
+     "playerA": "문혜연",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "이지현",
+     "sidoB": "대전",
+     "teamB": "대전광역시체육회",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-21",
+     "division": "남자 18세이하부",
+     "round": "결승",
+     "playerA": "박민기",
+     "sidoA": "경남",
+     "teamA": "양산제일고등학교[3]",
+     "playerB": "이종혁",
+     "sidoB": "전남",
+     "teamB": "나주스포츠클럽[3]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-21",
+     "division": "남자 일반부",
+     "round": "결승",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 2,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       10,
+       12
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-21",
+     "division": "여자 18세이하부",
+     "round": "결승",
+     "playerA": "김태연",
+     "sidoA": "인천",
+     "teamA": "인천광역시스쿼시연맹[3]",
+     "playerB": "박솔민",
+     "sidoB": "광주",
+     "teamB": "동일미래과학고등학교[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2025-10-21",
+     "division": "여자 일반부",
+     "round": "결승",
+     "playerA": "이지현",
+     "sidoA": "대전",
+     "teamA": "대전광역시체육회",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       10,
+       12
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       5,
+       11
+      ]
+     ],
+     "reason": null
+    }
+   ]
+  },
+  {
+   "gameno": 107,
+   "year": 2026,
+   "name": "2026 제107회 전국체육대회",
+   "source": "national",
+   "matches": [
+    {
+     "date": "2026-10-16",
+     "division": "남자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "김찬영",
+     "sidoA": "대구",
+     "teamA": "대구스쿼시유스클럽[2]",
+     "playerB": "장승보",
+     "sidoB": "전북",
+     "teamB": "남부안노을스포츠클럽[1]",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "김성주",
+     "sidoA": "충남",
+     "teamA": "천안월봉고등학교[1]",
+     "playerB": "윤종현",
+     "sidoB": "경남",
+     "teamB": "경상남도스쿼시연맹[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "김지완",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[1]",
+     "playerB": "윤태훈",
+     "sidoB": "서울",
+     "teamB": "서울특별시스쿼시연맹[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       14,
+       12
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "이동화",
+     "sidoA": "경북",
+     "teamA": "김천중앙고등학교[2]",
+     "playerB": "김현",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       1,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기1",
+     "playerA": "유승용",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기2",
+     "playerA": "나주영",
+     "sidoA": "충남",
+     "teamA": "충청남도체육회",
+     "playerB": "조영훈",
+     "sidoB": "대전",
+     "teamB": "대전광역시스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       0
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기3",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "이동준",
+     "sidoB": "경남",
+     "teamB": "경상남도체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       8
+      ],
+      [
+       14,
+       12
+      ],
+      [
+       11,
+       5
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기4",
+     "playerA": "이상훈",
+     "sidoA": "서울",
+     "teamA": "서울특별시스쿼시연맹",
+     "playerB": "강우석",
+     "sidoB": "울산",
+     "teamB": "울산광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기5",
+     "playerA": "오서진",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "문석호",
+     "sidoB": "세종",
+     "teamB": "세종특별자치시스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기6",
+     "playerA": "고영조",
+     "sidoA": "광주",
+     "teamA": "광주광역시체육회",
+     "playerB": "이라온",
+     "sidoB": "경기",
+     "teamB": "중앙대학교 제2캠퍼스(안성)[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       13,
+       11
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기7",
+     "playerA": "류정욱",
+     "sidoA": "강원",
+     "teamA": "강원도스쿼시연맹",
+     "playerB": "김승현",
+     "sidoB": "대구",
+     "teamB": "대구광역시청",
+     "gamesA": 3,
+     "gamesB": 2,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       13
+      ],
+      [
+       8,
+       11
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기8",
+     "playerA": "오수현",
+     "sidoA": "제주",
+     "teamA": "제주특별자치도스쿼시연맹",
+     "playerB": "서무진",
+     "sidoB": "전남",
+     "teamB": "전라남도스쿼시연맹",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "남자 일반부",
+     "round": "예선경기9",
+     "playerA": "이지석",
+     "sidoA": "부산",
+     "teamA": "부산광역시스쿼시연맹",
+     "playerB": "류정민",
+     "sidoB": "경북",
+     "teamB": "경상북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 18세이하부",
+     "round": "예선경기1",
+     "playerA": "김예은",
+     "sidoA": "전북",
+     "teamA": "남부안노을스포츠클럽[3]",
+     "playerB": "김하늘",
+     "sidoB": "경북",
+     "teamB": "김천한일고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       12,
+       10
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 18세이하부",
+     "round": "예선경기2",
+     "playerA": "이해인",
+     "sidoA": "전남",
+     "teamA": "나주스포츠클럽[1]",
+     "playerB": "강현이",
+     "sidoB": "서울",
+     "teamB": "서울특별시스쿼시연맹[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       0
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 18세이하부",
+     "round": "예선경기3",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[3]",
+     "playerB": "정유빈",
+     "sidoB": "충남",
+     "teamB": "천안월봉고등학교[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 18세이하부",
+     "round": "예선경기4",
+     "playerA": "김도은",
+     "sidoA": "세종",
+     "teamA": "세종여자고등학교[1]",
+     "playerB": "이수현",
+     "sidoB": "인천",
+     "teamB": "인천광역시스쿼시연맹[3]",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       10,
+       12
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 18세이하부",
+     "round": "예선경기5",
+     "playerA": "강연아",
+     "sidoA": "경기",
+     "teamA": "오남고등학교[2]",
+     "playerB": "남유비",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 일반부",
+     "round": "예선경기1",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "김하연",
+     "sidoB": "경기",
+     "teamB": "한국체육대학교[3]",
+     "gamesA": 0,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [],
+     "reason": "(점수안줌)실격"
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 일반부",
+     "round": "예선경기2",
+     "playerA": "남지윤",
+     "sidoA": "서울",
+     "teamA": "김천대학교[3]",
+     "playerB": "조**",
+     "sidoB": "경북",
+     "teamB": "김천대학교[4]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 일반부",
+     "round": "예선경기3",
+     "playerA": "송동주",
+     "sidoA": "광주",
+     "teamA": "광주광역시체육회",
+     "playerB": "김미소",
+     "sidoB": "세종",
+     "teamB": "세종특별자치시스쿼시연맹",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       0
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 일반부",
+     "round": "예선경기4",
+     "playerA": "안**",
+     "sidoA": "대구",
+     "teamA": "대구광역시청",
+     "playerB": "양연수",
+     "sidoB": "전남",
+     "teamB": "전남광주특별시청",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       9,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 일반부",
+     "round": "예선경기5",
+     "playerA": "엄화영",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "류보람",
+     "sidoB": "울산",
+     "teamB": "울산광역시체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       4
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-16",
+     "division": "여자 일반부",
+     "round": "예선경기6",
+     "playerA": "전아인",
+     "sidoA": "충남",
+     "teamA": "충청남도체육회",
+     "playerB": "이지현",
+     "sidoB": "대전",
+     "teamB": "대전광역시체육회",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       12,
+       14
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "김찬영",
+     "sidoA": "대구",
+     "teamA": "대구스쿼시유스클럽[2]",
+     "playerB": "오지훈",
+     "sidoB": "인천",
+     "teamB": "인천 대건고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       2
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "윤종현",
+     "sidoA": "경남",
+     "teamA": "경상남도스쿼시연맹[1]",
+     "playerB": "송늘찬",
+     "sidoB": "부산",
+     "teamB": "대광고등학교[3]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       8
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "서한규",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[3]",
+     "playerB": "김지완",
+     "sidoB": "울산",
+     "teamB": "언양고등학교[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       1,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "구건휘",
+     "sidoA": "제주",
+     "teamA": "대정고등학교[1]",
+     "playerB": "김현",
+     "sidoB": "경기",
+     "teamB": "오남고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       3,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 일반부",
+     "round": "준준결승경기1",
+     "playerA": "강우석",
+     "sidoA": "울산",
+     "teamA": "울산광역시체육회",
+     "playerB": "이민우",
+     "sidoB": "충북",
+     "teamB": "충청북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 일반부",
+     "round": "준준결승경기2",
+     "playerA": "오서진",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "고영조",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       3
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 일반부",
+     "round": "준준결승경기3",
+     "playerA": "서무진",
+     "sidoA": "전남",
+     "teamA": "전라남도스쿼시연맹",
+     "playerB": "류정욱",
+     "sidoB": "강원",
+     "teamB": "강원도스쿼시연맹",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       0,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "남자 일반부",
+     "round": "준준결승경기4",
+     "playerA": "류정민",
+     "sidoA": "경북",
+     "teamA": "경상북도체육회",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       11,
+       13
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기1",
+     "playerA": "김예은",
+     "sidoA": "전북",
+     "teamA": "남부안노을스포츠클럽[3]",
+     "playerB": "이해인",
+     "sidoB": "전남",
+     "teamB": "나주스포츠클럽[1]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       2,
+       11
+      ],
+      [
+       2,
+       11
+      ],
+      [
+       2,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기2",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[3]",
+     "playerB": "이현서",
+     "sidoB": "부산",
+     "teamB": "대광고등학교[2]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       1
+      ],
+      [
+       11,
+       1
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기3",
+     "playerA": "이**",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[1]",
+     "playerB": "김도은",
+     "sidoB": "세종",
+     "teamB": "세종여자고등학교[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       7
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 18세이하부",
+     "round": "준준결승경기4",
+     "playerA": "정현아",
+     "sidoA": "경남",
+     "teamA": "경상남도스쿼시연맹[1]",
+     "playerB": "남유비",
+     "sidoB": "대구",
+     "teamB": "와룡고등학교[1]",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       0
+      ],
+      [
+       13,
+       11
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 일반부",
+     "round": "준준결승경기1",
+     "playerA": "허민경",
+     "sidoA": "경남",
+     "teamA": "경상남도체육회",
+     "playerB": "조**",
+     "sidoB": "경북",
+     "teamB": "김천대학교[4]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       6
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 일반부",
+     "round": "준준결승경기2",
+     "playerA": "양연수",
+     "sidoA": "전남",
+     "teamA": "전남광주특별시청",
+     "playerB": "송동주",
+     "sidoB": "광주",
+     "teamB": "광주광역시체육회",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       5
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       11,
+       5
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 일반부",
+     "round": "준준결승경기3",
+     "playerA": "노윤진",
+     "sidoA": "부산",
+     "teamA": "부산광역시스쿼시연맹",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       9,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-17",
+     "division": "여자 일반부",
+     "round": "준준결승경기4",
+     "playerA": "문혜연",
+     "sidoA": "전북",
+     "teamA": "전라북도스쿼시연맹",
+     "playerB": "전아인",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       4,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       11,
+       8
+      ],
+      [
+       5,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "남자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "김지완",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[1]",
+     "playerB": "김찬영",
+     "sidoB": "대구",
+     "teamB": "대구스쿼시유스클럽[2]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "남자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "김현",
+     "sidoA": "경기",
+     "teamA": "오남고등학교[3]",
+     "playerB": "윤종현",
+     "sidoB": "경남",
+     "teamB": "경상남도스쿼시연맹[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       8
+      ],
+      [
+       11,
+       4
+      ],
+      [
+       11,
+       5
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "남자 일반부",
+     "round": "준결승경기1",
+     "playerA": "류정욱",
+     "sidoA": "강원",
+     "teamA": "강원도스쿼시연맹",
+     "playerB": "이민우",
+     "sidoB": "충북",
+     "teamB": "충청북도체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "남자 일반부",
+     "round": "준결승경기2",
+     "playerA": "오서진",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       11,
+       5
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       7,
+       11
+      ],
+      [
+       6,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "여자 18세이하부",
+     "round": "준결승경기1",
+     "playerA": "이**",
+     "sidoA": "울산",
+     "teamA": "언양고등학교[1]",
+     "playerB": "이해인",
+     "sidoB": "전남",
+     "teamB": "나주스포츠클럽[1]",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       5,
+       11
+      ],
+      [
+       11,
+       9
+      ],
+      [
+       13,
+       15
+      ],
+      [
+       10,
+       12
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "여자 18세이하부",
+     "round": "준결승경기2",
+     "playerA": "정현아",
+     "sidoA": "경남",
+     "teamA": "경상남도스쿼시연맹[1]",
+     "playerB": "박솔민",
+     "sidoB": "광주",
+     "teamB": "동일미래과학고등학교[3]",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       4,
+       11
+      ],
+      [
+       7,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "여자 일반부",
+     "round": "준결승경기1",
+     "playerA": "엄화영",
+     "sidoA": "인천",
+     "teamA": "인천광역시체육회",
+     "playerB": "허민경",
+     "sidoB": "경남",
+     "teamB": "경상남도체육회",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       6,
+       11
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       9
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-19",
+     "division": "여자 일반부",
+     "round": "준결승경기2",
+     "playerA": "전아인",
+     "sidoA": "충남",
+     "teamA": "충청남도체육회",
+     "playerB": "양연수",
+     "sidoB": "전남",
+     "teamB": "전남광주특별시청",
+     "gamesA": 3,
+     "gamesB": 1,
+     "winner": "A",
+     "points": [
+      [
+       12,
+       10
+      ],
+      [
+       11,
+       6
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       11,
+       9
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-20",
+     "division": "남자 18세이하부",
+     "round": "결승",
+     "playerA": "김현",
+     "sidoA": "경기",
+     "teamA": "오남고등학교[3]",
+     "playerB": "김찬영",
+     "sidoB": "대구",
+     "teamB": "대구스쿼시유스클럽[2]",
+     "gamesA": 3,
+     "gamesB": 2,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       9
+      ],
+      [
+       3,
+       11
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       9,
+       11
+      ],
+      [
+       12,
+       10
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-20",
+     "division": "남자 일반부",
+     "round": "결승",
+     "playerA": "이민우",
+     "sidoA": "충북",
+     "teamA": "충청북도체육회",
+     "playerB": "나주영",
+     "sidoB": "충남",
+     "teamB": "충청남도체육회",
+     "gamesA": 1,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       7,
+       11
+      ],
+      [
+       12,
+       10
+      ],
+      [
+       5,
+       11
+      ],
+      [
+       8,
+       11
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-20",
+     "division": "여자 18세이하부",
+     "round": "결승",
+     "playerA": "박솔민",
+     "sidoA": "광주",
+     "teamA": "동일미래과학고등학교[3]",
+     "playerB": "이해인",
+     "sidoB": "전남",
+     "teamB": "나주스포츠클럽[1]",
+     "gamesA": 3,
+     "gamesB": 0,
+     "winner": "A",
+     "points": [
+      [
+       11,
+       3
+      ],
+      [
+       11,
+       2
+      ],
+      [
+       11,
+       7
+      ]
+     ],
+     "reason": null
+    },
+    {
+     "date": "2026-10-20",
+     "division": "여자 일반부",
+     "round": "결승",
+     "playerA": "전아인",
+     "sidoA": "충남",
+     "teamA": "충청남도체육회",
+     "playerB": "엄화영",
+     "sidoB": "인천",
+     "teamB": "인천광역시체육회",
+     "gamesA": 0,
+     "gamesB": 3,
+     "winner": "B",
+     "points": [
+      [
+       8,
+       11
+      ],
+      [
+       6,
+       11
+      ],
+      [
+       5,
+       11
+      ]
+     ],
+     "reason": null
+    }
+   ]
+  }
+ ]
+}

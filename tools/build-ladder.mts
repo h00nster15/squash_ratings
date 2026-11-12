@@ -138,6 +138,65 @@ const merged = rawPlayers.length
 rawPlayers = rawPlayers.filter((p) => !alias.has(p.idNo))
 if (alias.size) console.log(alias.size + ' 등록번호 merged into ' + MERGES.length + ' people (' + merged + ' → ' + rawPlayers.length + ' players)')
 
+// --- 전국체육대회 ---------------------------------------------------------------
+// data/ksf/festival.json (tools/scrape-festival.mjs) holds the festival's singles; it is
+// not on the KSF portal. Its rows carry a name, 시도 and 소속 but no 등록번호, so each
+// name is matched to a player in the KSF data: same name and sex, of an age for the draw
+// (18세이하부: 13–19 that year), and when several remain, the one whose 시도 or 소속 agrees.
+// A name that matches no one, or several equally, is left out (listed below). Each
+// festival is one tournament, like any other.
+const FESTIVAL_FILE = path.join(DIR, 'festival.json')
+if (fs.existsSync(FESTIVAL_FILE)) {
+  const festival = JSON.parse(fs.readFileSync(FESTIVAL_FILE, 'utf8')) as {
+    events: {
+      gameno: number
+      year: number
+      name: string
+      matches: {
+        date: string; division: string; round: string | null
+        playerA: string; sidoA: string; teamA: string | null
+        playerB: string; sidoB: string; teamB: string | null
+        gamesA: number | null; gamesB: number | null
+      }[]
+    }[]
+  }
+  const byName = new Map<string, RawPlayer[]>()
+  for (const p of rawPlayers) byName.set(p.name, [...(byName.get(p.name) ?? []), p])
+  const school = (team: string | null) => (team ?? '').replace(/\[\d+\]$/, '').trim()
+  const find = (name: string, sido: string, team: string | null, division: string, year: number) => {
+    const sex = division.slice(0, 2)
+    const junior = /18세이하/.test(division)
+    const pool = (byName.get(name) ?? []).filter(
+      (p) => (!p.sex || p.sex === sex) && (!junior || !p.birthYear || (year - p.birthYear >= 13 && year - p.birthYear <= 19)),
+    )
+    if (pool.length <= 1) return pool[0]?.idNo ?? null
+    const score = (p: RawPlayer) => (p.sido === sido ? 1 : 0) + (team && p.teams.some((t) => t.includes(school(team))) ? 2 : 0)
+    const best = Math.max(...pool.map(score))
+    const top = pool.filter((p) => score(p) === best)
+    return best > 0 && top.length === 1 ? top[0].idNo : null
+  }
+  const missing = new Map<string, number>()
+  let added = 0
+  for (const e of festival.events) {
+    for (const f of e.matches) {
+      const a = find(f.playerA, f.sidoA, f.teamA, f.division, e.year)
+      const b = find(f.playerB, f.sidoB, f.teamB, f.division, e.year)
+      for (const [id, name, sido] of [[a, f.playerA, f.sidoA], [b, f.playerB, f.sidoB]] as const) {
+        if (!id) missing.set(`${name} (${sido}, ${f.division})`, (missing.get(`${name} (${sido}, ${f.division})`) ?? 0) + 1)
+      }
+      const row: RawMatch = {
+        toCd: `NF-${e.gameno}`, tournament: e.name, date: f.date, division: f.division, round: f.round,
+        playerAId: a, playerBId: b, gamesA: f.gamesA, gamesB: f.gamesB,
+      }
+      const at = rawMatches.findIndex((m) => m.date > f.date)
+      rawMatches.splice(at < 0 ? rawMatches.length : at, 0, row)
+      if (a && b) added++
+    }
+  }
+  console.log(`${added} 전국체전 singles added (${festival.events.map((e) => `${e.year} ${e.matches.length}`).join(', ')})`)
+  if (missing.size) console.log(`  names not matched to a KSF player: ${[...missing.keys()].join(', ')}`)
+}
+
 const now = new Date()
 const since = (months: number) => {
   const d = new Date(now)
