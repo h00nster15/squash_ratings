@@ -100,6 +100,15 @@ tr:last-child td {
   opacity: 0.6;
 }
 
+/* Compare tab: a rank both rankings give the same player, and the two rankings picked. */
+tr.same td {
+  background: var(--accent-bg);
+}
+
+tr.picked td:first-child {
+  box-shadow: inset 3px 0 var(--accent);
+}
+
 .up {
   color: var(--up);
 }

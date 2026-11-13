@@ -9,15 +9,17 @@ import './App.css'
 const NationalLadder = lazy(() => import('./NationalLadder.tsx').then((m) => ({ default: m.NationalLadder })))
 const PlayerPage = lazy(() => import('./PlayerPage.tsx').then((m) => ({ default: m.PlayerPage })))
 const RankingPoints = lazy(() => import('./RankingPoints.tsx').then((m) => ({ default: m.RankingPoints })))
+const RankingCompare = lazy(() => import('./RankingCompare.tsx').then((m) => ({ default: m.RankingCompare })))
 const ClubLadder = lazy(() => import('./ClubLadder.tsx').then((m) => ({ default: m.ClubLadder })))
 const Tournaments = lazy(() => import('./Tournaments.tsx').then((m) => ({ default: m.Tournaments })))
 const TournamentPage = lazy(() => import('./TournamentPage.tsx').then((m) => ({ default: m.TournamentPage })))
 const SeoulLeague = lazy(() => import('./SeoulLeague.tsx').then((m) => ({ default: m.SeoulLeague })))
 
-// Hash routes: #national (default) · #player/<idNo> · #points · #wellperion · #club · #league · #tournaments · #tournament/<id>
+// Hash routes: #national (default) · #player/<idNo> · #points · #compare · #wellperion · #club · #league · #tournaments · #tournament/<id>
 type Route =
   | { view: 'national' }
   | { view: 'points' }
+  | { view: 'compare' }
   | { view: 'league'; player?: string }
   | { view: 'player'; id: string }
   | { view: 'club' }
@@ -40,6 +42,7 @@ function parseRoute(hash: string): Route {
   if (org.national) {
     if (h === 'club') return { view: 'club' }
     if (h === 'points') return { view: 'points' }
+    if (h === 'compare') return { view: 'compare' }
     if (h === 'tournaments') return { view: 'tournaments' }
     let m = h.match(/^player\/(.+)$/)
     if (m) return { view: 'player', id: m[1] }
@@ -70,6 +73,7 @@ const TABS = [
     ? [
         { key: 'national', href: '#national', label: 'KSF National' },
         { key: 'points', href: '#points', label: 'Ranking Points' },
+        { key: 'compare', href: '#compare', label: 'Compare' },
         { key: 'club', href: '#club', label: org.clubLabel },
         { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
       ]
@@ -115,6 +119,8 @@ function App() {
           <SeoulLeague player={route.player} />
         ) : route.view === 'points' ? (
           <RankingPoints />
+        ) : route.view === 'compare' ? (
+          <RankingCompare />
         ) : route.view === 'wellperion' ? (
           <WellperionRatings player={route.player} />
         ) : route.view === 'club' ? (
