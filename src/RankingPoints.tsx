@@ -5,7 +5,7 @@ import { Sparkline } from './Sparkline.tsx'
 // The federation's ranking points (koreasquash.or.kr 국내랭킹), counted three ways
 // (tools/build-points.mts dates them):
 //   season  – the federation's rule: a season's points, reset every 1 January
-//   rolling – a tournament's points count for one year from the day it ended
+//   rolling – PSA style: a tournament's points count for one year from the day it ended
 //   psa     – the PSA world ranking's rule on the federation's tournaments: points by grade and finish on
 //             PSA's scale, one year rolling, and the average of the best BEST results (see psaPoints)
 
@@ -30,9 +30,9 @@ for (const e of ENTRIES) byPlayer.set(e.p, [...(byPlayer.get(e.p) ?? []), e])
 
 type Mode = 'psa' | 'rolling' | 'season'
 const MODES: { key: Mode; label: string }[] = [
-  { key: 'psa', label: 'PSA 방식 (상위 6개 평균)' },
-  { key: 'rolling', label: '1년 롤링 합계' },
+  { key: 'rolling', label: '1년 롤링 (PSA 방식)' },
   { key: 'season', label: '시즌 (연맹 방식)' },
+  { key: 'psa', label: 'PSA 등급표·평균 (시험)' },
 ]
 
 // PSA-style points. The federation grades its individual tournaments A (코리아오픈), B (대한체육회장배, 전한국,
@@ -99,7 +99,7 @@ function rank<T extends { pts: number }>(rows: T[]) {
 }
 
 export function RankingPoints() {
-  const [mode, setMode] = useState<Mode>('psa')
+  const [mode, setMode] = useState<Mode>('rolling')
   const [sex, setSex] = useState('남')
   const [kind, setKind] = useState('일반부')
   const [asOf, setAsOf] = useState(DATES[0])
@@ -223,8 +223,8 @@ export function RankingPoints() {
       <p className="muted small">
         Source: 대한스쿼시연맹 국내랭킹 (koreasquash.or.kr), {history.built} 수집, 2021–{T[T.length - 1]?.season} 시즌. 대회마다
         등급(A·B·C)에 따라 순위별 포인트가 주어집니다. <strong>시즌</strong>은 연맹 방식대로 그해 1월 1일부터 기준일까지의 포인트,{' '}
-        <strong>1년 롤링 합계</strong>는 대회가 끝난 날부터 1년 동안만 연맹 포인트가 남는 방식입니다(기준일에 1년이 지난 대회는 빠짐).{' '}
-        <strong>PSA 방식</strong>은 PSA 세계랭킹 규칙을 국내 대회에 적용한 것입니다: 연맹 등급(A 400 · B 200 · C 100, 전국체육대회 개인전은
+        <strong>1년 롤링</strong>은 PSA처럼 대회가 끝난 날부터 1년 동안만 포인트가 남는 방식입니다(기준일에 1년이 지난 대회는 빠짐).{' '}
+        <strong>PSA 등급표·평균 (시험)</strong>은 PSA 세계랭킹 규칙을 국내 대회에 적용한 것입니다: 연맹 등급(A 400 · B 200 · C 100, 전국체육대회 개인전은
         규정대로 C)은 그대로 두고 순위별 비율만 PSA 표(준우승 65%, 4강 40%, 8강 25%, 16강 15%, 32강 9.2%, 그 밖의 참가 5.6%)로 바꾼 뒤,
         최근 1년 성적 중 상위 {BEST}개의 평균으로 순위를 매깁니다(PSA는 최소 11개 대회로 나눔; 국내는 개인전이 1년에 8개라 {BEST}개).
         단체전과 국제랭킹포인트는 빠집니다.
