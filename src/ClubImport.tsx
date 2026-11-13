@@ -89,7 +89,7 @@ export function ClubImport({ data, reload }: { data: ClubData; reload: () => Pro
   }
   const need: Field[] = mode === 'wl' ? ['date', 'winner', 'loser'] : ['date', 'playerA', 'playerB', 'score']
   const missing = need.filter((f) => mapping[f] === undefined)
-  const optional: Field[] = mode === 'wl' ? ['score', 'type', 'event', 'national'] : ['type', 'event', 'national']
+  const optional: Field[] = mode === 'wl' ? ['score', 'type', 'event'] : ['type', 'event']
 
   async function save() {
     setBusy(true)
@@ -97,7 +97,7 @@ export function ClubImport({ data, reload }: { data: ClubData; reload: () => Pro
     try {
       const newPlayers = [...adding.entries()].filter(([n]) => chosen.some((r) => r.winner === n || r.loser === n)).map(([name, kind]) => ({ name, kind }))
       const r = await addClubMatches(
-        chosen.map(({ date, winner, loser, score, type, event, national }) => ({ date, winner, loser, score, type, event, national })),
+        chosen.map(({ date, winner, loser, score, type, event }) => ({ date, winner, loser, score, type, event })),
         newPlayers,
       )
       await reload()
@@ -233,7 +233,6 @@ export function ClubImport({ data, reload }: { data: ClubData; reload: () => Pro
                         <td>
                           <strong>{r.winner || '?'}</strong> {r.score || '(스코어 없음)'} {r.loser || '?'}
                           {r.event && <span className="muted small"> · {r.event}</span>}
-                          {r.national && <span className="muted small"> · 전국</span>}
                         </td>
                         <td className="muted small sm-hide">{TYPE_LABEL[r.type]}</td>
                         <td className="small">

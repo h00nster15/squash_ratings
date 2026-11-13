@@ -1,4 +1,5 @@
-# Publishes the Wellperion build to GitHub Pages on every push to main.
+# Publishes to GitHub Pages on every push to main: the Wellperion build at the site root
+# and the KSF national build under ksf/ — two separate sites, each with only its own ratings.
 # Relative base (./) so the app works under /squash_ratings/; routes are hash-based.
 name: Deploy to GitHub Pages
 
@@ -26,10 +27,12 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npm run build:wellperion -- --base ./
+      - run: npx tsc -b
+      - run: npx vite build --mode wellperion --base ./ --outDir dist/site
+      - run: npx vite build --base ./ --outDir dist/site/ksf
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/wellperion
+          path: dist/site
 
   deploy:
     needs: build

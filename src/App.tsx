@@ -1,17 +1,17 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
-import { ClubLadder } from './ClubLadder.tsx'
-import { NationalLadder } from './NationalLadder.tsx'
-import { PlayerPage } from './PlayerPage.tsx'
 import { org } from './org.ts'
 import { loadData, saveData } from './storage.ts'
-import { TournamentPage } from './TournamentPage.tsx'
 import { WellperionRatings } from './WellperionRatings.tsx'
-import { Tournaments } from './Tournaments.tsx'
 import './App.css'
 
-// The club-league view and its dataset only ship in builds whose org has one.
-// The ranking-points view ships its own dataset, loaded when opened.
+// Every view is loaded when opened, so an org that shows only its own ratings never
+// fetches the KSF national data. The club-league view ships only in builds whose org has one.
+const NationalLadder = lazy(() => import('./NationalLadder.tsx').then((m) => ({ default: m.NationalLadder })))
+const PlayerPage = lazy(() => import('./PlayerPage.tsx').then((m) => ({ default: m.PlayerPage })))
 const RankingPoints = lazy(() => import('./RankingPoints.tsx').then((m) => ({ default: m.RankingPoints })))
+const ClubLadder = lazy(() => import('./ClubLadder.tsx').then((m) => ({ default: m.ClubLadder })))
+const Tournaments = lazy(() => import('./Tournaments.tsx').then((m) => ({ default: m.Tournaments })))
+const TournamentPage = lazy(() => import('./TournamentPage.tsx').then((m) => ({ default: m.TournamentPage })))
 const SeoulLeague = lazy(() => import('./SeoulLeague.tsx').then((m) => ({ default: m.SeoulLeague })))
 
 // Hash routes: #national (default) · #player/<idNo> · #points · #wellperion · #club · #league · #tournaments · #tournament/<id>
@@ -27,8 +27,6 @@ type Route =
 
 function parseRoute(hash: string): Route {
   const h = hash.replace(/^#/, '')
-  if (h === 'club') return { view: 'club' }
-  if (h === 'points') return { view: 'points' }
   if (org.clubSource) {
     if (h === 'wellperion') return { view: 'wellperion' }
     const wp = h.match(/^wellperion\/player\/(.+)$/)
@@ -39,12 +37,16 @@ function parseRoute(hash: string): Route {
     const lp = h.match(/^league\/player\/(.+)$/)
     if (lp) return { view: 'league', player: decodeURIComponent(lp[1]) }
   }
-  if (h === 'tournaments') return { view: 'tournaments' }
-  let m = h.match(/^player\/(.+)$/)
-  if (m) return { view: 'player', id: m[1] }
-  m = h.match(/^tournament\/(.+)$/)
-  if (m) return { view: 'tournament', id: m[1] }
-  if (h === 'national') return { view: 'national' }
+  if (org.national) {
+    if (h === 'club') return { view: 'club' }
+    if (h === 'points') return { view: 'points' }
+    if (h === 'tournaments') return { view: 'tournaments' }
+    let m = h.match(/^player\/(.+)$/)
+    if (m) return { view: 'player', id: m[1] }
+    m = h.match(/^tournament\/(.+)$/)
+    if (m) return { view: 'tournament', id: m[1] }
+    if (h === 'national') return { view: 'national' }
+  }
   return { view: org.defaultView }
 }
 
@@ -63,13 +65,16 @@ function useRoute(): Route {
 
 const TABS = [
   ...(org.leagueLabel ? [{ key: 'league', href: '#league', label: org.leagueLabel }] : []),
-  ...(org.clubSource && org.defaultView === 'wellperion' ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
-  { key: 'national', href: '#national', label: 'KSF National' },
-  { key: 'points', href: '#points', label: 'Ranking Points' },
-  ...(org.clubSource && org.defaultView !== 'wellperion' ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
-  { key: 'club', href: '#club', label: org.clubLabel },
-  { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
-] as const
+  ...(org.clubSource ? [{ key: 'wellperion', href: '#wellperion', label: org.clubSource.label }] : []),
+  ...(org.national
+    ? [
+        { key: 'national', href: '#national', label: 'KSF National' },
+        { key: 'points', href: '#points', label: 'Ranking Points' },
+        { key: 'club', href: '#club', label: org.clubLabel },
+        { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
+      ]
+    : []),
+]
 
 function App() {
   const route = useRoute()
@@ -83,41 +88,45 @@ function App() {
       <header>
         <div className="panel-head">
           <h1>{org.title}</h1>
-          <nav className="segmented" aria-label="Section">
-            {TABS.map((t) => (
-              <a key={t.key} className={tab === t.key ? 'on' : ''} href={t.href}>
-                {t.label}
-              </a>
-            ))}
-          </nav>
+          {TABS.length > 1 && (
+            <nav className="segmented" aria-label="Section">
+              {TABS.map((t) => (
+                <a key={t.key} className={tab === t.key ? 'on' : ''} href={t.href}>
+                  {t.label}
+                </a>
+              ))}
+            </nav>
+          )}
         </div>
         <p className="muted">
-          {org.subtitle} A rating is shown as <span className="mono">rating ± uncertainty</span>; the ±
-          shrinks as a player plays more.
+          {org.subtitle}
+          {org.national && (
+            <>
+              {' '}A rating is shown as <span className="mono">rating ± uncertainty</span>; the ± shrinks as a player plays more.
+            </>
+          )}
         </p>
       </header>
 
-      {route.view === 'player' ? (
-        <PlayerPage id={route.id} />
-      ) : route.view === 'league' ? (
-        <Suspense fallback={<p className="muted">Loading league…</p>}>
+      <Suspense fallback={<p className="muted">Loading…</p>}>
+        {route.view === 'player' ? (
+          <PlayerPage id={route.id} />
+        ) : route.view === 'league' ? (
           <SeoulLeague player={route.player} />
-        </Suspense>
-      ) : route.view === 'points' ? (
-        <Suspense fallback={<p className="muted">Loading ranking points…</p>}>
+        ) : route.view === 'points' ? (
           <RankingPoints />
-        </Suspense>
-      ) : route.view === 'wellperion' ? (
-        <WellperionRatings player={route.player} />
-      ) : route.view === 'club' ? (
-        <ClubLadder data={data} setData={setData} />
-      ) : route.view === 'tournaments' ? (
-        <Tournaments data={data} setData={setData} />
-      ) : route.view === 'tournament' ? (
-        <TournamentPage id={route.id} data={data} setData={setData} />
-      ) : (
-        <NationalLadder />
-      )}
+        ) : route.view === 'wellperion' ? (
+          <WellperionRatings player={route.player} />
+        ) : route.view === 'club' ? (
+          <ClubLadder data={data} setData={setData} />
+        ) : route.view === 'tournaments' ? (
+          <Tournaments data={data} setData={setData} />
+        ) : route.view === 'tournament' ? (
+          <TournamentPage id={route.id} data={data} setData={setData} />
+        ) : (
+          <NationalLadder />
+        )}
+      </Suspense>
     </main>
   )
 }

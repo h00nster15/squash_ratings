@@ -5,7 +5,7 @@
 import type { ClubMatch, ClubPlayer } from './wellperion.ts'
 
 export type Cell = string | number | boolean | Date | null | undefined
-export type Field = 'date' | 'winner' | 'loser' | 'playerA' | 'playerB' | 'score' | 'type' | 'event' | 'national'
+export type Field = 'date' | 'winner' | 'loser' | 'playerA' | 'playerB' | 'score' | 'type' | 'event'
 export type Mapping = Partial<Record<Field, number>>
 /** 'wl': a winner column and a loser column. 'ab': two player columns and a score from A's side. */
 export type Mode = 'wl' | 'ab'
@@ -19,7 +19,6 @@ export const FIELD_LABEL: Record<Field, string> = {
   score: '스코어',
   type: '유형',
   event: '이벤트',
-  national: '전국 반영',
 }
 
 // Header words per field, compared with spaces removed and lower-cased.
@@ -32,7 +31,6 @@ const ALIASES: Record<Field, string[]> = {
   score: ['스코어', '점수', '결과', '게임스코어', 'score', 'result'],
   type: ['유형', '구분', '종류', '경기유형', 'type', 'kind'],
   event: ['이벤트', '대회', '대회명', '리그명', 'event', 'tournament'],
-  national: ['전국반영', '전국', '국가반영', 'national'],
 }
 
 const norm = (v: Cell) => String(v ?? '').replace(/\s+/g, '').toLowerCase()
@@ -117,8 +115,6 @@ export function typeOf(v: Cell): string {
   return 'challenge'
 }
 
-export const nationalOf = (v: Cell) => v === true || /^(y|yes|o|예|✓|true|1)$/i.test(text(v))
-
 export interface ImportRow {
   /** Row number in the spreadsheet (1-based, as Excel shows it). */
   line: number
@@ -128,7 +124,6 @@ export interface ImportRow {
   score: string
   type: string
   event: string
-  national: boolean
   /** Names as written that match no player (after spaces are ignored). */
   unknown: string[]
   status: 'ok' | 'duplicate' | 'error'
@@ -171,7 +166,6 @@ export function buildRows(
       score,
       type: typeOf(cell(r, 'type')),
       event: text(cell(r, 'event')),
-      national: nationalOf(cell(r, 'national')),
       unknown: [],
       status: 'ok',
       message: '',

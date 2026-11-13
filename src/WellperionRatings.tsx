@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { ClubImport } from './ClubImport.tsx'
 import { ClubPlayerPage } from './ClubPlayerPage.tsx'
-import { ladder } from './ksf.ts'
 import { ScoreInput } from './ScoreInput.tsx'
 import { emptyScore, readScore, type ScoreEntry } from './score.ts'
 import { today } from './storage.ts'
@@ -19,7 +18,6 @@ import {
   gamesOf,
   nationalScale,
   saveClubPlayer,
-  setClubMatchNational,
   signIn,
 } from './wellperion.ts'
 
@@ -47,8 +45,8 @@ const MATCH_TYPES = [
 /**
  * The Wellperion club ranking. Results live in the club Google Sheet; the same results
  * give two ratings — WSR (the club's own open-ended scale) and a national-scale rating on the
- * national ladder's scale — and a result marked 전국 반영 between two players linked to
- * their KSF 등록번호 is rated in the national ladder as well, from its next build.
+ * national ladder's scale. The club stays separate from the KSF national data: no club
+ * result goes into the national ladder, and no national data comes in here.
  */
 export function WellperionRatings({ player }: { player?: string }) {
   const [data, setData] = useState<ClubData | null>(null)
@@ -157,7 +155,6 @@ function ClubView({
   const { players, matches, admin } = data
   const nat = useMemo(() => nationalScale(players, matches), [players, matches])
   const ratedById = useMemo(() => new Map(nat.players.map((p) => [p.id, p])), [nat])
-  const byId = useMemo(() => new Map(players.map((p) => [p.id, p])), [players])
 
   // WSR ↔ national scale, from players with enough results on both.
   const fit = useMemo(
@@ -191,9 +188,6 @@ function ClubView({
   // Only active players are numbered; inactive ones show — wherever they appear.
   let n = 0
   const ranks = listed.map(({ p }) => (isActive(p) ? ++n : null))
-
-  const flagged = matches.filter((m) => m.national)
-  const eligible = flagged.filter((m) => byId.get(m.winner)?.ksfId && byId.get(m.loser)?.ksfId)
 
   return (
     <>
@@ -258,7 +252,6 @@ function ClubView({
                         <span className="muted small meta">
                           {' '}
                           {p.division}
-                          {p.ksfId ? ' · 국가 연결' : ''}
                           {admin && p.hidden ? ' · 비공개' : ''}
                         </span>
                       </td>
@@ -285,24 +278,6 @@ function ClubView({
             ? `환산(≈)은 두 레이팅이 모두 충분한 ${fit.players}명으로 맞춘 추정치입니다 — WSR 1점 ≈ ${Math.round(fit.slope)}점, WSR 5.00 ≈ ${Math.round(fit.toRating(5))} (일치도 ${Math.round(fit.r2 * 100)}%).`
             : '두 레이팅이 모두 충분한 선수가 5명 이상이 되면 서로 환산한 값(≈)을 함께 보여 줍니다.'}
         </p>
-      </section>
-
-      <section className="panel">
-        <h2>국가 랭킹 반영</h2>
-        <p className="muted small">
-          <b>전국 반영</b>으로 표시한 경기 {flagged.length}건 중 두 선수 모두 KSF 등록번호가 연결된 {eligible.length}건이 국가 랭킹에
-          들어갑니다 (국가 · 일반부 랭킹, "Wellperion 클럽" 경기로 표시). 국가 랭킹은 다음에 다시 만들 때 반영됩니다.
-        </p>
-        {flagged.length > eligible.length && (
-          <p className="small">
-            연결이 필요한 경기:{' '}
-            {flagged
-              .filter((m) => !eligible.includes(m))
-              .slice(0, 8)
-              .map((m) => `${m.date} ${byId.get(m.winner)?.name ?? '비공개'}–${byId.get(m.loser)?.name ?? '비공개'}`)
-              .join(', ')}
-          </p>
-        )}
       </section>
 
       {admin ? <CoachTools data={data} reload={reload} /> : <CoachSignIn onDone={reload} />}
@@ -370,7 +345,7 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
   }
 
   // --- Add a result ---
-  const [f, setF] = useState({ date: today(), winner: '', loser: '', score: '', type: 'challenge', event: '', national: false })
+  const [f, setF] = useState({ date: today(), winner: '', loser: '', score: '', type: 'challenge', event: '' })
   const [sc, setSc] = useState<ScoreEntry>(emptyScore)
   const winner = roster.find((p) => p.realName === f.winner)
   const loser = roster.find((p) => p.realName === f.loser)
@@ -436,20 +411,11 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
                 <input value={f.event} onChange={(e) => setF({ ...f, event: e.target.value })} />
               </label>
             </div>
-            <label className="check">
-              <input type="checkbox" checked={f.national} onChange={(e) => setF({ ...f, national: e.target.checked })} />
-              국가 랭킹에도 반영
-            </label>
-            {f.national && winner && loser && (!winner.ksfId || !loser.ksfId) && (
-              <p className="muted small">
-                {[winner, loser].filter((p) => !p.ksfId).map((p) => p.realName).join(', ')} 선수의 KSF 등록번호를 아래에서 연결해야 국가 랭킹에 들어갑니다.
-              </p>
-            )}
             <button type="submit" disabled={!valid || busy}>{busy ? '저장 중…' : '저장'}</button>
           </form>
         </section>
 
-        <LinkPlayers roster={roster} run={run} busy={busy} />
+        <AddPlayer run={run} busy={busy} />
       </div>
 
       {msg && <p className="small">{msg}</p>}
@@ -468,7 +434,6 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
                   <th>일자</th>
                   <th>결과</th>
                   <th className="sm-hide">유형</th>
-                  <th>국가 반영</th>
                   <th></th>
                 </tr>
               </thead>
@@ -476,7 +441,6 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
                 {recent.map((m) => {
                   const [a, b] = gamesOf(m)
                   const points = gamePoints(m.score)
-                  const linked = byId.get(m.winner)?.ksfId && byId.get(m.loser)?.ksfId
                   return (
                     <tr key={m.id!}>
                       <td className="muted">{m.date}</td>
@@ -486,12 +450,6 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
                         {points.length > 0 && <div className="muted small mono points">{formatPoints(points)}</div>}
                       </td>
                       <td className="muted small sm-hide">{MATCH_TYPES.find((t) => t.v === m.type)?.l ?? m.type}</td>
-                      <td>
-                        <label className="check">
-                          <input type="checkbox" disabled={busy} checked={m.national} onChange={(e) => void run(() => setClubMatchNational(m.id!, e.target.checked), '저장했습니다.')} />
-                          {m.national && !linked ? <span className="muted small">연결 필요</span> : null}
-                        </label>
-                      </td>
                       <td>
                         <button
                           type="button"
@@ -530,65 +488,13 @@ function CoachTools({ data, reload }: { data: ClubData; reload: () => Promise<vo
   )
 }
 
-/** Link a club player to their KSF 등록번호 (picked from the national list), or add a player. */
-function LinkPlayers({ roster, run, busy }: { roster: ClubPlayer[]; run: (what: () => Promise<unknown>, done: string) => Promise<void>; busy: boolean }) {
-  const [who, setWho] = useState('')
-  const [q, setQ] = useState('')
+/** Add a club player. */
+function AddPlayer({ run, busy }: { run: (what: () => Promise<unknown>, done: string) => Promise<void>; busy: boolean }) {
   const [newName, setNewName] = useState('')
   const [newKind, setNewKind] = useState('junior')
-  const player = roster.find((p) => p.realName === who)
-  const hits = q.trim().length >= 1 ? ladder.players.filter((p) => p.name.includes(q.trim())).slice(0, 8) : []
-  const nationalName = (id: string) => ladder.players.find((p) => p.id === id)
   return (
     <section className="panel">
-      <h2>선수 · KSF 연결</h2>
-      <form className="match-form" onSubmit={(e) => e.preventDefault()}>
-        <label>
-          클럽 선수
-          <select
-            value={who}
-            onChange={(e) => {
-              setWho(e.target.value)
-              setQ(e.target.value)
-            }}
-          >
-            <option value="">선택</option>
-            {roster.map((p) => (
-              <option key={p.id} value={p.realName}>
-                {p.realName}
-                {p.ksfId ? ' ✓' : ''}
-              </option>
-            ))}
-          </select>
-        </label>
-        {player?.ksfId && (
-          <p className="small">
-            연결됨: {nationalName(player.ksfId)?.name ?? '국가 명단에 없는 번호'} ({player.ksfId}){' '}
-            <button type="button" className="link" disabled={busy} onClick={() => void run(() => saveClubPlayer({ name: player.realName!, ksfId: '' }), '연결을 해제했습니다.')}>
-              해제
-            </button>
-          </p>
-        )}
-        {player && (
-          <label>
-            국가 명단에서 찾기
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="이름" />
-          </label>
-        )}
-        {player && hits.length > 0 && (
-          <ul className="year-divisions" style={{ flexDirection: 'column' }}>
-            {hits.map((h) => (
-              <li key={h.id}>
-                <button type="button" className="ghost" style={{ marginTop: 0 }} disabled={busy} onClick={() => void run(() => saveClubPlayer({ name: player.realName!, ksfId: h.id }), `${player.realName} ↔ ${h.name} 연결했습니다.`)}>
-                  {h.name} · {h.birthYear ?? '?'} · {h.team ?? h.lastDivision ?? ''}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        {player && q.trim() && hits.length === 0 && <p className="muted small">국가 명단(최근 3년 KSF 대회 출전자)에 없는 이름입니다.</p>}
-      </form>
-      <h3 style={{ marginTop: '1rem' }}>선수 추가</h3>
+      <h2>선수 추가</h2>
       <form
         className="inline-form"
         onSubmit={(e) => {

@@ -71,7 +71,7 @@ export function ClubPlayerPage({ data, id, scale, setScale }: { data: ClubData; 
         </a>
         <div className="panel-head">
           <h2>
-            {name(id)} <span className="muted small">{player.division}{player.ksfId ? ' · 국가 연결' : ''}</span>
+            {name(id)} <span className="muted small">{player.division}</span>
           </h2>
           <span className="muted small">{wins}승 {losses}패</span>
         </div>

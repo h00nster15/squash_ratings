@@ -34,8 +34,6 @@ export interface ClubMatch {
   games: [number, number] | null
   type: string
   event: string
-  /** 전국 반영: rated in the national ladder too, once both players are linked to KSF. */
-  national: boolean
   /**
    * WSR around this result: [winner before, winner after, loser before, loser after].
    * Absent from a script deployed before it existed.
@@ -106,21 +104,21 @@ async function post(action: string, body: Record<string, unknown>) {
   return j
 }
 
-export const addClubMatch = (m: { date: string; winner: string; loser: string; score: string; type: string; event: string; national: boolean }) =>
-  post('club-match', m)
+// Club results never go to the national ladder, so every result is saved with 전국 반영 off.
+export const addClubMatch = (m: { date: string; winner: string; loser: string; score: string; type: string; event: string }) =>
+  post('club-match', { ...m, national: false })
 /** The Excel import: new players first, then every result, all or nothing. */
 export async function addClubMatches(
-  matches: { date: string; winner: string; loser: string; score: string; type: string; event: string; national: boolean }[],
+  matches: { date: string; winner: string; loser: string; score: string; type: string; event: string }[],
   players: { name: string; kind: string }[],
 ) {
   try {
-    return await post('club-matches', { matches, players })
+    return await post('club-matches', { matches: matches.map((m) => ({ ...m, national: false })), players })
   } catch (e) {
     if (e instanceof Error && e.message.includes('Unknown action')) throw new Error('클럽 스크립트가 아직 엑셀 가져오기를 모릅니다 — 새 버전으로 배포해 주세요.')
     throw e
   }
 }
-export const setClubMatchNational = (id: string, national: boolean) => post('club-match-update', { id, national })
 export const deleteClubMatch = (id: string) => post('club-match-update', { id, delete: true })
 export const saveClubPlayer = (p: { name: string; ksfId?: string; kind?: string }) => post('club-player', p)
 

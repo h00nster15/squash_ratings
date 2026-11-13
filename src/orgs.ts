@@ -27,6 +27,11 @@ export interface OrgConfig {
    * served by its Apps Script. Absent = no such tab.
    */
   clubSource?: { label: string; execUrl: string }
+  /**
+   * The KSF national views (KSF National, Ranking Points, the org's local Club and
+   * Tournaments tabs, player pages). False for an org that shows only its own ratings.
+   */
+  national: boolean
   /** Pre-select this 시도 on the national ladder (players registered there). */
   nationalSido?: string
   /** localStorage namespace for the org's own players, matches and tournaments. */
@@ -43,7 +48,7 @@ export const ORGS: Record<OrgKey, OrgConfig> = {
     accentDark: '#4ccb8a',
     clubLabel: 'Club',
     defaultView: 'national',
-    clubSource: { label: 'Wellperion', execUrl: WELLPERION_EXEC },
+    national: true,
     storageKey: 'squash_ratings.v1',
   },
   wellperion: {
@@ -56,6 +61,8 @@ export const ORGS: Record<OrgKey, OrgConfig> = {
     clubLabel: '로컬 기록',
     defaultView: 'wellperion',
     clubSource: { label: 'Wellperion', execUrl: WELLPERION_EXEC },
+    // Only the club's own ranking: nothing from the KSF national data.
+    national: false,
     storageKey: 'squash_ratings.wellperion.v1',
   },
   seoul: {
@@ -68,6 +75,7 @@ export const ORGS: Record<OrgKey, OrgConfig> = {
     clubLabel: '서울연맹 대회',
     leagueLabel: 'Club League',
     defaultView: 'league',
+    national: true,
     nationalSido: '서울',
     storageKey: 'squash_ratings.seoul.v1',
   },
