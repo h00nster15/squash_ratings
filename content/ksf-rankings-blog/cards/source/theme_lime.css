@@ -1,0 +1,22 @@
+  :root{--bg:#141418;--page:#141418;--ink:#fff;--soft:#C9C9D2;--muted:#8A8A96;--kick:#D4F25C;--line:rgba(255,255,255,.09);
+    --panel:#232329;--panel-b:transparent;--gold:#D4F25C;--w:#ffffff;--l:#3A3A43;--her:#ffffff;--him:#D4F25C}
+  .card{background:#141418}
+  .court,.box{display:none}
+  .in{left:64px;right:64px;top:60px;bottom:54px}
+  .pg{top:58px;right:64px;border:0;background:#2E2E35;color:#fff;border-radius:999px;padding:10px 22px}
+  .kick{letter-spacing:.04em;font-size:27px}
+  .t{letter-spacing:-2.5px} .t.xl{letter-spacing:-4px}
+  .panel{border:0;border-radius:32px;padding:12px 32px}
+  .two .panel{border-radius:28px}
+  .sq{border-radius:9px} .sq.him{background:#D4F25C;color:#141418} .sq.her{background:#fff;color:#141418}
+  .nums div{border:0;border-radius:28px;background:#232329} .nums b{color:#D4F25C}
+  .vsline{border:0;border-radius:32px;background:#232329} .vsline .tm small{color:#8A8A96}
+  .h2h.b .r{color:#fff} .h2h.a .r{color:#D4F25C}
+  .rk .n{color:#8A8A96} .rk.top .n{color:#D4F25C}
+  .pt .n{color:#D4F25C}
+  .stat .k{color:#8A8A96}
+  .bar .tr{background:#3A3A43} .bar.b .tr i{background:#fff}
+  .close em{color:#D4F25C}
+  .krow .r{color:#D4F25C}
+  .foot{color:#767684} .foot b{color:#fff}
+  .krow .r{background:rgba(212,242,92,.14)}
