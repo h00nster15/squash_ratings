@@ -38,6 +38,27 @@ export function applyOrgTheme() {
   dark.addEventListener('change', apply)
 }
 
+/**
+ * Count page views on GoatCounter when the org has a site code. Routes are hash-based, so
+ * each route (#player/<id>, …) is counted as its own page, on load and on every change.
+ */
+export function startViewCount() {
+  if (!org.goatCounter) return
+  type GoatCounter = { count: (vars: { path: string }) => void }
+  const count = () => {
+    const gc = (window as unknown as { goatcounter?: GoatCounter }).goatcounter
+    gc?.count({ path: location.pathname + location.hash })
+  }
+  const script = document.createElement('script')
+  script.async = true
+  script.src = 'https://gc.zgo.at/count.js'
+  script.dataset.goatcounter = `https://${org.goatCounter}.goatcounter.com/count`
+  script.dataset.goatcounterSettings = JSON.stringify({ no_onload: true })
+  script.addEventListener('load', count)
+  document.head.append(script)
+  window.addEventListener('hashchange', count)
+}
+
 function hexToRgba(hex: string, alpha: number) {
   const n = parseInt(hex.slice(1), 16)
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`

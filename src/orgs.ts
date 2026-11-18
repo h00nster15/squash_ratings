@@ -38,6 +38,11 @@ export interface OrgConfig {
    * Club or Tournaments records.
    */
   presentation?: boolean
+  /**
+   * GoatCounter site code (https://<code>.goatcounter.com): counts page views, seen only on
+   * the owner's GoatCounter dashboard. Absent = no counting.
+   */
+  goatCounter?: string
   /** Pre-select this 시도 on the national ladder (players registered there). */
   nationalSido?: string
   /** localStorage namespace for the org's own players, matches and tournaments. */
@@ -68,6 +73,7 @@ export const ORGS: Record<OrgKey, OrgConfig> = {
     defaultView: 'national',
     national: true,
     presentation: true,
+    goatCounter: 'ksfratings',
     storageKey: 'squash_ratings.view.v1',
   },
   wellperion: {
