@@ -4,7 +4,7 @@
 // The Wellperion club Apps Script (v1 · mirror): the same /exec the club manager app uses.
 const WELLPERION_EXEC = 'https://script.google.com/macros/s/AKfycbwpLozjXaVuue6WA-eCsHpVjbZqI3Aen1jV2I3ZU7zCZPi3RqMDR9U2BZ8Z6lEXm2O2/exec'
 
-export type OrgKey = 'ksf' | 'wellperion' | 'seoul'
+export type OrgKey = 'ksf' | 'ksfview' | 'wellperion' | 'seoul'
 
 export interface OrgConfig {
   key: OrgKey
@@ -32,6 +32,12 @@ export interface OrgConfig {
    * Tournaments tabs, player pages). False for an org that shows only its own ratings.
    */
   national: boolean
+  /**
+   * Read-only version to show other people: of the national views only the KSF National
+   * ratings and player pages — no Ranking Points or Compare, and none of the org's local
+   * Club or Tournaments records.
+   */
+  presentation?: boolean
   /** Pre-select this 시도 on the national ladder (players registered there). */
   nationalSido?: string
   /** localStorage namespace for the org's own players, matches and tournaments. */
@@ -50,6 +56,19 @@ export const ORGS: Record<OrgKey, OrgConfig> = {
     defaultView: 'national',
     national: true,
     storageKey: 'squash_ratings.v1',
+  },
+  ksfview: {
+    key: 'ksfview',
+    title: 'Squash Ratings',
+    shortName: 'Squash Ratings',
+    subtitle: 'Ratings from official tournament results.',
+    accent: '#1f7a4d',
+    accentDark: '#4ccb8a',
+    clubLabel: 'Club',
+    defaultView: 'national',
+    national: true,
+    presentation: true,
+    storageKey: 'squash_ratings.view.v1',
   },
   wellperion: {
     key: 'wellperion',

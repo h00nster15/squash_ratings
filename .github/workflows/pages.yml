@@ -30,6 +30,7 @@ jobs:
       - run: npx tsc -b
       - run: npx vite build --mode wellperion --base ./ --outDir dist/site
       - run: npx vite build --base ./ --outDir dist/site/ksf
+      - run: npx vite build --mode ksfview --base ./ --outDir dist/site/ksf/view
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site

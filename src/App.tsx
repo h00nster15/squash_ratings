@@ -40,15 +40,17 @@ function parseRoute(hash: string): Route {
     if (lp) return { view: 'league', player: decodeURIComponent(lp[1]) }
   }
   if (org.national) {
-    if (h === 'club') return { view: 'club' }
+    const m = h.match(/^player\/(.+)$/)
+    if (m) return { view: 'player', id: m[1] }
+    if (h === 'national') return { view: 'national' }
+  }
+  if (org.national && !org.presentation) {
     if (h === 'points') return { view: 'points' }
+    if (h === 'club') return { view: 'club' }
     if (h === 'compare') return { view: 'compare' }
     if (h === 'tournaments') return { view: 'tournaments' }
-    let m = h.match(/^player\/(.+)$/)
-    if (m) return { view: 'player', id: m[1] }
-    m = h.match(/^tournament\/(.+)$/)
+    const m = h.match(/^tournament\/(.+)$/)
     if (m) return { view: 'tournament', id: m[1] }
-    if (h === 'national') return { view: 'national' }
   }
   return { view: org.defaultView }
 }
@@ -72,10 +74,14 @@ const TABS = [
   ...(org.national
     ? [
         { key: 'national', href: '#national', label: 'KSF National' },
-        { key: 'points', href: '#points', label: 'Ranking Points' },
-        { key: 'compare', href: '#compare', label: 'Compare' },
-        { key: 'club', href: '#club', label: org.clubLabel },
-        { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
+        ...(org.presentation
+          ? []
+          : [
+              { key: 'points', href: '#points', label: 'Ranking Points' },
+              { key: 'compare', href: '#compare', label: 'Compare' },
+              { key: 'club', href: '#club', label: org.clubLabel },
+              { key: 'tournaments', href: '#tournaments', label: 'Tournaments' },
+            ]),
       ]
     : []),
 ]
