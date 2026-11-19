@@ -477,9 +477,22 @@ button.ghost.danger {
     display: inline;
   }
 
-  /* Birth year · division (· team) moves under the name, so the name column stays narrow. */
+  header p {
+    font-size: 0.85rem;
+  }
+
+  /* Birth year · division (· team) moves under the name, so the name column stays narrow;
+     a long team is cut with … rather than pushing Rating and W–L off the screen. */
   .meta {
     display: block;
+    max-width: 46vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* A player's match list: the tournament heading wraps, so each result and score stays in view. */
+  .group-row td {
+    white-space: normal;
   }
 
   th,
@@ -501,18 +514,20 @@ button.ghost.danger {
   .segmented a {
     flex-shrink: 0;
     white-space: nowrap;
-    /* Big enough to hit with a thumb. */
-    padding: 0.5rem 0.85rem;
+    /* Big enough to hit with a thumb, small enough that each filter group fits one line. */
+    padding: 0.45rem 0.65rem;
+    font-size: 0.85rem;
   }
 
   .filters {
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
+  /* 시도 and search share one line. */
   .filters select,
   .filters input[type='text'],
   .filters input:not([type]) {
-    flex: 1 1 100%;
+    flex: 1 1 40%;
     min-width: 0;
   }
 
